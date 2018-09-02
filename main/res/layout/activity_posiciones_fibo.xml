@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayoutP"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/posFibo"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:inputType="number"
+        android:textColor="@android:color/holo_orange_dark" />
+
+    <Button
+        android:id="@+id/btnCalcularFibo"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Calcular" />
+
+    <TextView
+        android:id="@+id/resFibo"
+        android:layout_width="57dp"
+        android:layout_height="29dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:text="..."
+        android:textColor="@android:color/holo_green_dark" />
+
+    <Button
+        android:id="@+id/btnPosFibo"
+        android:layout_width="172dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:text="Posiciones de Fibo" />
+
+
+    <ImageView
+        android:id="@+id/imgFacto"
+        android:layout_width="65dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:src="@drawable/factorial" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linearLayoutH"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Llamados a Fibonacci:"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/numFibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="..."
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/modFibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="..."
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="LLamados a Factotial:"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/numFacto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="..."
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/modiFacto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="..."
+            android:textColor="@android:color/darker_gray" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
