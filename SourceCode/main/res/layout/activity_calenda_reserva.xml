@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityCalendaReserva">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+    <CalendarView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></CalendarView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reservar"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="475dp" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha Inicial"
+        tools:layout_editor_absoluteX="44dp"
+        tools:layout_editor_absoluteY="371dp" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha Final"
+        tools:layout_editor_absoluteX="44dp"
+        tools:layout_editor_absoluteY="424dp" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dia"
+        tools:layout_editor_absoluteX="159dp"
+        tools:layout_editor_absoluteY="337dp" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mes"
+        tools:layout_editor_absoluteX="222dp"
+        tools:layout_editor_absoluteY="337dp" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="43dp"
+        android:layout_height="34dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="364dp" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="43dp"
+        android:layout_height="34dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="364dp" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="42dp"
+        android:layout_height="34dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="211dp"
+        tools:layout_editor_absoluteY="364dp" />
+
+    <EditText
+        android:id="@+id/editText5"
+        android:layout_width="42dp"
+        android:layout_height="34dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="416dp" />
+
+    <EditText
+        android:id="@+id/editText6"
+        android:layout_width="42dp"
+        android:layout_height="34dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="209dp"
+        tools:layout_editor_absoluteY="416dp" />
+</android.support.constraint.ConstraintLayout>

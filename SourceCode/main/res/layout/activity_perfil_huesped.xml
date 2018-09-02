@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".ActivityPerfilHuesped">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="54dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnMashHuesped"
+                    android:layout_width="56dp"
+                    android:layout_height="43dp"
+
+                    android:layout_weight="1"
+                    android:text="MS" />
+
+                <Button
+                    android:id="@+id/btnBuscarAloja"
+                    android:layout_width="56dp"
+                    android:layout_height="43dp"
+
+                    android:layout_weight="1"
+                    android:text="BA" />
+
+                <Button
+                    android:id="@+id/btnReservasHuesped"
+                    android:layout_width="52dp"
+                    android:layout_height="43dp"
+
+                    android:layout_weight="1"
+                    android:text="RV" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="184dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Nombre alojamiento"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/btnBusquedaNombre"
+                    android:layout_width="52dp"
+                    android:layout_height="42dp"
+                    android:layout_marginEnd="8dp"
+
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnVerHuspeAnfi"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/perfilanonimo"
+                android:text="Button" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="Caracteristicas" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="1"
+                android:text="Miguel Barón"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="Edad" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="Calificacion" />
+
+            <Button
+                android:id="@+id/btnAlojaCercano"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:text="Alojamiento cercano" />
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
