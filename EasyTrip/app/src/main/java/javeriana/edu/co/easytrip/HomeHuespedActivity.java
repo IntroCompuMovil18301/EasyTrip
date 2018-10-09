@@ -1,64 +1,80 @@
 package javeriana.edu.co.easytrip;
 
-import android.support.design.widget.TabLayout;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 public class HomeHuespedActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private static final String TAG = "MainActivity";
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    private HuespedPageAdapter huespedPageAdapter;
     private ViewPager mViewPager;
+    private ImageButton toolPerfilPH;
+    private FloatingActionButton fabBusquedaPH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_huesped);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        this.fabBusquedaPH = (FloatingActionButton) findViewById(R.id.fabBusquedaPH);
+        this.fabBusquedaPH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (view.getContext(),BuscarAlojamientoActivity.class);
+
+                startActivity(intent);
+            }
+        });
+
+        this.toolPerfilPH = (ImageButton) findViewById(R.id.toolPerfilPH);
+        this.toolPerfilPH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),PerfilHuespedActivity.class);
+
+                startActivity(intent);
+            }
+        });
+
+        this.huespedPageAdapter = new HuespedPageAdapter(getSupportFragmentManager(),4);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        setupViewPager(mViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        tabLayout.setupWithViewPager(mViewPager);
 
 
+        tabLayout.getTabAt(0).setIcon(R.drawable.iconmash);
+        tabLayout.getTabAt(1).setIcon(R.drawable.iconlodging);
+        tabLayout.getTabAt(2).setIcon(R.drawable.iconreservations);
+
+        tabLayout.setSelectedTabIndicatorHeight(2);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
     }
 
+    private void setupViewPager(ViewPager viewPager) {
+        HuespedPageAdapter adapter = new HuespedPageAdapter(getSupportFragmentManager(),4);
+        MashesHuespedFragment mashes = new MashesHuespedFragment();
+        adapter.addFragment(new MashesHuespedFragment(), "Mashes");
+        adapter.addFragment(new AloCercanoHuespedFragment(), "Alojamientos Cercanos");
+        adapter.addFragment(new ReservasHuespedFragment(), "Reservas");
+        viewPager.setAdapter(adapter);
+        viewPager.arrowScroll(1);
+    }
 
     /**
      * A placeholder fragment containing a simple view.

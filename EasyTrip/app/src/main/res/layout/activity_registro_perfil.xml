@@ -77,9 +77,9 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/acccent"
                     android:text="Nombre:"
                     tools:ignore="DuplicateIds"
-                    android:backgroundTint="@color/lightBlueA400"
 
                     />
 
@@ -91,7 +91,8 @@
                     android:layout_marginRight="25dp"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:textColorLink="@color/lightBlueA400"/>
+                    android:selectAllOnFocus="false"
+                    android:textColorLink="@color/acccent" />
             </LinearLayout>
 
             <LinearLayout
@@ -116,7 +117,8 @@
                     android:layout_marginRight="25dp"
                     android:ems="10"
                     android:inputType="textEmailAddress"
-                    android:textColorLink="@color/lightBlueA400" />
+                    android:selectAllOnFocus="false"
+                    android:textColorLink="@color/acccent" />
 
             </LinearLayout>
 
@@ -142,7 +144,8 @@
                     android:layout_marginRight="25dp"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:textColorLink="@color/lightBlueA400"/>
+                    android:selectAllOnFocus="false"
+                    android:textColorLink="@color/acccent" />
 
             </LinearLayout>
 
@@ -169,7 +172,7 @@
                     android:ems="10"
                     android:inputType="textPassword"
 
-                    />
+                    android:selectAllOnFocus="false" />
 
             </LinearLayout>
 
@@ -195,7 +198,7 @@
                     android:ems="10"
                     android:inputType="textPassword"
 
-                    />
+                    android:selectAllOnFocus="false" />
 
             </LinearLayout>
 
@@ -207,9 +210,11 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/lightBlueA700"
+                android:background="@drawable/boton_redondo"
                 android:text="Siguente"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+
+                />
 
         </LinearLayout>
     </ScrollView>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <corners android:radius="20dp"></corners>
+    <solid android:color="@color/fondoBoton"></solid>
+    <padding android:top="8dp"></padding>
+    <padding android:bottom="8dp"></padding>
+    <padding android:left="8dp"></padding>
+    <padding android:right="8dp"></padding>
+    <color android:textColor="@color/white"></color>
+</shape>

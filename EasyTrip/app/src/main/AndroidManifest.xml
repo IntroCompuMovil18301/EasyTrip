@@ -19,14 +19,13 @@
         <activity android:name=".RegistroPerfilActivity" />
         <activity android:name=".SubirFotoActivity" />
         <activity android:name=".RegistroHuespedActivity" />
-        <activity android:name=".AlojamientoCercanoActivity" />
-        <activity android:name=".MashHuespedActivity" />
-        <activity android:name=".ReservasHuespedActivity" />
+        <activity android:name=".BuscarAlojamientoActivity" />
         <activity android:name=".PerfilHuespedActivity" />
         <activity
             android:name=".HomeHuespedActivity"
             android:label="@string/title_activity_home_huesped"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".VerAlojamientoActivity"></activity>
     </application>
 
 </manifest>
