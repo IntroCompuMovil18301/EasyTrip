@@ -1,35 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textTab3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Tab3"
-        android:textSize="25sp"
-        tools:layout_editor_absoluteY="40dp" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnTEST3"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearNombreReservaPH"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:id="@+id/txtNombreReservaPH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Casa Quinta"
+                    android:textAlignment="center"
+                    android:textColor="@color/h1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearImgReservaPH"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="107dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnBackReservaPH"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@android:color/transparent"
+                        android:padding="18dp"
+
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iconbackimage" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="134dp"
+                        android:layout_weight="1"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/reservavillareal" />
+
+                    <ImageButton
+                        android:id="@+id/btnNextReservaPH"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@android:color/transparent"
+                        android:padding="18dp"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iconnextimage" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearFechaInicioPH"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TESTBTN 3"
-                tools:layout_editor_absoluteX="204dp"
-                tools:layout_editor_absoluteY="573dp" />
-        </android.support.constraint.ConstraintLayout>
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Fecha Inicio:"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+                    android:id="@+id/txtFechaInicioReservaPH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="23/08/2018"
+                    android:textAlignment="center"
+                    android:textColor="@color/info"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearFechaFinPH"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Fecha Fin:"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+                    android:id="@+id/txtFechaFinReservaPH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="23/08/2018"
+                    android:textAlignment="center"
+                    android:textColor="@color/info"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearCostoReservaPH"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Costo Total:"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+                    android:id="@+id/txtCostoReservaPH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="$250.000"
+                    android:textAlignment="center"
+                    android:textColor="@color/info"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearEstadoReservaPH"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Estado:"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+                    android:id="@+id/txtEstadoReservaPH"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="$250.000"
+                    android:textAlignment="center"
+                    android:textColor="@color/info"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearAcompanantesReservaPH"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="107dp">
+
+                <TextView
+
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Acompañantes:"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+            </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

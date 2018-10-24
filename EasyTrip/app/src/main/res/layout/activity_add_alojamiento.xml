@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".AddAlojamientoActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearNombreaAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Nombre:"
+                    tools:ignore="DuplicateIds"
+
+                    />
+
+                <EditText
+                    android:id="@+id/txtNombreAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:selectAllOnFocus="false"
+                    android:text="Casa Anapoima"
+                    android:textColorLink="@color/acccent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearTipoAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:text="Tipo:"
+                    android:textAlignment="textEnd" />
+
+                <Spinner
+                    android:id="@+id/spnTipoAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:entries="@array/tipoAlojamiento" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearNumeroAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Numero de Personas:" />
+
+                <EditText
+                    android:id="@+id/txtNumneroAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:selectAllOnFocus="false"
+                    android:text="10"
+                    android:textColorLink="@color/acccent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearValorAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Valor por noche:" />
+
+                <EditText
+                    android:id="@+id/txtValorAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:selectAllOnFocus="false"
+                    android:text="25.000"
+                    android:textColorLink="@color/acccent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearDescripcionAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+
+                    android:backgroundTint="@color/acccent"
+                    android:text="Descripción:"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+                    android:id="@+id/txtDescripcionAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Hermosa casa quinta, con piscina y jacuzzi; tiene 5 habitaciones con baño independiente, cocina integran, equipo de sonido y televisores"
+                    android:textAlignment="center"
+                    android:textColor="@color/info"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearButtonsAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnCamaraAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_redondo"
+                    android:text="Camara"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btnUbicacionAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_redondo"
+                    android:text="Ubicacion"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

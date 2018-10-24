@@ -71,6 +71,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:focusableInTouchMode="true"
                 android:orientation="vertical">
 
                 <TextView
@@ -78,10 +79,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/acccent"
-                    android:text="Nombre:"
-                    tools:ignore="DuplicateIds"
+                    android:focusableInTouchMode="true"
 
-                    />
+                    android:text="Nombre:"
+                    tools:ignore="DuplicateIds" />
 
                 <EditText
                     android:id="@+id/txtNombreR"

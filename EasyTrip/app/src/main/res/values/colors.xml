@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0091EA</color>
+    <color name="colorPrimary">#29B6F6</color>
     <color name="colorPrimaryDark">#0091EA</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="white">#ffffff</color>
 
     <color name="lightBlue50">#E1F5FE</color>
-    <color name="lightBlue100">#B3E5FC</color>
+    <color name="lightBlue100">#b3e5fc</color>
     <color name="lightBlue200">#81D4FA</color>
     <color name="borde">#4FC3F7</color>
     <color name="lightBlue400">#29B6F6</color>
     <color name="lightBlue500">#03a9f4</color>
     <color name="lightBlue600">#039BE5</color>
     <color name="primario">#0288D1</color>
-    <color name="h2">#0277BD</color>
+    <color name="h2">#0277bd</color>
     <color name="h1">#01579B</color>
     <color name="h4">#80D8FF</color>
-    <color name="h3">#40C4FF</color>
+    <color name="h3">#40c4ff</color>
     <color name="acccent">#00B0FF</color>
     <color name="fondoBoton">#0091ea</color>
     <color name="info">#53879e</color>

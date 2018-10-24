@@ -30,8 +30,6 @@ public class AloCercanoHuespedFragment extends Fragment{
 
         this.listAlojamientosPH = (ListView) view.findViewById(R.id.listAlojamientosPH);
 
-
-
         String[] values = new String[] { "Android List View",
                 "Adapter implementation",
                 "Simple List View In Android",

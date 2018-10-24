@@ -8,24 +8,36 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearListACPH"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="@color/acccent"
+                android:text="Alojamientos a menos de 50 metros:"
+
+                android:textColor="@color/info"
+                tools:ignore="DuplicateIds" />
 
             <LinearLayout
                 android:id="@+id/linearMapAPH"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical">
@@ -42,34 +54,21 @@
             <LinearLayout
                 android:id="@+id/linearAlinajomentosPH"
                 android:layout_width="match_parent"
-                android:layout_height="228dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical">
 
-                <TextView
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/acccent"
-                    android:text="Alojamientos a menos de 50 metros:"
-                    android:textColor="@color/info"
-
-                    tools:ignore="DuplicateIds" />
-
                 <ListView
                     android:id="@+id/listAlojamientosPH"
                     android:layout_width="match_parent"
-                    android:layout_height="158dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-
-                    android:overScrollMode="always" />
+                    android:layout_height="127dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="86dp" />
 
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>

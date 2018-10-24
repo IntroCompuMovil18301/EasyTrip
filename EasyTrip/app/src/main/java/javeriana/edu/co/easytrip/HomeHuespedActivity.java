@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -12,7 +13,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toolbar;
 
 public class HomeHuespedActivity extends AppCompatActivity {
 
@@ -21,14 +24,15 @@ public class HomeHuespedActivity extends AppCompatActivity {
     private HuespedPageAdapter huespedPageAdapter;
     private ViewPager mViewPager;
     private ImageButton toolPerfilPH;
-    private FloatingActionButton fabBusquedaPH;
+    private Button fabBusquedaPH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_huesped);
 
-        this.fabBusquedaPH = (FloatingActionButton) findViewById(R.id.fabBusquedaPH);
+
+        this.fabBusquedaPH = (Button) findViewById(R.id.fabBusquedaPH);
         this.fabBusquedaPH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,7 +52,7 @@ public class HomeHuespedActivity extends AppCompatActivity {
             }
         });
 
-        this.huespedPageAdapter = new HuespedPageAdapter(getSupportFragmentManager(),4);
+        this.huespedPageAdapter = new HuespedPageAdapter(getSupportFragmentManager(),3);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -62,19 +66,25 @@ public class HomeHuespedActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.iconlodging);
         tabLayout.getTabAt(2).setIcon(R.drawable.iconreservations);
 
-        tabLayout.setSelectedTabIndicatorHeight(2);
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+        tabLayout.getTabAt(1).select();
     }
 
     private void setupViewPager(ViewPager viewPager) {
         HuespedPageAdapter adapter = new HuespedPageAdapter(getSupportFragmentManager(),4);
         MashesHuespedFragment mashes = new MashesHuespedFragment();
-        adapter.addFragment(new MashesHuespedFragment(), "Mashes");
-        adapter.addFragment(new AloCercanoHuespedFragment(), "Alojamientos Cercanos");
-        adapter.addFragment(new ReservasHuespedFragment(), "Reservas");
+        adapter.addFragment(new MashesHuespedFragment(),"");
+        adapter.addFragment(new AloCercanoHuespedFragment(),"");
+        adapter.addFragment(new ReservasHuespedFragment(),"");
+
         viewPager.setAdapter(adapter);
         viewPager.arrowScroll(1);
     }
+
+
 
     /**
      * A placeholder fragment containing a simple view.

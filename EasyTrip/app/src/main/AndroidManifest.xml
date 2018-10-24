@@ -25,7 +25,20 @@
             android:name=".HomeHuespedActivity"
             android:label="@string/title_activity_home_huesped"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".VerAlojamientoActivity"></activity>
+        <activity android:name=".VerAlojamientoActivity" />
+        <activity android:name=".CalendarioReservarActivity" />
+        <activity android:name=".VerMashActivity" />
+        <activity
+            android:name=".HomeAnfitrionActivity"
+            android:label="@string/title_activity_home_anfitrion" />
+        <activity android:name=".VerReservaActivity" />
+        <activity android:name=".AddAlojamientoActivity" />
+        <activity android:name=".ActivityCompaneros" />
+        <activity android:name=".ActivityMatshes" />
+        <activity android:name=".VerHuespedActivity" />
+        <activity android:name=".EditarPerfilHuespedActivity" />
+        <activity android:name=".EditarPerfilAnfitrionActivity" />
+        <activity android:name=".PerfilAnfitrionActivity"></activity>
     </application>
 
 </manifest>

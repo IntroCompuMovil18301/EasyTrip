@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VerMashActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="60dp"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/fotoPerfilMash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    app:srcCompat="@drawable/perfirlanonimo" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/linearNombreMash"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:id="@+id/txtNombreMash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+
+                    android:backgroundTint="@color/acccent"
+                    android:text="Carolina Lopez"
+                    android:textAlignment="center"
+                    android:textColor="@color/h1"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearInfoMash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linearInfo1Mash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:id="@+id/txtEdadMash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="26 Años"
+                        android:textAlignment="center"
+                        android:textColor="@color/h3"
+                        android:textSize="18sp" />
+
+                    <TextView
+
+                        android:id="@+id/txtFumaMash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="No fuma"
+                        android:textAlignment="center"
+                        android:textColor="@color/h3"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearInfo2Mash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:id="@+id/txtGeneroMash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Mujer"
+                        android:textAlignment="center"
+                        android:textColor="@color/h3"
+                        android:textSize="18sp" />
+
+                    <TextView
+
+                        android:id="@+id/txtNacionalidadMash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Colombiana"
+                        android:textAlignment="center"
+                        android:textColor="@color/h3"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearDescipcionMash"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+
+                    android:backgroundTint="@color/acccent"
+                    android:text="Acercade mi..."
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+                    android:id="@+id/txtDescripcionMash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Soy una viajera frecuente, Me gusta el orden y la limpieza, Amante de la Música y la playa"
+                    android:textAlignment="center"
+                    android:textColor="@color/info"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearCalificacionMash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:id="@+id/txtCalificacionMash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+
+                    android:backgroundTint="@color/acccent"
+                    android:text="Calificación promedio:"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearButtonsMash"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnDescartarMash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_redondo"
+                    android:text="Descartar"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btnAceptarMash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_redondo"
+                    android:text="Aceptar"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

@@ -4,6 +4,258 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".VerAlojamientoActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearNombreVerAlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:id="@+id/txtNombreVerAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Casa Quinta"
+                    android:textAlignment="center"
+                    android:textColor="@color/h1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearImgVerAlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="107dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnBackFotoVerAlo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@android:color/transparent"
+                        android:padding="18dp"
+
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iconbackimage" />
+
+                    <ImageButton
+                        android:id="@+id/imageVerAlo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="134dp"
+                        android:layout_weight="1"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/reservavillareal" />
+
+                    <ImageButton
+                        android:id="@+id/btnNextFotoVerAlo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:background="@android:color/transparent"
+                        android:padding="18dp"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iconnextimage" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearButtonsVerAlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/btnCalendarioReservar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3
+"
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@android:drawable/ic_menu_agenda" />
+
+                <Button
+                    android:id="@+id/btnReservarVerAlo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/boton_redondo"
+                    android:text="Hacer Reserva"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearInfoVerAlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:id="@+id/txtValorVerAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Valor día: $35.000"
+                    android:textAlignment="center"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+
+                    android:id="@+id/txtCapacidadVerAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="Capacidad:"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/h1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+
+                    android:id="@+id/txtCapacidadNumVerAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/h4"
+                    android:text="25 personas"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/h3"
+                    android:textSize="18sp"
+                    tools:ignore="DuplicateIds" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearDescripcionVerAlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+
+                    android:backgroundTint="@color/acccent"
+                    android:text="Descripción:"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+                <TextView
+                    android:id="@+id/txtDescripcionVerAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Hermosa finca con dos Piscinas y Jacuzzi, cuanta con: habitaciones con baño y cocina integral con comedor"
+                    android:textAlignment="center"
+                    android:textColor="@color/info"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearCalificacionVerAlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:id="@+id/txtCalificacionVerAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+
+                    android:backgroundTint="@color/acccent"
+                    android:text="Calificaciones:"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/h1"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearHistorialVerAlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtHistorialVerAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+
+                    android:text="Ver Historial de Reservas"
+                    android:textAlignment="center"
+                    android:textColor="@color/info"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>
