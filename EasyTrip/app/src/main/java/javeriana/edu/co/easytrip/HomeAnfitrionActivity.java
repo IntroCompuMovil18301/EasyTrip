@@ -7,7 +7,9 @@ import android.app.FragmentTransaction;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,8 +17,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,46 +28,102 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.Toolbar;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.security.Principal;
+import java.util.Date;
+
+import javeriana.edu.co.modelo.Anfitrion;
+import javeriana.edu.co.modelo.Huesped;
+import javeriana.edu.co.modelo.Usuario;
 
 import static android.app.PendingIntent.getActivity;
 
 public class HomeAnfitrionActivity extends AppCompatActivity {
 
+    public static final String PATH_USERS="usuarios/";
 
+    private FirebaseAuth mAuth;
     private AnfitrionPageAdapter anfitrionPageAdapter;
-    private Button fabBusquedaPA;
+    private ImageButton fabBusquedaPA;
     private ViewPager mViewPager;
     private ImageButton toolPerfilPA;
+    private Toolbar toolbar;
+
+
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private String email;
+    private FirebaseStorage storage;
+    private Anfitrion myUserA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_anfitrion);
+
+        //this.toolbar = (Toolbar) findViewById(R.id.toolbarAnfitrion);
+
+        //this.toolbar.inflateMenu(R.menu.menu);
+        this.myUserA = new Anfitrion();
+
+        this.mAuth = FirebaseAuth.getInstance();
+        this.database= FirebaseDatabase.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        storage = FirebaseStorage.getInstance();
+        loadUser(user.getEmail());
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        this.fabBusquedaPA = (Button) findViewById(R.id.fabBusquedaPA);
+        this.fabBusquedaPA = (ImageButton) findViewById(R.id.fabBusquedaPA);
         this.fabBusquedaPA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseUser user = mAuth.getCurrentUser();
+
+
                 Intent intent = new Intent (view.getContext(),BuscarAlojamientoActivity.class);
 
                 startActivity(intent);
             }
         });
 
-        this.anfitrionPageAdapter = new AnfitrionPageAdapter(getSupportFragmentManager(),3);
+
 
         this.toolPerfilPA = (ImageButton) findViewById(R.id.toolPerfilPA);
         this.toolPerfilPA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //mAuth.signOut();
                 Intent intent = new Intent(view.getContext(),PerfilAnfitrionActivity.class);
 
+                Bundle b = new Bundle();
+                b.putSerializable("anfitrion",myUserA);
+                //intent.putExtra("anfitrion",myUserA);
+                intent.putExtra("bundle",b);
+
                 startActivity(intent);
+
+
             }
         });
 
+
+        this.anfitrionPageAdapter = new AnfitrionPageAdapter(getSupportFragmentManager(),3);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.containerHomeAnfitrion);
@@ -149,5 +209,58 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int itemClicked = item.getItemId();
+        if(itemClicked == R.id.menuCerrarSs){
+            mAuth.signOut();
+            Intent intent = new Intent(HomeAnfitrionActivity.this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void loadUser(String em) {
+        this.email = em;
+        myRef = database.getReference("anfitriones/");
+        //Toast.makeText(PerfilAnfitrionActivity.this, "Aqui", Toast.LENGTH_SHORT).show();
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+
+                    Anfitrion a = singleSnapshot.getValue(Anfitrion.class);
+                    if(a.getEmail().compareTo(email) == 0){
+
+                        myUserA = a;
+                        //myUserA.setEmail(a.getEmail());
+                        //myUserA.setRol(a.getRol());
+                        //myUserA.setFechaNacimiento(a.getFechaNacimiento());
+                        //myUserA.setFoto(a.getFoto());
+                        //myUserA.setNombre(a.getNombre());
+                        ///myUserA.setUsuario(a.getUsuario());
+                        //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2"+a.getNombre(), Toast.LENGTH_SHORT).show();
+                    }
+                    //myUser = a;
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(HomeAnfitrionActivity.this, "Error en consulta", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
+    }
 
 }

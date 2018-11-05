@@ -6,6 +6,13 @@
         <item>Huesped</item>
     </string-array>
 
+    <string-array name="paises">
+        <item>Colombia</item>
+        <item>México</item>
+        <item>Brazil</item>
+        <item>España</item>
+    </string-array>
+
     <string-array name="criterioBusqueda">
         <item>Costo de noche</item>
         <item>Fecha</item>

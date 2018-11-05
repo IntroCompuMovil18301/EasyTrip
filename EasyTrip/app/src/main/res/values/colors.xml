@@ -6,10 +6,11 @@
 
     <color name="white">#ffffff</color>
 
-    <color name="lightBlue50">#E1F5FE</color>
+    <color name="edit">#E1F5FE</color>
     <color name="lightBlue100">#b3e5fc</color>
     <color name="lightBlue200">#81D4FA</color>
     <color name="borde">#4FC3F7</color>
+
     <color name="lightBlue400">#29B6F6</color>
     <color name="lightBlue500">#03a9f4</color>
     <color name="lightBlue600">#039BE5</color>

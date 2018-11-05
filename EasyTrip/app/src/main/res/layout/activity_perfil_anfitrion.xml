@@ -58,12 +58,13 @@
 
                 <TextView
 
-                    android:id="@+id/txtNombreAnfi"
+                    android:id="@+id/txtNombreAnfiVi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
 
                     android:backgroundTint="@color/acccent"
+                    android:inputType="textCapCharacters"
                     android:text="Carolina Lopez"
                     android:textAlignment="center"
                     android:textColor="@color/h1"
@@ -74,12 +75,13 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearRolAnfi"
+                android:id="@+id/linearRolAnfiVi"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/txtRolAnfiVi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -94,12 +96,12 @@
                 android:id="@+id/linearEmailAnfi"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView
 
-                    android:id="@+id/txtEmailPH"
+                    android:id="@+id/txtEmailPAVi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="carolina_lopez@gmail.com"
@@ -113,12 +115,12 @@
                 android:id="@+id/linearUsuarioAnfi"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView
 
-                    android:id="@+id/txtUsuarioAnfi"
+                    android:id="@+id/txtUsuarioAnfiVi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="CaroLez"
@@ -132,7 +134,7 @@
                 android:id="@+id/linearCalificacionAnfi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView

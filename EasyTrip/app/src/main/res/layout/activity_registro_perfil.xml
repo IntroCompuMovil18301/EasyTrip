@@ -54,7 +54,10 @@
                     android:layout_gravity="center"
                     android:layout_weight="2"
                     android:text="Rol:"
-                    android:textAlignment="textEnd" />
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/idRolR"
@@ -62,7 +65,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:entries="@array/rol" />
+                    android:background="@drawable/edit_redondo"
+                    android:entries="@array/rol"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -82,6 +87,9 @@
                     android:focusableInTouchMode="true"
 
                     android:text="Nombre:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     tools:ignore="DuplicateIds" />
 
                 <EditText
@@ -91,9 +99,11 @@
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     android:ems="10"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapWords|textPersonName"
                     android:selectAllOnFocus="false"
-                    android:textColorLink="@color/acccent" />
+                    android:textColor="@color/h3"
+                    android:textColorLink="@color/acccent"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -108,7 +118,10 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email:" />
+                    android:text="Email:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtEmailR"
@@ -119,7 +132,9 @@
                     android:ems="10"
                     android:inputType="textEmailAddress"
                     android:selectAllOnFocus="false"
-                    android:textColorLink="@color/acccent" />
+                    android:textColor="@color/h3"
+                    android:textColorLink="@color/acccent"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -135,7 +150,10 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Usuario:" />
+                    android:text="Usuario:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtUsuarioR"
@@ -146,6 +164,7 @@
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:selectAllOnFocus="false"
+                    android:textColor="@color/h3"
                     android:textColorLink="@color/acccent" />
 
             </LinearLayout>
@@ -162,7 +181,10 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Contraseña:" />
+                    android:text="Contraseña:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtContrasenaR"
@@ -173,7 +195,8 @@
                     android:ems="10"
                     android:inputType="textPassword"
 
-                    android:selectAllOnFocus="false" />
+                    android:selectAllOnFocus="false"
+                    android:textColor="@color/h3" />
 
             </LinearLayout>
 
@@ -188,7 +211,10 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ConfirmarContraseña:" />
+                    android:text="ConfirmarContraseña:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtConfirmarR"
@@ -199,7 +225,9 @@
                     android:ems="10"
                     android:inputType="textPassword"
 
-                    android:selectAllOnFocus="false" />
+                    android:selectAllOnFocus="false"
+                    android:textColor="@color/h3"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -207,15 +235,14 @@
                 android:id="@+id/btnSiguienteR"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="center_vertical|center_horizontal|center"
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/boton_redondo"
                 android:text="Siguente"
-                android:textColor="@color/white"
 
-                />
+                android:textColor="@color/white" />
 
         </LinearLayout>
     </ScrollView>

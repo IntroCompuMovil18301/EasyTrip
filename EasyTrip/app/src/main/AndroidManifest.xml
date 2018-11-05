@@ -5,10 +5,12 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="EasyTrip"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar"
+
+        >
         <activity android:name=".PrincipalActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,16 +23,13 @@
         <activity android:name=".RegistroHuespedActivity" />
         <activity android:name=".BuscarAlojamientoActivity" />
         <activity android:name=".PerfilHuespedActivity" />
-        <activity
-            android:name=".HomeHuespedActivity"
-            android:label="@string/title_activity_home_huesped"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".HomeHuespedActivity"/>
+
+
         <activity android:name=".VerAlojamientoActivity" />
         <activity android:name=".CalendarioReservarActivity" />
         <activity android:name=".VerMashActivity" />
-        <activity
-            android:name=".HomeAnfitrionActivity"
-            android:label="@string/title_activity_home_anfitrion" />
+        <activity android:name=".HomeAnfitrionActivity" />
         <activity android:name=".VerReservaActivity" />
         <activity android:name=".AddAlojamientoActivity" />
         <activity android:name=".ActivityCompaneros" />

@@ -39,9 +39,12 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/acccent"
                 android:text="Usuario:"
-                tools:ignore="DuplicateIds"
+                android:textAlignment="viewStart"
 
-                />
+                android:textColor="@color/h1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="DuplicateIds" />
 
             <EditText
                 android:id="@+id/txtUsuarioL"
@@ -49,9 +52,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edit_redondo"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:selectAllOnFocus="false"
+                android:textAlignment="viewStart"
+                android:textColor="@color/h2"
                 android:textColorLink="@color/acccent" />
         </LinearLayout>
 
@@ -72,9 +79,11 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/acccent"
                 android:text="Contraseña:"
-                tools:ignore="DuplicateIds"
+                android:textColor="@color/h1"
 
-                />
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="DuplicateIds" />
 
             <EditText
                 android:id="@+id/txtContrasenaL"
@@ -82,9 +91,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="25dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/edit_redondo"
                 android:ems="10"
                 android:inputType="textPassword"
                 android:selectAllOnFocus="false"
+                android:textColor="@color/h2"
                 android:textColorLink="@color/acccent" />
         </LinearLayout>
 
@@ -93,7 +105,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
             <Button
@@ -124,10 +136,11 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:backgroundTint="@color/acccent"
                 android:text="¿No tienes Cuenta aún?"
-                android:textAlignment="center"
 
+                android:textAlignment="viewStart"
                 android:textStyle="italic"
                 tools:ignore="DuplicateIds" />
 

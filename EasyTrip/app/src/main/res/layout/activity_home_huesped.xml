@@ -4,20 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".HomeHuespedActivity">
+    tools:context=".HomeHuespedActivity"
+    >
 
-    <LinearLayout
-        android:id="@+id/linearButtonsHome"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarHuesped"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
-        android:gravity="center_vertical|center_horizontal|center"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <ImageButton
+            android:id="@+id/toolPerfilPH"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right|center_vertical|center_horizontal|center"
+            android:layout_weight="2"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/iconprofile" />
 
         <Button
             android:id="@+id/fabBusquedaPH"
@@ -29,17 +38,7 @@
             android:text="Buscar Alojamiento"
             android:textColor="@color/white" />
 
-        <ImageButton
-            android:id="@+id/toolPerfilPH"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical|center_horizontal|center"
-            android:layout_weight="2"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/iconprofile" />
-
-    </LinearLayout>
+    </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_contentScroll"

@@ -28,11 +28,16 @@
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Genero" />
+                    android:text="Genero"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
+                    android:id="@+id/groupSexo"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rbtnFemeninoR"
@@ -41,7 +46,9 @@
                         android:layout_weight="1"
                         android:buttonTint="@color/lightBlue500"
                         android:checked="false"
-                        android:text="Femenino" />
+                        android:text="Femenino"
+                        android:textColor="@color/h3"
+                        android:textSize="16sp" />
 
                     <RadioButton
                         android:id="@+id/rbtnMasculinoR"
@@ -49,7 +56,9 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:buttonTint="@color/lightBlue500"
-                        android:text="Masculino" />
+                        android:text="Masculino"
+                        android:textColor="@color/h3"
+                        android:textSize="16sp" />
 
                 </RadioGroup>
 
@@ -69,15 +78,20 @@
                     android:layout_gravity="center"
                     android:layout_weight="2"
                     android:text="Nacionalidad"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spnNacionalidadR"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:entries="@array/rol" />
+                    android:background="@drawable/edit_redondo"
+                    android:entries="@array/paises" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,9 +109,11 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/acccent"
                     android:text="Sobre ti..."
-                    tools:ignore="DuplicateIds"
+                    android:textColor="@color/h2"
 
-                    />
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
 
                 <EditText
                     android:id="@+id/txtSobretiR"
@@ -106,10 +122,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
+                    android:baselineAligned="false"
                     android:ems="10"
                     android:inputType="textLongMessage"
                     android:selectAllOnFocus="false"
-                    android:textColorLink="@color/acccent" />
+                    android:textColor="@color/h3"
+                    android:textColorLink="@color/acccent"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -123,28 +142,39 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="¿Fumador?" />
+                    android:text="¿Fumador?"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rbtnSiFumaR"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:buttonTint="@color/lightBlue500"
                         android:checked="false"
-                        android:text="Si" />
+                        android:text="Si"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/h3"
+                        android:textSize="16sp" />
 
                     <RadioButton
                         android:id="@+id/rbtnNoFumaR"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="100dp"
                         android:layout_weight="1"
                         android:buttonTint="@color/lightBlue500"
-                        android:text="No" />
+                        android:text="No"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/h3"
+                        android:textSize="16sp" />
 
                 </RadioGroup>
 
@@ -154,13 +184,13 @@
                 android:id="@+id/btnRegistrarH"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="center_vertical|center_horizontal|center"
                 android:layout_marginBottom="8dp"
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/boton_redondo"
-                android:text="Registrarse"
 
+                android:text="Registrarse"
                 android:textColor="@color/white" />
 
         </LinearLayout>

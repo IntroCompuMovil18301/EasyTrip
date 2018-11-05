@@ -15,7 +15,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import android.widget.Toolbar;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+
+import javeriana.edu.co.modelo.Anfitrion;
+import javeriana.edu.co.modelo.Huesped;
 
 public class HomeHuespedActivity extends AppCompatActivity {
 
@@ -25,12 +38,27 @@ public class HomeHuespedActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ImageButton toolPerfilPH;
     private Button fabBusquedaPH;
+    private Toolbar toolbar;
+
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private String email;
+    private Huesped myUserH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_huesped);
 
+        //this.toolbar = (Toolba    r) findViewById(R.id.toolbarHuesped);
+        //this.toolbar.inflateMenu(R.menu.menu);
+        this.mAuth = FirebaseAuth.getInstance();
+        this.database= FirebaseDatabase.getInstance();
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        loadUser(user.getEmail());
 
         this.fabBusquedaPH = (Button) findViewById(R.id.fabBusquedaPH);
         this.fabBusquedaPH.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +75,11 @@ public class HomeHuespedActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(),PerfilHuespedActivity.class);
+
+                Bundle b = new Bundle();
+                b.putSerializable("huesped",myUserH);
+                //intent.putExtra("anfitrion",myUserA);
+                intent.putExtra("bundle",b);
 
                 startActivity(intent);
             }
@@ -136,5 +169,33 @@ public class HomeHuespedActivity extends AppCompatActivity {
             // Show 3 total pages.
             return 3;
         }
+    }
+
+
+    public void loadUser(String em) {
+        this.email = em;
+        myRef = database.getReference("huespedes/");
+        //Toast.makeText(PerfilAnfitrionActivity.this, "Aqui", Toast.LENGTH_SHORT).show();
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+
+                    Huesped h = singleSnapshot.getValue(Huesped.class);
+                    if(h.getEmail().compareTo(email) == 0){
+                        myUserH = h;
+                        //Toast.makeText(HomeHuespedActivity.this, "Aqui2"+h.getNombre(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(HomeHuespedActivity.this, "Error en consulta", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
     }
 }
