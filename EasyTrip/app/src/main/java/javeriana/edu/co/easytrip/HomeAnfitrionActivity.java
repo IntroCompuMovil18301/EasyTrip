@@ -7,6 +7,8 @@ import android.app.FragmentTransaction;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +16,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +36,8 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +49,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.security.Principal;
 import java.util.Date;
@@ -63,6 +70,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ImageButton toolPerfilPA;
     private Toolbar toolbar;
+    private Bitmap fotoPerfil;
 
 
     private FirebaseDatabase database;
@@ -86,8 +94,8 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         loadUser(user.getEmail());
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+
+
 
         this.fabBusquedaPA = (ImageButton) findViewById(R.id.fabBusquedaPA);
         this.fabBusquedaPA.setOnClickListener(new View.OnClickListener() {
@@ -242,13 +250,10 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
                     if(a.getEmail().compareTo(email) == 0){
 
                         myUserA = a;
-                        //myUserA.setEmail(a.getEmail());
-                        //myUserA.setRol(a.getRol());
-                        //myUserA.setFechaNacimiento(a.getFechaNacimiento());
-                        //myUserA.setFoto(a.getFoto());
-                        //myUserA.setNombre(a.getNombre());
-                        ///myUserA.setUsuario(a.getUsuario());
+
                         //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2"+a.getNombre(), Toast.LENGTH_SHORT).show();
+                        descargarFoto("ImagenesPerfil",a.getNombre());
+                        Toast.makeText(HomeAnfitrionActivity.this, a.getNombre(), Toast.LENGTH_SHORT).show();
                     }
                     //myUser = a;
 
@@ -261,6 +266,39 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
             }
         });
         //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    private void descargarFoto(String origen, String nombre){
+
+        StorageReference storageRef = storage.getReference();
+        StorageReference islandRef = storageRef.child(origen+"/"+nombre+".jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                fotoPerfil = bitmap;
+
+                RoundedBitmapDrawable roundedDrawable =
+                        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                //asignamos el CornerRadius
+                roundedDrawable.setCornerRadius(bitmap.getHeight());
+
+                toolPerfilPA.setImageDrawable(roundedDrawable);
+
+                Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
     }
 
 }

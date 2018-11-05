@@ -29,8 +29,6 @@
                 android:id="@+id/linearNombreaAdd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical">
 
@@ -40,12 +38,14 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/acccent"
                     android:text="Nombre:"
-                    tools:ignore="DuplicateIds"
+                    android:textColor="@color/h2"
 
-                    />
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
 
                 <EditText
-                    android:id="@+id/txtNombreAdd"
+                    android:id="@+id/txtNombreAddAlo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
@@ -54,15 +54,17 @@
                     android:inputType="textPersonName"
                     android:selectAllOnFocus="false"
                     android:text="Casa Anapoima"
-                    android:textColorLink="@color/acccent" />
+                    android:textColor="@color/h3"
+                    android:textColorHighlight="@color/h3"
+                    android:textColorLink="@color/h2"
+                    android:textSize="16dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearTipoAdd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -72,14 +74,20 @@
                     android:layout_gravity="center"
                     android:layout_weight="2"
                     android:text="Tipo:"
-                    android:textAlignment="textEnd" />
+
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/spnTipoAdd"
+                    android:id="@+id/spnTipoAddAlo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_weight="1"
+                    android:background="@drawable/edit_redondo"
                     android:entries="@array/tipoAlojamiento" />
             </LinearLayout>
 
@@ -87,18 +95,20 @@
                 android:id="@+id/linearNumeroAdd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Numero de Personas:" />
+                    android:text="Numero de Personas:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/txtNumneroAdd"
+                    android:id="@+id/txtNumeroAddAlo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
@@ -107,7 +117,9 @@
                     android:inputType="number"
                     android:selectAllOnFocus="false"
                     android:text="10"
-                    android:textColorLink="@color/acccent" />
+                    android:textColor="@color/h3"
+                    android:textColorLink="@color/acccent"
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -115,18 +127,20 @@
                 android:id="@+id/linearValorAdd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Valor por noche:" />
+                    android:text="Valor por noche:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/txtValorAdd"
+                    android:id="@+id/txtValorAddAlo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="25dp"
@@ -135,7 +149,9 @@
                     android:inputType="textPersonName"
                     android:selectAllOnFocus="false"
                     android:text="25.000"
-                    android:textColorLink="@color/acccent" />
+                    android:textColor="@color/h3"
+                    android:textColorLink="@color/acccent"
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -143,36 +159,37 @@
                 android:id="@+id/linearDescripcionAdd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView
 
+                    android:id="@+id/txtDescripcionAddAl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
-                    android:layout_marginTop="5dp"
 
+                    android:layout_marginTop="5dp"
                     android:backgroundTint="@color/acccent"
                     android:text="Descripción:"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/h1"
-                    android:textSize="20sp"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     tools:ignore="DuplicateIds" />
 
-                <TextView
-                    android:id="@+id/txtDescripcionAdd"
+                <EditText
+                    android:id="@+id/txtDescripcionAddAlo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="5dp"
-
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:ems="10"
+                    android:selectAllOnFocus="false"
                     android:text="Hermosa casa quinta, con piscina y jacuzzi; tiene 5 habitaciones con baño independiente, cocina integran, equipo de sonido y televisores"
-                    android:textAlignment="center"
-                    android:textColor="@color/info"
-                    android:textSize="18sp" />
+                    android:textColor="@color/h3"
+                    android:textColorLink="@color/acccent"
+                    android:textSize="16dp" />
 
             </LinearLayout>
 
@@ -180,26 +197,84 @@
                 android:id="@+id/linearButtonsAdd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnCamaraAdd"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/boton_redondo"
-                    android:text="Camara"
-                    android:textColor="@color/white" />
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ibtnCamaraAdd"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iconaddphotos" />
+
+                    <TextView
+                        android:id="@+id/txtFotosAddAlo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="# Fotos"
+                        android:textAlignment="center"
+                        android:textColor="@color/info"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ibtnUbicacionAdd"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center_vertical|center_horizontal|center"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iconaddlocation" />
+
+                    <TextView
+                        android:id="@+id/txtCiudadAddAlo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Dirección"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/info"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btnUbicacionAdd"
+                    android:id="@+id/btnGuardarAlo"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal|center"
                     android:layout_weight="1"
+
                     android:background="@drawable/boton_redondo"
-                    android:text="Ubicacion"
+                    android:text="Guardar"
                     android:textColor="@color/white" />
             </LinearLayout>
 

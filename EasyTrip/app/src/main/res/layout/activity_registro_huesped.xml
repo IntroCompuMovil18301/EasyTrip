@@ -124,7 +124,6 @@
                     android:layout_marginRight="25dp"
                     android:baselineAligned="false"
                     android:ems="10"
-                    android:inputType="textLongMessage"
                     android:selectAllOnFocus="false"
                     android:textColor="@color/h3"
                     android:textColorLink="@color/acccent"
