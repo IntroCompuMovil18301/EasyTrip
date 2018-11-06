@@ -71,6 +71,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
     private ImageButton toolPerfilPA;
     private Toolbar toolbar;
     private Bitmap fotoPerfil;
+    private ImageButton fabCalendarioPA;
 
 
     private FirebaseDatabase database;
@@ -95,7 +96,16 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         loadUser(user.getEmail());
 
+        this.fabCalendarioPA = (ImageButton) findViewById(R.id.fabCalendarioPA);
+        this.fabCalendarioPA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (view.getContext(),CalendarioReservarActivity.class);
 
+                startActivity(intent);
+
+            }
+        });
 
         this.fabBusquedaPA = (ImageButton) findViewById(R.id.fabBusquedaPA);
         this.fabBusquedaPA.setOnClickListener(new View.OnClickListener() {
@@ -253,11 +263,11 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
 
                         //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2"+a.getNombre(), Toast.LENGTH_SHORT).show();
                         descargarFoto("ImagenesPerfil",a.getNombre());
-                        Toast.makeText(HomeAnfitrionActivity.this, a.getNombre(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HomeAnfitrionActivity.this, a.getNombre(), Toast.LENGTH_SHORT).show();
                     }
                     //myUser = a;
-
                 }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -287,11 +297,11 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
                 RoundedBitmapDrawable roundedDrawable =
                         RoundedBitmapDrawableFactory.create(getResources(), bitmap);
                 //asignamos el CornerRadius
-                roundedDrawable.setCornerRadius(bitmap.getHeight());
-
+                //roundedDrawable.setCornerRadius(bitmap.getHeight());
+                roundedDrawable.setCircular(true);
                 toolPerfilPA.setImageDrawable(roundedDrawable);
 
-                Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

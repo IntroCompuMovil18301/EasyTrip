@@ -90,7 +90,7 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
 
 
 
-        Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
+        Drawable originalDrawable = getResources().getDrawable(R.drawable.perfirlanonimo);
         Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
 
         //creamos el drawable redondeado
@@ -98,7 +98,8 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
                 RoundedBitmapDrawableFactory.create(getResources(), originalBitmap);
 
         //asignamos el CornerRadius
-        roundedDrawable.setCornerRadius(originalBitmap.getHeight());
+        //roundedDrawable.setCornerRadius(originalBitmap.getHeight());
+        roundedDrawable.setCircular(true);
 
         imageView = (ImageView) findViewById(R.id.fotoPerfilAnfi);
 
@@ -156,7 +157,8 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
                 RoundedBitmapDrawable roundedDrawable =
                         RoundedBitmapDrawableFactory.create(getResources(), bitmap);
                 //asignamos el CornerRadius
-                roundedDrawable.setCornerRadius(bitmap.getHeight());
+                //roundedDrawable.setCornerRadius(bitmap.getHeight());
+                roundedDrawable.setCircular(true);
 
                 imageView.setImageDrawable(roundedDrawable);
             }

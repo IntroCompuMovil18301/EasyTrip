@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Alojamiento implements Serializable{
 
+    private String id;
+    private String idUsuario;
     private String nombre;
     private String tipo;
     private Double costo;
@@ -58,5 +60,21 @@ public class Alojamiento implements Serializable{
 
     public void setMaxHuespedes(int maxHuespedes) {
         this.maxHuespedes = maxHuespedes;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

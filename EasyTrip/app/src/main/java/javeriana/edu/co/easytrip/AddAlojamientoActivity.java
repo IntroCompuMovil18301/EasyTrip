@@ -2,6 +2,7 @@ package javeriana.edu.co.easytrip;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -15,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -49,8 +52,10 @@ public class AddAlojamientoActivity extends AppCompatActivity {
     private Button btnGuardarAlo;
     private Spinner spnTipoAddAlo;
     private List<Foto> fotos;
-    private List<Bitmap> fotosB;
+    //private List<Bitmap> fotosB;
     private Localizacion localizacion;
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +64,12 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         this.alo = new Alojamiento();
         database= FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
+        this.mAuth = FirebaseAuth.getInstance();
 
         this.fotos = new ArrayList<Foto>();
-        this.fotosB = new ArrayList<Bitmap>();
+        //this.fotosB = new ArrayList<Bitmap>();
+
+
 
         this.localizacion = new Localizacion();
 
@@ -82,26 +90,39 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         this.ibtnCamaraAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Foto f = new Foto();
                 f.setNombre("Foto1");
                 f.setDescripcion("Esta es una descripción muy corta");
+
+               // nFotos++;
+                //Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
+                //Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+
+                Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.imagencasa);
+                f.setBitmap(icon);
                 fotos.add(f);
+                //fotosB.add(icon);
 
-                Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
-                Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-                fotosB.add(fotoBitmap);
+                //Foto f2 = new Foto();
+                f = new Foto();
+                f.setNombre("Foto2");
+                f.setDescripcion("Esta es una descripción muy corta x2");
 
-                Foto f2 = new Foto();
-                f2.setNombre("Foto2");
-                f2.setDescripcion("Esta es una descripción muy corta x2");
-                fotos.add(f2);
 
-                Drawable originalDrawable2 = getResources().getDrawable(R.drawable.logo);
-                Bitmap fotoBitmap2 = ((BitmapDrawable) originalDrawable2).getBitmap();
-                fotosB.add(fotoBitmap2);
+                //Drawable originalDrawable2 = getResources().getDrawable(R.drawable.logo);
+                //Bitmap fotoBitmap2 = ((BitmapDrawable) originalDrawable2).getBitmap();
+                Bitmap icon2 = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.perfirlanonimo);
+                f.setBitmap(icon2);
+                fotos.add(f);
+              //  fotosB.add(icon2);
+              //  nFotos++;
 
                 txtFotosAddAlo.setText(fotos.size()+" Fotos");
                 txtFotosAddAlo.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -121,27 +142,43 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         });
 
         this.btnGuardarAlo = (Button) findViewById(R.id.btnGuardarAlo);
-        //Toast.makeText(AddAlojamientoActivity.this, "aqui33", Toast.LENGTH_SHORT).show();
+    //    Toast.makeText(AddAlojamientoActivity.this, nFotos, Toast.LENGTH_SHORT).show();
         this.btnGuardarAlo.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 //Toast.makeText(AddAlojamientoActivity.this, "aqui xd", Toast.LENGTH_SHORT).show();
+                FirebaseUser user = mAuth.getCurrentUser();
+                alo.setNombre(txtNombreAddAlo.getText().toString());
+                alo.setCosto(Double.parseDouble(txtValorAddAlo.getText().toString()));
+                alo.setDescripcion(txtDescripcionAddAlo.getText().toString());
+                alo.setMaxHuespedes(Integer.parseInt(txtNumeroAddAlo.getText().toString().trim()));
+                alo.setTipo(spnTipoAddAlo.getSelectedItem().toString());
+                alo.setValoracion(0.0);
+                alo.setIdUsuario(user.getUid());
 
 
                 myRef = database.getReference(PATH_ALOJAMIENTOS);
                 String key = myRef.push().getKey();
 
                 myRef = database.getReference(PATH_ALOJAMIENTOS+key);
+
                 myRef.setValue(alo);
-
-                for(int i=0; i < fotos.size();i++){
-
+                int i=0;
+                //for(int i=0; i < 2;i++){
+                for(Foto f: fotos){
                     myRef = database.getReference(PATH_ALOJAMIENTOS+key+"/fotos/");
                     String keyF = myRef.push().getKey();
                     myRef = database.getReference(PATH_ALOJAMIENTOS+key+"/fotos/"+keyF);
+                    fotos.get(i).setBitmap(null);
                     myRef.setValue(fotos.get(i));
-                    cargarFoto(fotosB.get(i),keyF,fotos.get(i).getNombre());
+                    Toast.makeText(AddAlojamientoActivity.this, "!!!", Toast.LENGTH_SHORT).show();
+
+                    cargarFoto(fotos.get(i).getBitmap(), keyF,fotos.get(i).getNombre());
+
+                    //-------------------------
+                    //Toast.makeText(AddAlojamientoActivity.this, "", Toast.LENGTH_SHORT).show();
+
                 }
 
 
@@ -151,6 +188,11 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                 myRef.setValue(localizacion);
 
                 finish();
+                //Intent intent = new Intent(view.getContext(),HomeAnfitrionActivity.class);
+
+                //startActivity(intent);
+
+
                 //Intent intent = new Intent(view.getContext(),HomeAnfitrionActivity.class);
                 //startActivity(intent);
             }
@@ -166,7 +208,7 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
 */
 
-        StorageReference imageRef = storageRef.child("alijamientos/"+destino+"/"+file.getLastPathSegment());
+        StorageReference imageRef = storageRef.child("alojamientos/"+destino+"/"+file.getLastPathSegment());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
