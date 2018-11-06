@@ -66,7 +66,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private AnfitrionPageAdapter anfitrionPageAdapter;
-    private ImageButton fabBusquedaPA;
+    private ImageButton fabAddAloPA;
     private ViewPager mViewPager;
     private ImageButton toolPerfilPA;
     private Toolbar toolbar;
@@ -107,15 +107,14 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
             }
         });
 
-        this.fabBusquedaPA = (ImageButton) findViewById(R.id.fabBusquedaPA);
-        this.fabBusquedaPA.setOnClickListener(new View.OnClickListener() {
+        this.fabAddAloPA = (ImageButton) findViewById(R.id.fabAddAloPA);
+        this.fabAddAloPA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseUser user = mAuth.getCurrentUser();
 
 
-                Intent intent = new Intent (view.getContext(),BuscarAlojamientoActivity.class);
-
+                Intent intent = new Intent (view.getContext(),AddAlojamientoActivity.class);
                 startActivity(intent);
             }
         });

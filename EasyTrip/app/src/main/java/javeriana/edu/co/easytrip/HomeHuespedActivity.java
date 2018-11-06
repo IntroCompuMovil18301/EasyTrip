@@ -1,9 +1,14 @@
 package javeriana.edu.co.easytrip;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
@@ -18,6 +23,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import javeriana.edu.co.modelo.Anfitrion;
 import javeriana.edu.co.modelo.Huesped;
@@ -37,7 +45,8 @@ public class HomeHuespedActivity extends AppCompatActivity {
     private HuespedPageAdapter huespedPageAdapter;
     private ViewPager mViewPager;
     private ImageButton toolPerfilPH;
-    private Button fabBusquedaPH;
+    private ImageButton fabCalendarioPH;
+    private ImageButton fabBusquedaPH;
     private Toolbar toolbar;
 
     private FirebaseAuth mAuth;
@@ -45,6 +54,8 @@ public class HomeHuespedActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private String email;
     private Huesped myUserH;
+    private FirebaseStorage storage;
+    private Bitmap fotoPerfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +65,24 @@ public class HomeHuespedActivity extends AppCompatActivity {
         //this.toolbar = (Toolba    r) findViewById(R.id.toolbarHuesped);
         //this.toolbar.inflateMenu(R.menu.menu);
         this.mAuth = FirebaseAuth.getInstance();
+        this.storage = FirebaseStorage.getInstance();
         this.database= FirebaseDatabase.getInstance();
 
         FirebaseUser user = mAuth.getCurrentUser();
 
         loadUser(user.getEmail());
 
-        this.fabBusquedaPH = (Button) findViewById(R.id.fabBusquedaPH);
+        this.fabCalendarioPH = (ImageButton) findViewById(R.id.fabCalendarioPH);
+        this.fabCalendarioPH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent (view.getContext(),CalendarioReservarActivity.class);
+
+                startActivity(intent);
+            }
+        });
+
+        this.fabBusquedaPH = (ImageButton) findViewById(R.id.fabBusquedaPH);
         this.fabBusquedaPH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,6 +208,7 @@ public class HomeHuespedActivity extends AppCompatActivity {
                     Huesped h = singleSnapshot.getValue(Huesped.class);
                     if(h.getEmail().compareTo(email) == 0){
                         myUserH = h;
+                        descargarFoto("ImagenesPerfil",h.getNombre());
                         //Toast.makeText(HomeHuespedActivity.this, "Aqui2"+h.getNombre(), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -197,5 +220,36 @@ public class HomeHuespedActivity extends AppCompatActivity {
             }
         });
         //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
+    }
+
+    private void descargarFoto(String origen, String nombre){
+
+        StorageReference storageRef = storage.getReference();
+        StorageReference islandRef = storageRef.child(origen+"/"+nombre+".jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                // Data for "images/island.jpg" is returns, use this as needed
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                fotoPerfil = bitmap;
+
+                RoundedBitmapDrawable roundedDrawable =
+                        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                //asignamos el CornerRadius
+                //roundedDrawable.setCornerRadius(bitmap.getHeight());
+                roundedDrawable.setCircular(true);
+                toolPerfilPH.setImageDrawable(roundedDrawable);
+
+                //Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
     }
 }

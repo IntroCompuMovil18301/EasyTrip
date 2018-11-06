@@ -163,6 +163,9 @@ public class AddAlojamientoActivity extends AppCompatActivity {
 
                 myRef = database.getReference(PATH_ALOJAMIENTOS+key);
 
+                //Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
+                //Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+
                 myRef.setValue(alo);
                 int i=0;
                 //for(int i=0; i < 2;i++){
@@ -172,12 +175,12 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                     myRef = database.getReference(PATH_ALOJAMIENTOS+key+"/fotos/"+keyF);
                     fotos.get(i).setBitmap(null);
                     myRef.setValue(fotos.get(i));
-                    Toast.makeText(AddAlojamientoActivity.this, "!!!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AddAlojamientoActivity.this, "!!!", Toast.LENGTH_SHORT).show();
 
                     cargarFoto(fotos.get(i).getBitmap(), keyF,fotos.get(i).getNombre());
 
                     //-------------------------
-                    //Toast.makeText(AddAlojamientoActivity.this, "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddAlojamientoActivity.this, "xD", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -199,14 +202,14 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         });
 
     }
-
+/*
     private void cargarFoto(Bitmap bitmap,String destino, String nombre){
         StorageReference storageRef = storage.getReference();
         Uri file = Uri.fromFile(new File("alojamientos/"+nombre+".jpg"));
-/*
-        Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
-        Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-*/
+
+       // Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
+     //   Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+
 
         StorageReference imageRef = storageRef.child("alojamientos/"+destino+"/"+file.getLastPathSegment());
 
@@ -216,5 +219,26 @@ public class AddAlojamientoActivity extends AppCompatActivity {
 
         imageRef.putBytes(foto);
 
+    }*/
+
+    private void cargarFoto(Bitmap bitmap,String destino, String nombre){
+        StorageReference storageRef = storage.getReference();
+        Uri file = Uri.fromFile(new File("alojamiento/"+nombre+".jpg"));
+/*
+        Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
+        Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+*/
+
+        StorageReference imageRef = storageRef.child(destino+"/"+file.getLastPathSegment());
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
+        final byte[] foto = baos.toByteArray();
+
+        imageRef.putBytes(foto);
+
     }
+
+
+
 }

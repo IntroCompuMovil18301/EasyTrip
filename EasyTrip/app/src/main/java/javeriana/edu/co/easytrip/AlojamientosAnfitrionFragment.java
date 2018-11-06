@@ -77,14 +77,14 @@ public class AlojamientosAnfitrionFragment extends Fragment{
 
 
         this.listAlojamientosAnfi = (ListView) view.findViewById(R.id.listAlojamientosAnfi);
-        this.fabAddAlojamientoAnfi = (FloatingActionButton) view.findViewById(R.id.fabAddAlojamientoAnfi);
+        /*this.fabAddAlojamientoAnfi = (FloatingActionButton) view.findViewById(R.id.fabAddAlojamientoAnfi);
         this.fabAddAlojamientoAnfi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent (view.getContext(),AddAlojamientoActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
         String[] values = new String[] { "Android List View",
                 "Adapter implementation",
                 "Simple List View In Android",
