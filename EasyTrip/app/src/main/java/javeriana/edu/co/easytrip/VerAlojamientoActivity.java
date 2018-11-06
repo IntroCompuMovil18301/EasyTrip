@@ -154,7 +154,8 @@ public class VerAlojamientoActivity extends AppCompatActivity {
                     foto = singleSnapshot.getValue(Foto.class);
 
                     StorageReference storageRef = storage.getReference();
-                    StorageReference islandRef = storageRef.child("alojamientos/"+singleSnapshot.getKey()+"/"+foto.getNombre()+".jpg");
+                    //StorageReference islandRef = storageRef.child("Alojamientos/"+singleSnapshot.getKey()+"/"+foto.getNombre()+".jpg");
+                    StorageReference islandRef = storageRef.child("Alojamientos/"+alojamiento.getId()+"/"+foto.getNombre()+".jpg    ");
                     Toast.makeText(VerAlojamientoActivity.this, islandRef.getPath(), Toast.LENGTH_SHORT).show();
 
                     final long ONE_MEGABYTE = 1024 * 1024;
