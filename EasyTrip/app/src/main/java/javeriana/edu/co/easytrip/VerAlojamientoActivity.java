@@ -104,14 +104,16 @@ public class VerAlojamientoActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                // Toast.makeText(VerAlojamientoActivity.this, selected, Toast.LENGTH_SHORT).show();
+                if(!fotosB.isEmpty()){
+                    if(selected == 1){
+                        selected = fotosB.size();
+                    }else{
+                        selected--;
+                    }
 
-                if(selected == 1){
-                    selected = fotosB.size();
-                }else{
-                    selected--;
+                    imageVerAlo.setImageBitmap(fotosB.get(selected-1));
                 }
 
-                imageVerAlo.setImageBitmap(fotosB.get(selected-1));
 
             }
         });
@@ -120,13 +122,16 @@ public class VerAlojamientoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                // Toast.makeText(VerAlojamientoActivity.this, selected, Toast.LENGTH_SHORT).show();
-                if(selected == fotosB.size()){
-                    selected = 1;
-                }else{
-                    selected++;
+                if(!fotosB.isEmpty()){
+                    if(selected == fotosB.size()){
+                        selected = 1;
+                    }else{
+                        selected++;
+                    }
+
+                    imageVerAlo.setImageBitmap(fotosB.get(selected-1));
                 }
 
-                imageVerAlo.setImageBitmap(fotosB.get(selected-1));
 
             }
         });
@@ -155,8 +160,8 @@ public class VerAlojamientoActivity extends AppCompatActivity {
 
                     StorageReference storageRef = storage.getReference();
                     //StorageReference islandRef = storageRef.child("Alojamientos/"+singleSnapshot.getKey()+"/"+foto.getNombre()+".jpg");
-                    StorageReference islandRef = storageRef.child("Alojamientos/"+alojamiento.getId()+"/"+foto.getNombre()+".jpg    ");
-                    Toast.makeText(VerAlojamientoActivity.this, islandRef.getPath(), Toast.LENGTH_SHORT).show();
+                    StorageReference islandRef = storageRef.child("Alojamientos/"+alojamiento.getId()+"/"+foto.getNombre()+".jpg");
+                    //Toast.makeText(VerAlojamientoActivity.this, islandRef.getPath(), Toast.LENGTH_SHORT).show();
 
                     final long ONE_MEGABYTE = 1024 * 1024;
 
@@ -170,7 +175,7 @@ public class VerAlojamientoActivity extends AppCompatActivity {
                             fotosB.add(bitmap);
                             imageVerAlo.setImageBitmap(fotosB.get(0));
                             selected++;
-                 //           Toast.makeText(VerAlojamientoActivity.this, "hecho", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(VerAlojamientoActivity.this, "hecho", Toast.LENGTH_SHORT).show();
 
 
                         }

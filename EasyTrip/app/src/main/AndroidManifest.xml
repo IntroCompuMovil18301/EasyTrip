@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="javeriana.edu.co.easytrip">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,8 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
 
         >
+
+
         <activity android:name=".PrincipalActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,8 +38,8 @@
         <activity android:name=".CalendarioReservarActivity" />
         <activity android:name=".VerMashActivity" />
         <activity android:name=".HomeAnfitrionActivity" />
+        <activity android:name=".AddAlojamientoActivity"/>
         <activity android:name=".VerReservaActivity" />
-        <activity android:name=".AddAlojamientoActivity" />
         <activity android:name=".ActivityCompaneros" />
         <activity android:name=".ActivityMatshes" />
         <activity android:name=".VerHuespedActivity" />

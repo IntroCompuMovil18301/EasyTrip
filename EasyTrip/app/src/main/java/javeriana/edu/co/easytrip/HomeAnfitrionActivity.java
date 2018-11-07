@@ -111,7 +111,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         this.fabAddAloPA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseUser user = mAuth.getCurrentUser();
+               // FirebaseUser user = mAuth.getCurrentUser();
 
 
                 Intent intent = new Intent (view.getContext(),AddAlojamientoActivity.class);
@@ -166,6 +166,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         MashesHuespedFragment mashes = new MashesHuespedFragment();
         adapter.addFragment(new MashesHuespedFragment(),"");
         adapter.addFragment(new AlojamientosAnfitrionFragment(),"");
+        adapter.addFragment(new ReservasAnfitrionFragment(),"");
         adapter.addFragment(new ReservasAnfitrionFragment(),"");
 
         viewPager.setAdapter(adapter);
@@ -300,7 +301,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
                 roundedDrawable.setCircular(true);
                 toolPerfilPA.setImageDrawable(roundedDrawable);
 
-                //Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

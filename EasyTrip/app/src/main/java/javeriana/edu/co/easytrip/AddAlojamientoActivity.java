@@ -163,8 +163,8 @@ public class AddAlojamientoActivity extends AppCompatActivity {
 
                 myRef = database.getReference(PATH_ALOJAMIENTOS+key);
 
-                //Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
-                //Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+                Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
+                Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
 
                 myRef.setValue(alo);
                 int i=0;
@@ -177,14 +177,12 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                     myRef.setValue(fotos.get(i));
                     //Toast.makeText(AddAlojamientoActivity.this, "!!!", Toast.LENGTH_SHORT).show();
 
-                    Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
-                    Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-
-                    cargarFoto(bitmap, "Alojamientos/"+key+"/",f.getNombre());
                     //cargarFoto(fotos.get(i).getBitmap(), keyF,fotos.get(i).getNombre());
 
+                    cargarFoto(fotoBitmap, key,fotos.get(i).getNombre());
+
                     //-------------------------
-                    Toast.makeText(AddAlojamientoActivity.this, "xD", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AddAlojamientoActivity.this, "xD", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -233,10 +231,10 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
 */
 
-        StorageReference imageRef = storageRef.child(destino+"/"+file.getLastPathSegment());
+        StorageReference imageRef = storageRef.child("Alojamientos/"+destino+"/"+file.getLastPathSegment());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
         final byte[] foto = baos.toByteArray();
 
         imageRef.putBytes(foto);
