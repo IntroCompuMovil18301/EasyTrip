@@ -1,37 +1,54 @@
-package javeriana.edu.co.modelo;
-
-import java.util.Date;
+package Modelo;
 
 public class Usuario {
-    //private String idUsuario;
-    private String nombre;
-    private String nombreUsuario;
-    private Date fechaNacimiento;
+    private String nomUsuario;
+    private String contrasena;
+    private String email;
+    private String tipo;
 
+    public Usuario(){
 
-    public String getNombre() {
-        return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public Usuario(String nomUsuario, String contrasena, String email, String tipo) {
+        this.nomUsuario = nomUsuario;
+        this.contrasena = contrasena;
+        this.email = email;
+        this.tipo = tipo;
+    }
+
+    public String getNomUsuario() {
+        return nomUsuario;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setNomUsuario(String nomUsuario) {
+        this.nomUsuario = nomUsuario;
+    }
+
+    public void setContrasena(String contraseña) {
+        this.contrasena = contraseña;
     }
 
 
-
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
 }

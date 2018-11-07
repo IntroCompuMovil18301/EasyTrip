@@ -204,13 +204,13 @@ public class HomeHuespedActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-
+                    /*
                     Huesped h = singleSnapshot.getValue(Huesped.class);
                     if(h.getEmail().compareTo(email) == 0){
                         myUserH = h;
                         descargarFoto("ImagenesPerfil",h.getNombre());
                         //Toast.makeText(HomeHuespedActivity.this, "Aqui2"+h.getNombre(), Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
                 }
             }
             @Override

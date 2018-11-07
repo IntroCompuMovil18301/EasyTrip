@@ -78,7 +78,6 @@
                     android:layout_gravity="center"
                     android:layout_weight="2"
                     android:text="Nacionalidad"
-                    android:textAlignment="viewStart"
                     android:textColor="@color/h2"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -93,7 +92,34 @@
                     android:background="@drawable/edit_redondo"
                     android:entries="@array/paises" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearNacionalidad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:text="Nacionalidad"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spnTipoViajeR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_redondo"
+                    android:entries="@array/paises" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/linearSobreTiR"
                 android:layout_width="match_parent"

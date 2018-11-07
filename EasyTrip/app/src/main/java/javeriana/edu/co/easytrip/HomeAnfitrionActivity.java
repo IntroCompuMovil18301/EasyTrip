@@ -56,7 +56,6 @@ import java.util.Date;
 
 import javeriana.edu.co.modelo.Anfitrion;
 import javeriana.edu.co.modelo.Huesped;
-import javeriana.edu.co.modelo.Usuario;
 
 import static android.app.PendingIntent.getActivity;
 
@@ -255,7 +254,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
                 //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
 
-                    Anfitrion a = singleSnapshot.getValue(Anfitrion.class);
+                    /*Anfitrion a = singleSnapshot.getValue(Anfitrion.class);
                     if(a.getEmail().compareTo(email) == 0){
 
                         myUserA = a;
@@ -264,7 +263,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
                         descargarFoto("ImagenesPerfil",a.getNombre());
                         //Toast.makeText(HomeAnfitrionActivity.this, a.getNombre(), Toast.LENGTH_SHORT).show();
                     }
-                    //myUser = a;
+                    //myUser = a;*/
                 }
 
             }

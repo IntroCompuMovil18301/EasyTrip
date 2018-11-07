@@ -71,10 +71,9 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
         //Toast.makeText(PerfilAnfitrionActivity.this, "Aqui--"+myUser.getNombre(), Toast.LENGTH_SHORT).show();
 
         this.txtNombreAnfiVi.setText(myUser.getNombre().toString());
-        this.txtNombreAnfiVi.setText(myUser.getNombre());
-        this.txtRolAnfiVi.setText(myUser.getRol());
-        this.txtEmailPAVi.setText(myUser.getEmail());
-        this.txtUsuarioAnfi.setText(myUser.getUsuario());
+        //this.txtRolAnfiVi.setText(myUser.getRol());
+        //this.txtEmailPAVi.setText(myUser.getEmail());
+        //this.txtUsuarioAnfi.setText(myUser.getUsuario());
 
 
 
@@ -118,7 +117,7 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(PerfilAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-
+/*
                     Anfitrion a = singleSnapshot.getValue(Anfitrion.class);
                     if(a.getEmail().compareTo(email) == 0){
                         //txtNombreAnfi.setText(a.getNombre());
@@ -128,7 +127,7 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
                         myUser = a;
                     }
                         //myUser = a;
-
+*/
                 }
             }
             @Override
