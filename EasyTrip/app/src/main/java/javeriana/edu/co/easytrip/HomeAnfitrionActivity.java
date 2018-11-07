@@ -56,7 +56,7 @@ import java.util.Date;
 
 import javeriana.edu.co.modelo.Anfitrion;
 import javeriana.edu.co.modelo.Huesped;
-import javeriana.edu.co.modelo.Usuario;
+
 
 import static android.app.PendingIntent.getActivity;
 
@@ -76,7 +76,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private String email;
+    private String nombre;
     private FirebaseStorage storage;
     private Anfitrion myUserA;
 
@@ -246,7 +246,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
 
 
     public void loadUser(String em) {
-        this.email = em;
+        this.nombre = em;
         myRef = database.getReference("anfitriones/");
         //Toast.makeText(PerfilAnfitrionActivity.this, "Aqui", Toast.LENGTH_SHORT).show();
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -257,7 +257,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
 
                     Anfitrion a = singleSnapshot.getValue(Anfitrion.class);
-                    if(a.getEmail().compareTo(email) == 0){
+                    if(a.getEmail().compareTo(nombre) == 0){
 
                         myUserA = a;
 

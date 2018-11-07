@@ -91,10 +91,10 @@ public class PerfilHuespedActivity extends AppCompatActivity {
 
 
         this.txtNombrePH.setText(this.myUser.getNombre());
-        this.txtRolPH.setText(this.myUser.getRol());
+        this.txtRolPH.setText("Huesped");
         this.txtGeneroPH.setText(this.myUser.getGenero());
         this.txtNacionalidadPH.setText(this.myUser.getNacionalidad());
-        this.txtInfoPH.setText(this.myUser.getSobreTi());
+        this.txtInfoPH.setText(this.myUser.getSobreMi());
 
 
         DateFormat dateFormat = dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

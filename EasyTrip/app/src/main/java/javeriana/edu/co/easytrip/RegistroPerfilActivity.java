@@ -1,41 +1,20 @@
 package javeriana.edu.co.easytrip;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-//----------------
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,172 +29,87 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.Date;
 
+import Modelo.Usuario;
 import javeriana.edu.co.modelo.Anfitrion;
-import javeriana.edu.co.modelo.Huesped;
-import javeriana.edu.co.modelo.Usuario;
-
-import static android.Manifest.permission.CAMERA;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static android.support.v4.content.FileProvider.getUriForFile;
-
+import javeriana.edu.co.modelo.FirebaseReference;
 
 public class RegistroPerfilActivity extends AppCompatActivity {
 
-    private final String CARPETA_RAIZ="misImagenesPrueba/";
-    private final String RUTA_IMAGEN=CARPETA_RAIZ+"misFotos";
-    private ImageView imageview;
-
-    public static final String PATH_USERS="anfitriones/";
-
     private ImageView editFotoR;
-    private ImageView fotoPerfil;
     private Button btnSiguienteR;
-    private EditText txtNombreR;
-    private EditText txtEmailR;
-    private EditText txtUsuarioR;
-    private EditText txtContrasenaR;
-    private EditText txtConfirmarR;
-    private Spinner idRolR;
-
-    private FirebaseAuth mAuth;
+    private FirebaseStorage storage;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private FirebaseStorage storage;
+    private FirebaseAuth mAuth;
+    private ImageView fotoPerfil;
     private StorageReference storageReference;
 
-    final int COD_SELECCIONA=10;
-    final int COD_FOTO=20;
-    TextView texto;
+    EditText nombre, apellidos, email, nom_usuario, contraseña, confContraseña;
+    Spinner rol;
 
-    Button botonCargar;
-    ImageView imagen;
-    String path;
+    private static final int CAMERA_REQUEST = 1888;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_perfil);
-        this.fotoPerfil = (ImageView) findViewById(R.id.fotoPerfil);
-        this.txtNombreR = (EditText) findViewById(R.id.txtNombreR);
-        this.txtNombreR.setText("michael");
-        this.txtEmailR = (EditText) findViewById(R.id.txtEmailR);
-        this.txtEmailR.setText("michavarg9@gmail.com");
-        this.txtUsuarioR = (EditText) findViewById(R.id.txtUsuarioR);
-        this.txtUsuarioR.setText("wizchael");
-        this.txtContrasenaR = (EditText) findViewById(R.id.txtContrasenaR);
-        this.txtContrasenaR.setText("123456");
-        this.txtConfirmarR = (EditText) findViewById(R.id.txtConfirmarR);
-        this.txtConfirmarR.setText("123456");
-        this.idRolR = (Spinner) findViewById(R.id.idRolR);
 
-        this.database= FirebaseDatabase.getInstance();
-        this.mAuth = FirebaseAuth.getInstance();
+
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        rol = (Spinner) findViewById(R.id.idRolR);
+        btnSiguienteR = (Button) findViewById(R.id.btnSiguienteR);
+
+        this.fotoPerfil= (ImageView) findViewById(R.id.fotoPerfil);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        this.btnSiguienteR = (Button) findViewById(R.id.btnSiguienteR);
-        this.btnSiguienteR.setOnClickListener(new View.OnClickListener() {
+        nom_usuario = (EditText) findViewById(R.id.txtUsuarioR);
+        contraseña = (EditText) findViewById(R.id.txtContrasenaR);
+        confContraseña = (EditText) findViewById(R.id.txtConfirmarR);
+        email = (EditText) findViewById(R.id.txtEmailR);
+        nombre = (EditText) findViewById(R.id.txtNombreR);
 
+        nom_usuario.setText("michael");
+        contraseña.setText("123456");
+        confContraseña.setText("123456");
+        email.setText("michavarg9@gmail.com");
+        nombre.setText("michael");
+
+        rol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-
-            if (validateForm()) {
-
-                if (idRolR.getSelectedItem().toString().compareTo("Huesped") == 0) {
-
-
-                    Huesped h = new Huesped();
-                    h.setNombre(txtNombreR.getText().toString());
-                    h.setUsuario(txtUsuarioR.getText().toString());
-                    h.setEmail(txtEmailR.getText().toString());
-                    h.setFechaNacimiento((new Date()).toString());
-
-                    Intent intent = new Intent(view.getContext(), RegistroHuespedActivity.class);
-                    Bundle b = new Bundle();
-
-                    intent.putExtra("huesped", h);
-                    intent.putExtra("contrasena", txtContrasenaR.getText().toString());
-
-                        Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
-                        Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-
-                        cargarFoto(bitmap, "ImagenesPerfil",h.getNombre());
-
-                    startActivity(intent);
-
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (rol.getSelectedItem().toString().equalsIgnoreCase("Huesped")) {
+                    btnSiguienteR.setText("Siguiente");
                 } else {
-                    //--------------------------------------------------------------
-                    mAuth.createUserWithEmailAndPassword(txtEmailR.getText().toString(), txtContrasenaR.getText().toString())
-                            .addOnCompleteListener(RegistroPerfilActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        //Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        if (user != null) { //Update user Info
-
-                                            UserProfileChangeRequest.Builder upcrb = new UserProfileChangeRequest.Builder();
-                                            upcrb.setDisplayName("Anfitrion");
-                                            //upcrb.setPhotoUri(Uri.parse("gs://easytrip-ffa76.appspot.com/usuarios/"));//fake uri, use Firebase Storage
-                                            user.updateProfile(upcrb.build());
-
-
-                                            //String key = myRef.push().getKey();
-
-
-                                            Anfitrion a = new Anfitrion();
-                                            a.setNombre(txtNombreR.getText().toString());
-                                            a.setUsuario(txtUsuarioR.getText().toString());
-                                            a.setFechaNacimiento((new Date()).toString());
-                                            a.setEmail(txtEmailR.getText().toString());
-
-                                                Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
-                                                Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-
-                                                cargarFoto(bitmap, "ImagenesPerfil",a.getNombre());
-                                                descargarFoto("ImagenesPerfil",a.getNombre());
-
-
-                                            a.setFoto("");
-                                            a.setRol("Anfitrion");
-                                            myRef = database.getReference(PATH_USERS + user.getUid());
-                                            myRef.setValue(a);
-
-                                            //Toast.makeText(RegistroPerfilActivity.this, user.getUid(),
-                                            //      Toast.LENGTH_SHORT).show();
-
-                                            startActivity(new Intent(RegistroPerfilActivity.this, HomeAnfitrionActivity.class)); //o en el listener
-
-                                        } else {
-                                            Toast.makeText(RegistroPerfilActivity.this, "Error en el Registro",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                    if (!task.isSuccessful()) {
-                                        Toast.makeText(RegistroPerfilActivity.this, "Fault",
-                                                Toast.LENGTH_SHORT).show();
-                                        //Log.e(TAG, task.getException().getMessage());
-                                    }
-                                }
-                            });
-
-                    //--------------------------------------------------------------
-
+                    btnSiguienteR.setText("Registrarse");
                 }
             }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        this.btnSiguienteR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validateForm()) {
+                    crearNuevoUsuario();
+                }
 
             }
         });
@@ -239,106 +133,172 @@ public class RegistroPerfilActivity extends AppCompatActivity {
         this.editFotoR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(view.getContext(), SubirFotoActivity.class);
-                startActivity(intent);*/
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                //descargarFoto("ImagenesPerfil", "michael");
+            }
+        });
 
-                if(validaPermisos()){
-                    cargarImagen();
-                }else{
-                    solicitarPermisosManual();
+    }
+
+    private void crearNuevoUsuario() {
+        nom_usuario = (EditText) findViewById(R.id.txtUsuarioR);
+
+        myRef = database.getReference();
+        myRef.child(FirebaseReference.USUARIOS).orderByChild("nomUsuario").equalTo(nom_usuario.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChildren()) {
+                    for (DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
+                        Usuario us = singlesnapshot.getValue(Usuario.class);
+                        if (nom_usuario.getText().toString().equals(us.getNomUsuario()))
+                            Toast.makeText(RegistroPerfilActivity.this, "El nombre de usuario ya existe", Toast.LENGTH_SHORT).show();
+                        else {
+                            nuevoUsuario();
+                        }
+                    }
+                } else {
+                    nuevoUsuario();
                 }
-                //descargarFoto("ImagenesPerfil","michael");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
     }
 
-    private boolean validateForm() {
+    private void nuevoUsuario() {
+        Usuario usuario = new Usuario(nom_usuario.getText().toString(), contraseña.getText().toString(), email.getText().toString(), rol.getSelectedItem().toString());
+        myRef.child(FirebaseReference.USUARIOS).child(usuario.getNomUsuario()).setValue(usuario);
+        mAuth.createUserWithEmailAndPassword(usuario.getEmail(), usuario.getContrasena()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    if (user != null) {
+                        UserProfileChangeRequest.Builder upcrb = new UserProfileChangeRequest.Builder();
+                        upcrb.setDisplayName("Anfitrion");
+                        user.updateProfile(upcrb.build());
+                    } else {
+                        Toast.makeText(RegistroPerfilActivity.this, "Error en el Registro", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+        if (rol.getSelectedItem().toString().equalsIgnoreCase("Huesped"))
+            crearNuevoHuesped(usuario.getNomUsuario());
+        else
+            crearNuevoAnfitrion(usuario.getNomUsuario());
+    }
 
+    private Usuario construirUsuario() {
 
+        return new Usuario(nom_usuario.getText().toString(), contraseña.getText().toString(), email.getText().toString(), rol.getSelectedItem().toString());
+    }
+
+    private void crearNuevoAnfitrion(String nomUsuario) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        Anfitrion anfitrion = new Anfitrion(nomUsuario, nombre.getText().toString(), "UrlFoto", user.getEmail());
+        myRef.child(FirebaseReference.ANFITRIONES).child(nomUsuario).setValue(anfitrion);
+
+        Intent intent = new Intent(RegistroPerfilActivity.this, PrincipalActivity.class);
+        startActivity(intent);
+    }
+
+    private void crearNuevoHuesped(String nomUsuario) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString("nomUsuario", nomUsuario);
+        bundle.putString("nombre", nom_usuario.getText().toString());
+        bundle.putString("email", email.getText().toString());
+
+        Intent intent = new Intent(RegistroPerfilActivity.this, RegistroHuespedActivity.class);
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
+    }
+
+    private boolean emailValido(String email) {
         boolean valid = true;
-
-        String nombre = this.txtNombreR.getText().toString();
-        if (TextUtils.isEmpty(nombre)) {
-            this.txtNombreR.setError("Requerido");
+        if (!email.contains("@") || !email.contains(".")) {
             valid = false;
-        } else {
-            this.txtNombreR.setError(null);
+            Toast.makeText(RegistroPerfilActivity.this, "Email incorrecto ejemplo@dominio.com", Toast.LENGTH_SHORT).show();
         }
-
-        String email = this.txtEmailR.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            this.txtEmailR.setError("Requerido");
-            valid = false;
-        } else {
-            if(!this.isEmailValid(email)){
-                this.txtEmailR.setError("Email inválido");
-            }else{
-                this.txtEmailR.setError(null);
-            }
-
-        }
-
-
-
-        String usuario = this.txtUsuarioR.getText().toString();
-        if (TextUtils.isEmpty(usuario)) {
-            this.txtUsuarioR.setError("Requerido");
-            valid = false;
-        } else {
-            this.txtUsuarioR.setError(null);
-        }
-
-        String contrasena = this.txtContrasenaR.getText().toString();
-        if (TextUtils.isEmpty(contrasena)) {
-            this.txtContrasenaR.setError("Requerido");
-            valid = false;
-        } else {
-            if(contrasena.length()<6){
-                this.txtContrasenaR.setError("Contraseña minimo de 6 caracteres");
-            }else{
-                this.txtContrasenaR.setError(null);
-            }
-
-        }
-
-        String confirmar = this.txtConfirmarR.getText().toString();
-        if (TextUtils.isEmpty(confirmar)) {
-            this.txtConfirmarR.setError("Requerido");
-            valid = false;
-        } else {
-
-            this.txtConfirmarR.setError(null);
-        }
-
-        if(contrasena.compareTo("")!=0 && confirmar.compareTo("")!=0)
-            if(contrasena.compareTo(confirmar) != 0 ){
-                this.txtConfirmarR.setError("Los campos no coinciden");
-                this.txtContrasenaR.setError("Los campos no coinciden");
-                valid = false;
-            }
-
-
         return valid;
     }
 
-    private boolean isEmailValid(String email) {
-        boolean isValid = true;
-        if (!email.contains("@") || !email.contains(".") || email.length() < 5)
-            isValid = false;
-        return isValid;
+    private boolean validateForm() {
+
+        boolean valid = true;
+
+        nom_usuario = (EditText) findViewById(R.id.txtUsuarioR);
+        contraseña = (EditText) findViewById(R.id.txtContrasenaR);
+        confContraseña = (EditText) findViewById(R.id.txtConfirmarR);
+        email = (EditText) findViewById(R.id.txtEmailR);
+        nombre = (EditText) findViewById(R.id.txtNombreR);
+
+        if (TextUtils.isEmpty(nombre.getText().toString())) {
+            this.nombre.setError("Requerido");
+            valid = false;
+        } else {
+            this.nombre.setError(null);
+        }
+
+        if (TextUtils.isEmpty(email.getText().toString())) {
+            email.setError("Requerido");
+            valid = false;
+        } else {
+            if (!this.emailValido(email.getText().toString())) {
+                email.setError("Email inválido");
+            } else {
+                email.setError(null);
+            }
+
+        }
+
+
+        if (TextUtils.isEmpty(nom_usuario.getText().toString())) {
+            nom_usuario.setError("Requerido");
+            valid = false;
+        } else {
+            nom_usuario.setError(null);
+        }
+
+        if (TextUtils.isEmpty(contraseña.getText().toString())) {
+            this.contraseña.setError("Requerido");
+            valid = false;
+        } else {
+            if (contraseña.getText().toString().length() < 6) {
+                contraseña.setError("Contraseña minimo de 6 caracteres");
+            } else {
+                contraseña.setError(null);
+            }
+
+        }
+
+        if (TextUtils.isEmpty(confContraseña.getText().toString())) {
+            confContraseña.setError("Requerido");
+            valid = false;
+        } else {
+            confContraseña.setError(null);
+        }
+
+        if (contraseña.getText().toString().compareTo("") != 0 && confContraseña.getText().toString().compareTo("") != 0)
+            if (contraseña.getText().toString().compareTo(confContraseña.getText().toString()) != 0) {
+                confContraseña.setError("Los campos no coinciden");
+                contraseña.setError("Los campos no coinciden");
+                valid = false;
+            }
+        return valid;
     }
 
-    private void cargarFoto(Bitmap bitmap,String destino, String nombre){
+    private void cargarFoto(Bitmap bitmap, String destino, String nombre) {
         StorageReference storageRef = storage.getReference();
-        Uri file = Uri.fromFile(new File("perfil/"+nombre+".jpg"));
-/*
-        Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
-        Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-*/
+        Uri file = Uri.fromFile(new File("perfil/" + nombre + ".jpg"));
 
-        StorageReference imageRef = storageRef.child(destino+"/"+file.getLastPathSegment());
+        StorageReference imageRef = storageRef.child(destino + "/" + file.getLastPathSegment());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
@@ -348,10 +308,10 @@ public class RegistroPerfilActivity extends AppCompatActivity {
 
     }
 
-    private void descargarFoto(String origen, String nombre){
+    private void descargarFoto(String origen, String nombre) {
 
         StorageReference storageRef = storage.getReference();
-        StorageReference islandRef = storageRef.child(origen+"/"+nombre+".jpg");
+        StorageReference islandRef = storageRef.child(origen + "/" + nombre + ".jpg");
 
         final long ONE_MEGABYTE = 1024 * 1024;
         islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -373,177 +333,16 @@ public class RegistroPerfilActivity extends AppCompatActivity {
                 // Handle any errors
             }
         });
-    }
-
-
-
-    //--------------------------------------------------
-
-    private boolean validaPermisos() {
-
-        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
-            return true;
-        }
-
-        if((checkSelfPermission(CAMERA)==PackageManager.PERMISSION_GRANTED)&&
-                (checkSelfPermission(WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED)){
-            return true;
-        }
-
-        if((shouldShowRequestPermissionRationale(CAMERA)) ||
-                (shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE))){
-            cargarDialogoRecomendacion();
-        }else{
-            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE,CAMERA},100);
-        }
-
-        return false;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(requestCode==100){
-            if(grantResults.length==2 && grantResults[0]==PackageManager.PERMISSION_GRANTED
-                    && grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                botonCargar.setEnabled(true);
-            }else{
-                solicitarPermisosManual();
-            }
-        }
-
-    }
-
-    private void solicitarPermisosManual() {
-        final CharSequence[] opciones={"si","no"};
-        final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(RegistroPerfilActivity.this);
-        alertOpciones.setTitle("¿Desea configurar los permisos de forma manual?");
-        alertOpciones.setItems(opciones, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (opciones[i].equals("si")){
-                    Intent intent=new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri=Uri.fromParts("package",getPackageName(),null);
-                    intent.setData(uri);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getApplicationContext(),"Los permisos no fueron aceptados",Toast.LENGTH_SHORT).show();
-                    dialogInterface.dismiss();
-                }
-            }
-        });
-        alertOpciones.show();
-    }
-
-    private void cargarDialogoRecomendacion() {
-        AlertDialog.Builder dialogo=new AlertDialog.Builder(RegistroPerfilActivity.this);
-        dialogo.setTitle("Permisos Desactivados");
-        dialogo.setMessage("Debe aceptar los permisos para el correcto funcionamiento de la App");
-
-        dialogo.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE,CAMERA},100);
-            }
-        });
-        dialogo.show();
-    }
-
-
-    private void cargarImagen() {
-        final CharSequence[] opciones={"Tomar Foto","Cargar Imagen","Cancelar"};
-        final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(RegistroPerfilActivity.this);
-        alertOpciones.setTitle("Seleccione una Opción");
-        alertOpciones.setItems(opciones, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (opciones[i].equals("Tomar Foto")){
-                    tomarFotografia();
-                }else{
-                    if (opciones[i].equals("Cargar Imagen")){
-                        Intent intent=new Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/");
-                        startActivityForResult(intent.createChooser(intent,"Seleccione la Aplicación"),COD_SELECCIONA);
-                    }else{
-                        dialogInterface.dismiss();
-                    }
-                }
-            }
-        });
-        alertOpciones.show();
-
-    }
-
-    private void tomarFotografia() {
-  //      Toast.makeText(RegistroPerfilActivity.this, "+++", Toast.LENGTH_SHORT).show();
-        File fileImagen=new File(Environment.getExternalStorageDirectory(),RUTA_IMAGEN);
-
-        boolean isCreada=fileImagen.exists();
-        String nombreImagen="";
-        if(isCreada==false){
-            isCreada=fileImagen.mkdirs();
-        }
-
-        if(isCreada==true){
-            nombreImagen=(System.currentTimeMillis()/1000)+".jpg";
-        }
-
-
-        path=Environment.getExternalStorageDirectory()+
-                File.separator+RUTA_IMAGEN+File.separator+nombreImagen;
-
-
-        File imagen=new File(path);
-
-        Intent intent=null;
-        Toast.makeText(RegistroPerfilActivity.this, path, Toast.LENGTH_SHORT).show();
-        intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
-        {
-            String authorities=getApplicationContext().getPackageName()+".provider";
-
-            Uri imageUri=FileProvider.getUriForFile(this,authorities,imagen);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        }else
-        {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagen));
-        }
-        //startActivityForResult(intent,COD_FOTO);
-
-
-    }
+   }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==RESULT_OK){
-
-            switch (requestCode){
-                case COD_SELECCIONA:
-                    Uri miPath=data.getData();
-                    imagen.setImageURI(miPath);
-                    break;
-
-                case COD_FOTO:
-                    MediaScannerConnection.scanFile(this, new String[]{path}, null,
-                            new MediaScannerConnection.OnScanCompletedListener() {
-                                @Override
-                                public void onScanCompleted(String path, Uri uri) {
-                                    Log.i("Ruta de almacenamiento","Path: "+path);
-                                }
-                            });
-
-                    Bitmap bitmap= BitmapFactory.decodeFile(path);
-                    imagen.setImageBitmap(bitmap);
-
-                    break;
-            }
-
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            fotoPerfil.setImageBitmap(photo);
 
         }
     }
-
 
 }

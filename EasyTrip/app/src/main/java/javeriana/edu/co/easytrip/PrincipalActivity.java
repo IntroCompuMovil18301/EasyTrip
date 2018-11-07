@@ -22,164 +22,65 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import javeriana.edu.co.modelo.Anfitrion;
-import javeriana.edu.co.modelo.Huesped;
+import Modelo.Usuario;
+import javeriana.edu.co.modelo.FirebaseReference;
 
 public class PrincipalActivity extends AppCompatActivity {
-
-    //firebase authentication
+    public static final String TAG = "USER";
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
+    private Button btnRegistrarseP, btnLogin;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
-    private Button btnRegistrarseP;
-    private Button btnLoginL;
-    private EditText txtUsuarioL;
-    private EditText txtContrasenaL;
-    private Anfitrion myUser;
-    private Huesped myUserH;
+    EditText mUser, mPassword;
+    private String tipoUsuario, nomUsuario;
 
-    private String email;
-    private String rol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-        this.rol ="";
-        this.database= FirebaseDatabase.getInstance();
-        this.mAuth = FirebaseAuth.getInstance();
 
-        this.txtUsuarioL = (EditText) findViewById(R.id.txtUsuarioL);
-        this.txtUsuarioL.setText("michavarg9@gmail.com");
-        this.txtContrasenaL = (EditText) findViewById(R.id.txtContrasenaL);
-        this.txtContrasenaL.setText("123456");
+        database = FirebaseDatabase.getInstance();
 
-        this.btnLoginL = (Button) findViewById(R.id.btnLoginL);
-        this.btnLoginL.setOnClickListener(new View.OnClickListener() {
+        mUser = (EditText) findViewById(R.id.txtUsuarioL);
+        mPassword = (EditText) findViewById(R.id.txtContrasenaL);
+        mUser.setText("michael");
+        mAuth = FirebaseAuth.getInstance();
+        mPassword.setText("123456");
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user!= null){
+                    rolUsuario(user.getEmail());
+                }else{
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
+
+        btnLogin = (Button) findViewById(R.id.btnLoginL);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (validateForm()) {
-
-                mAuth.signInWithEmailAndPassword(txtUsuarioL.getText().toString(), txtContrasenaL.getText().toString())
-                        .addOnCompleteListener(PrincipalActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                // Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                if (!task.isSuccessful()) {
-                                    //Log.w(TAG, "signInWithEmail:failed", task.getException());
-                                    Toast.makeText(PrincipalActivity.this, "Usuario o contraseña Incorrectos",
-                                            Toast.LENGTH_SHORT).show();
-
-                                }
-                                else{
-
-                                    //startActivity(new Intent(PrincipalActivity.this,HomeAnfitrionActivity.class));
-
-                                    String rolAux="";
-                                    //while(rol.compareTo("") == 0){
-                                        //rolAux = loadUser(user.getEmail());
-                                    //}
-                                    //rolAux = loadUser(user.getEmail());
-
-
-                                    //-----------------------------------------------------------------------------------
-                                    //Toast.makeText(PrincipalActivity.this, "+++", Toast.LENGTH_SHORT).show();
-
-                                    if(user.getDisplayName().compareTo("Huesped") == 0){
-                                        //Intent intent = new Intent( PrincipalActivity.this,HomeHuespedActivity.class);
-                                        //Toast.makeText(PrincipalActivity.this, user.getEmail()+"--"+user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(PrincipalActivity.this, HomeHuespedActivity.class));
-                                    }
-                                    if(user.getDisplayName().compareTo("Anfitrion") == 0){
-                                        startActivity(new Intent(PrincipalActivity.this, HomeAnfitrionActivity.class));
-                                    }
-
-                                    //startActivity(new Intent(PrincipalActivity.this, HomeAnfitrionActivity.class));
-
-                                }
-                            }
-                        });
-
-
-                // Intent intent = new Intent(view.getContext(),VerReservaActivity.class);
-                //Intent intent = new Intent(view.getContext(),HomeAnfitrionActivity.class);
-                //Intent intent = new Intent(view.getContext(),ActivityReservasPorAcepatar.class);
-                //startActivity(intent);
-
-            }
+                signInUser();
             }
         });
-
-    //--------------------------------------------------------------------------------------------------
-
 
         this.btnRegistrarseP = (Button) findViewById(R.id.btnRegistrarseP);
         this.btnRegistrarseP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(),RegistroPerfilActivity.class);
-                //Intent intent = new Intent(view.getContext(),HomeAnfitrionActivity.class);
-                //Intent intent = new Intent(view.getContext(),ActivityCompaneros.class);
-                //Intent intent = new Intent(view.getContext(),VerReservaActivity.class);
                 startActivity(intent);
             }
         });
-
-
-    //----------------------------------------------------------------------------------------------------
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-
-                if (user != null) {
-                    boolean hecho = false;
-                    String rolAux = "";
-                    //while (!hecho) {
-                    Toast.makeText(PrincipalActivity.this, "aqui", Toast.LENGTH_SHORT).show();
-                    rolAux = loadUser(user.getEmail());
-
-                    Toast.makeText(PrincipalActivity.this, rolAux +"--", Toast.LENGTH_SHORT).show();
-
-
-                    if (rolAux.compareTo("Huesped") == 0) {
-                        startActivity(new Intent(PrincipalActivity.this, HomeHuespedActivity.class));
-                        hecho = true;
-                    }
-                    if (rolAux.compareTo("Anfitrion") == 0) {
-                        startActivity(new Intent(PrincipalActivity.this, HomeAnfitrionActivity.class));
-                        hecho = true;
-                    }
-                //}
-                        Toast.makeText(PrincipalActivity.this, rolAux, Toast.LENGTH_SHORT).show();
-                } else {
-                    // User is signed out
-
-                    Toast.makeText(PrincipalActivity.this, "No Logueado", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
-
     }
-
     @Override
     protected void onStart() {
         super.onStart();
-        //this.database= FirebaseDatabase.getInstance();
-        //this.mAuth = FirebaseAuth.getInstance();
-        //mAuth.addAuthStateListener(mAuthListener);
+        mAuth.addAuthStateListener(mAuthListener);
     }
     @Override
     public void onStop() {
@@ -188,85 +89,88 @@ public class PrincipalActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
-
-    private boolean validateForm() {
+    private boolean valideForm(){
         boolean valid = true;
-        String email = this.txtUsuarioL.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            this.txtUsuarioL.setError("Requerido");
+        String email = mUser.getText().toString();
+        if(TextUtils.isEmpty(email)){
+            mUser.setError("Requerido");
             valid = false;
-        } else {
-            this.txtUsuarioL.setError(null);
+        }else{
+            mUser.setError(null);
         }
-        String password = this.txtContrasenaL.getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            this.txtContrasenaL.setError("Requerido");
+        String password = mPassword.getText().toString();
+        if(TextUtils.isEmpty(password)){
+            mPassword.setError("Requerido");
             valid = false;
-        } else {
-            this.txtContrasenaL.setError(null);
+        }else{
+            mPassword.setError(null);
         }
         return valid;
     }
-
-    public String loadUser(String em) {
-        this.email = em;
-
-        //Toast.makeText(PrincipalActivity.this, em+"++", Toast.LENGTH_SHORT).show();;
-        myRef = database.getReference("huespedes/");
-        //Toast.makeText(PrincipalActivity.this, "Aqui", Toast.LENGTH_SHORT).show();
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-
-                    myUserH = singleSnapshot.getValue(Huesped.class);
-
-                    if(myUserH.getEmail().compareTo(email) == 0){
-                        Toast.makeText(PrincipalActivity.this, myUserH.getRol()+"++", Toast.LENGTH_SHORT).show();;
-                        rol =  myUserH.getRol();
-                    }
-                    //String p = myUserH.getRol();
-                    //Toast.makeText(PrincipalActivity.this, p+"--", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(PrincipalActivity.this, "Error en consulta", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        //------------------------------------------------------------------
-        myRef = database.getReference("anfitriones/");
-        //Toast.makeText(PrincipalActivity.this, "Aqui", Toast.LENGTH_SHORT).show();
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-
-                    myUser = singleSnapshot.getValue(Anfitrion.class);
-                    if(myUser.getEmail().compareTo(email) == 0){
-                        Toast.makeText(PrincipalActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
-                        rol =  myUser.getRol();
+    protected void signInUser(){
+        if(valideForm()){
+            myRef = database.getReference();
+            myRef.child(FirebaseReference.USUARIOS).orderByChild("nomUsuario").equalTo(mUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChildren()) {
+                        for (DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
+                            Usuario us = singlesnapshot.getValue(Usuario.class);
+                            tipoUsuario = us.getTipo();
+                            nomUsuario = us.getNomUsuario();
+                            ingresar(us.getEmail(),us.getContrasena());
+                        }
+                    }else {
+                        Toast.makeText(PrincipalActivity.this,"No encontre nada",Toast.LENGTH_SHORT).show();
 
                     }
                 }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(PrincipalActivity.this, "Error en consulta", Toast.LENGTH_SHORT).show();
-            }
-        });
-        //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
-        return rol;
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
+    private void ingresar(String nomUsuario, String password){
+        mAuth.signInWithEmailAndPassword(nomUsuario,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+                if(!task.isSuccessful()) {
+                    Log.w(TAG, "signInWithEmail:failed", task.getException());
+                    Toast.makeText(PrincipalActivity.this, "Fallo al iniciar la sesion", Toast.LENGTH_SHORT).show();
+                    mUser.setText("");
+                    mPassword.setText("");
+                }
+            }
+        });
+    }
+    private void rolUsuario(String email){
+        myRef = database.getReference();
+        myRef.child(FirebaseReference.USUARIOS).orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()) {
+                    for(DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
+                        Usuario us = singlesnapshot.getValue(Usuario.class);
+                        if(us.getTipo().equals("Huesped")) {
+                            startActivity(new Intent(PrincipalActivity.this, HomeHuespedActivity.class).putExtra("Usuario",us));
+                        }else{
+                            startActivity(new Intent(PrincipalActivity.this, HomeAnfitrionActivity.class).putExtra("Usuario",us));
+                        }
+                    }
+                }else {
+                    Toast.makeText(PrincipalActivity.this,"No encontre nada",Toast.LENGTH_SHORT).show();
 
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-
+            }
+        });
+    }
 }

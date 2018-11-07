@@ -1,48 +1,50 @@
 package javeriana.edu.co.modelo;
 
 import java.io.Serializable;
-import java.util.Date;
 
-public class Anfitrion implements Serializable {
+public class Anfitrion implements Serializable{
 
+    private String nomUsuario;
     private String nombre;
-    private String usuario;
-    private String fechaNacimiento;
+    private String URL_Foto;
     private String email;
-    private String foto;
-    private String rol;
 
+    public Anfitrion(){}
+
+
+    public Anfitrion(String nomUsuario,String nombre,String URL_Foto, String em) {
+        this.nomUsuario = nomUsuario;
+        this.nombre = nombre;
+        this.URL_Foto = URL_Foto;
+        this.email = em;
+    }
 
     public String getNombre() {
         return nombre;
+    }
+
+    public String getURL_Foto() {
+        return URL_Foto;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    public String getFechaNacimiento() {
-        return fechaNacimiento;
+    public void setURL_Foto(String URL_Foto) {
+        this.URL_Foto = URL_Foto;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public String getNomUsuario() {
+        return nomUsuario;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public void setNomUsuario(String nomUsuario) {
+        this.nomUsuario = nomUsuario;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
+    public boolean agregarAlojamiento(String tipo, double costo , int numHuespeds, String descripcion, String URL_foto){
+        return true;
     }
 
     public String getEmail() {
@@ -52,13 +54,4 @@ public class Anfitrion implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
 }

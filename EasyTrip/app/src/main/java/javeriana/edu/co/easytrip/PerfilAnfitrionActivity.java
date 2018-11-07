@@ -28,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.security.Principal;
+
 import javeriana.edu.co.modelo.Anfitrion;
 import javeriana.edu.co.modelo.Huesped;
 
@@ -46,6 +48,7 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String email;
     private FirebaseStorage storage;
+
 
 
     @Override
@@ -72,10 +75,11 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
 
         this.txtNombreAnfiVi.setText(myUser.getNombre().toString());
         this.txtNombreAnfiVi.setText(myUser.getNombre());
-        this.txtRolAnfiVi.setText(myUser.getRol());
+        this.txtRolAnfiVi.setText("Anfitrión");
         this.txtEmailPAVi.setText(myUser.getEmail());
-        this.txtUsuarioAnfi.setText(myUser.getUsuario());
+        this.txtUsuarioAnfi.setText(myUser.getNomUsuario());
 
+        this.mAuth = FirebaseAuth.getInstance();
 
 
         this.fabEditAnfi = (FloatingActionButton) findViewById(R.id.fabEditAnfi);
@@ -83,7 +87,8 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(view.getContext(), "TESTING FAB CLICK",Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(view.getContext(), EditarPerfilAnfitrionActivity.class);
+             //   mAuth.signOut();
+               // Intent intent = new Intent(view.getContext(), PrincipalActivity.class);
                 //startActivity(intent);
             }
         });
