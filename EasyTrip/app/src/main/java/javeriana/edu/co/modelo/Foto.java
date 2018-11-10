@@ -2,7 +2,9 @@ package javeriana.edu.co.modelo;
 
 import android.graphics.Bitmap;
 
-public class Foto {
+import java.io.Serializable;
+
+public class Foto implements Serializable{
 
     private String nombre;
     private String descripcion;

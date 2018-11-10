@@ -1,6 +1,7 @@
 package javeriana.edu.co.easytrip;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import Modelo.Usuario;
 import javeriana.edu.co.modelo.FirebaseReference;
+import javeriana.edu.co.modelo.Foto;
 import javeriana.edu.co.modelo.Huesped;
 
 public class RegistroHuespedActivity extends AppCompatActivity {
@@ -22,6 +25,7 @@ public class RegistroHuespedActivity extends AppCompatActivity {
     private Button btnRegistrarH;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private Bitmap foto;
 
     String nombre, apellidos, nomUsuario;
     TextView sobreMi;
@@ -33,6 +37,7 @@ public class RegistroHuespedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_huesped);
+
 
         database = FirebaseDatabase.getInstance();
 
@@ -46,7 +51,7 @@ public class RegistroHuespedActivity extends AppCompatActivity {
                 nombre = bundle.getString("nombre");
                 apellidos = bundle.getString("apellidos");
                 nomUsuario = bundle.getString("nomUsuario");
-
+                Modelo.Usuario usuario = (Usuario) bundle.getSerializable("Usuario");
                 Huesped huesped = crearNuevoHuesped();
 
                 myRef = database.getReference();
@@ -54,7 +59,7 @@ public class RegistroHuespedActivity extends AppCompatActivity {
                 if(huesped != null)
                     myRef.child(FirebaseReference.HUESPESDES).child(nomUsuario).setValue(huesped);
 
-                Intent intent = new Intent (view.getContext(),HomeHuespedActivity.class);
+                Intent intent = new Intent (view.getContext(),HomeHuespedActivity.class).putExtra("Usuario",usuario);
                 startActivity(intent);
             }
         });

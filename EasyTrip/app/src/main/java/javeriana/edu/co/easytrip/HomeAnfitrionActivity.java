@@ -54,7 +54,9 @@ import com.google.firebase.storage.StorageReference;
 import java.security.Principal;
 import java.util.Date;
 
+import Modelo.Usuario;
 import javeriana.edu.co.modelo.Anfitrion;
+import javeriana.edu.co.modelo.FirebaseReference;
 import javeriana.edu.co.modelo.Huesped;
 
 import static android.app.PendingIntent.getActivity;
@@ -68,41 +70,32 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
     private ImageButton fabAddAloPA;
     private ViewPager mViewPager;
     private ImageButton toolPerfilPA;
-    private Toolbar toolbar;
-    private Bitmap fotoPerfil;
     private ImageButton fabCalendarioPA;
-
-
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private String email;
+    private Bitmap fotoPerfil;
+
+
     private FirebaseStorage storage;
-    private Anfitrion myUserA;
+    private Usuario myUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_anfitrion);
 
-        //this.toolbar = (Toolbar) findViewById(R.id.toolbarAnfitrion);
-
-        //this.toolbar.inflateMenu(R.menu.menu);
-        this.myUserA = new Anfitrion();
+        this.myUser = (Usuario) getIntent().getSerializableExtra("Usuario");
 
         this.mAuth = FirebaseAuth.getInstance();
         this.database= FirebaseDatabase.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
-        loadUser(user.getEmail());
 
         this.fabCalendarioPA = (ImageButton) findViewById(R.id.fabCalendarioPA);
         this.fabCalendarioPA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent (view.getContext(),CalendarioReservarActivity.class);
-
                 startActivity(intent);
-
             }
         });
 
@@ -111,8 +104,6 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseUser user = mAuth.getCurrentUser();
-
-
                 Intent intent = new Intent (view.getContext(),AddAlojamientoActivity.class);
                 startActivity(intent);
             }
@@ -124,17 +115,32 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         this.toolPerfilPA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mAuth.signOut();
-                Intent intent = new Intent(view.getContext(),PerfilAnfitrionActivity.class);
+                Modelo.Usuario us = (Usuario) getIntent().getSerializableExtra("Usuario");
+                myRef = database.getReference();
+                myRef.child(FirebaseReference.ANFITRIONES).orderByChild("nomUsuario").equalTo(us.getNomUsuario()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChildren()) {
+                            for(DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
+                                Anfitrion usA = singlesnapshot.getValue(Anfitrion.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("Usuario",getIntent().getSerializableExtra("Usuario"));
+                                bundle.putSerializable("Anfitrion",usA);
+                                Intent intent = new Intent(HomeAnfitrionActivity.this,PerfilAnfitrionActivity.class);
+                                intent.putExtra("bundle",bundle);
+                                startActivity(intent);
+                            }
+                        }else {
+                            Toast.makeText(HomeAnfitrionActivity.this,"No encontre nada",Toast.LENGTH_SHORT).show();
 
-                Bundle b = new Bundle();
-                b.putSerializable("anfitrion",myUserA);
-                //intent.putExtra("anfitrion",myUserA);
-                intent.putExtra("bundle",b);
+                        }
+                    }
 
-                startActivity(intent);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-
+                    }
+                });
             }
         });
 
@@ -157,6 +163,8 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         tabLayout.getTabAt(1).select();
+
+        loadUser();
 
     }
 
@@ -242,30 +250,20 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void loadUser(String em) {
-        this.email = em;
-        myRef = database.getReference("anfitriones/");
-        //Toast.makeText(PerfilAnfitrionActivity.this, "Aqui", Toast.LENGTH_SHORT).show();
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
+    public void loadUser() {
+        myRef = database.getReference();
+        myRef.child(FirebaseReference.ANFITRIONES).orderByChild("nomUsuario").equalTo(myUser.getNomUsuario()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-
-                    /*Anfitrion a = singleSnapshot.getValue(Anfitrion.class);
-                    if(a.getEmail().compareTo(email) == 0){
-
-                        myUserA = a;
-
-                        //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2"+a.getNombre(), Toast.LENGTH_SHORT).show();
-                        descargarFoto("ImagenesPerfil",a.getNombre());
-                        //Toast.makeText(HomeAnfitrionActivity.this, a.getNombre(), Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()) {
+                    for(DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
+                        Anfitrion usA = singlesnapshot.getValue(Anfitrion.class);
+                        descargarFoto("ImagenesPerfil",myUser.getNomUsuario());
                     }
-                    //myUser = a;*/
-                }
+                }else {
+                    Toast.makeText(HomeAnfitrionActivity.this,"No encontre nada",Toast.LENGTH_SHORT).show();
 
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -287,19 +285,15 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                 fotoPerfil = bitmap;
 
-                RoundedBitmapDrawable roundedDrawable =
-                        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-                //asignamos el CornerRadius
-                //roundedDrawable.setCornerRadius(bitmap.getHeight());
+                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
                 roundedDrawable.setCircular(true);
                 toolPerfilPA.setImageDrawable(roundedDrawable);
 
-                //Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -308,5 +302,4 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
             }
         });
     }
-
 }

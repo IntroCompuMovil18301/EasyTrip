@@ -156,9 +156,9 @@ public class PrincipalActivity extends AppCompatActivity {
                     for(DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
                         Usuario us = singlesnapshot.getValue(Usuario.class);
                         if(us.getTipo().equals("Huesped")) {
-                            startActivity(new Intent(PrincipalActivity.this, HomeHuespedActivity.class).putExtra("nomusuario",nomUsuario));
+                            startActivity(new Intent(PrincipalActivity.this, HomeHuespedActivity.class).putExtra("Usuario",us));
                         }else{
-                            startActivity(new Intent(PrincipalActivity.this, HomeAnfitrionActivity.class).putExtra("nomusuario",nomUsuario));
+                            startActivity(new Intent(PrincipalActivity.this, HomeAnfitrionActivity.class).putExtra("Usuario",us));
                         }
                     }
                 }else {

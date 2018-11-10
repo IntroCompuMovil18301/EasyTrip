@@ -52,7 +52,6 @@ public class AddAlojamientoActivity extends AppCompatActivity {
     private Button btnGuardarAlo;
     private Spinner spnTipoAddAlo;
     private List<Foto> fotos;
-    //private List<Bitmap> fotosB;
     private Localizacion localizacion;
     private FirebaseAuth mAuth;
 
@@ -67,9 +66,6 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         this.mAuth = FirebaseAuth.getInstance();
 
         this.fotos = new ArrayList<Foto>();
-        //this.fotosB = new ArrayList<Bitmap>();
-
-
 
         this.localizacion = new Localizacion();
 
@@ -95,30 +91,25 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                 f.setNombre("Foto1");
                 f.setDescripcion("Esta es una descripción muy corta");
 
-               // nFotos++;
-                //Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
-                //Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-
                 Bitmap icon = BitmapFactory.decodeResource(getResources(),
                         R.drawable.imagencasa);
                 f.setBitmap(icon);
                 fotos.add(f);
-                //fotosB.add(icon);
 
-                //Foto f2 = new Foto();
                 f = new Foto();
                 f.setNombre("Foto2");
                 f.setDescripcion("Esta es una descripción muy corta x2");
-
-
-                //Drawable originalDrawable2 = getResources().getDrawable(R.drawable.logo);
-                //Bitmap fotoBitmap2 = ((BitmapDrawable) originalDrawable2).getBitmap();
-                Bitmap icon2 = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.perfirlanonimo);
-                f.setBitmap(icon2);
                 fotos.add(f);
-              //  fotosB.add(icon2);
-              //  nFotos++;
+
+                f = new Foto();
+                f.setNombre("Foto3");
+                f.setDescripcion("Esta es una descripción muy corta x2");
+                fotos.add(f);
+
+                f = new Foto();
+                f.setNombre("Foto4");
+                f.setDescripcion("Esta es una descripción muy corta x2");
+                fotos.add(f);
 
                 txtFotosAddAlo.setText(fotos.size()+" Fotos");
                 txtFotosAddAlo.setVisibility(View.VISIBLE);
@@ -142,12 +133,10 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         });
 
         this.btnGuardarAlo = (Button) findViewById(R.id.btnGuardarAlo);
-    //    Toast.makeText(AddAlojamientoActivity.this, nFotos, Toast.LENGTH_SHORT).show();
         this.btnGuardarAlo.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                //Toast.makeText(AddAlojamientoActivity.this, "aqui xd", Toast.LENGTH_SHORT).show();
                 FirebaseUser user = mAuth.getCurrentUser();
                 alo.setNombre(txtNombreAddAlo.getText().toString());
                 alo.setCosto(Double.parseDouble(txtValorAddAlo.getText().toString()));
@@ -162,25 +151,36 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                 String key = myRef.push().getKey();
 
                 myRef = database.getReference(PATH_ALOJAMIENTOS+key);
+/*
+                Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
+                Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
 
-                //Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
-                //Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-
+                Drawable originalDrawable2 = getResources().getDrawable(R.drawable.personauno);
+                Bitmap fotoBitmap2 = ((BitmapDrawable) originalDrawable).getBitmap();
+*/
                 myRef.setValue(alo);
                 int i=0;
-                //for(int i=0; i < 2;i++){
                 for(Foto f: fotos){
+
+
                     myRef = database.getReference(PATH_ALOJAMIENTOS+key+"/fotos/");
                     String keyF = myRef.push().getKey();
                     myRef = database.getReference(PATH_ALOJAMIENTOS+key+"/fotos/"+keyF);
                     fotos.get(i).setBitmap(null);
                     myRef.setValue(fotos.get(i));
-                    //Toast.makeText(AddAlojamientoActivity.this, "!!!", Toast.LENGTH_SHORT).show();
 
-                    cargarFoto(fotos.get(i).getBitmap(), keyF,fotos.get(i).getNombre());
+                    if(i%2 == 0){
+                        Drawable originalDrawable = getResources().getDrawable(R.drawable.imagencasa);
+                        Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+                        cargarFoto(fotoBitmap, key,fotos.get(i).getNombre());
+                    }else{
+                        Drawable originalDrawable = getResources().getDrawable(R.drawable.personauno);
+                        Bitmap fotoBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+                        cargarFoto(fotoBitmap, key,fotos.get(i).getNombre());
 
-                    //-------------------------
-                    Toast.makeText(AddAlojamientoActivity.this, "xD", Toast.LENGTH_SHORT).show();
+                    }
+                    i++;
+
 
                 }
 
@@ -191,45 +191,16 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                 myRef.setValue(localizacion);
 
                 finish();
-                //Intent intent = new Intent(view.getContext(),HomeAnfitrionActivity.class);
-
-                //startActivity(intent);
-
-
-                //Intent intent = new Intent(view.getContext(),HomeAnfitrionActivity.class);
-                //startActivity(intent);
             }
         });
 
     }
-/*
-    private void cargarFoto(Bitmap bitmap,String destino, String nombre){
-        StorageReference storageRef = storage.getReference();
-        Uri file = Uri.fromFile(new File("alojamientos/"+nombre+".jpg"));
-
-       // Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
-     //   Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-
-
-        StorageReference imageRef = storageRef.child("alojamientos/"+destino+"/"+file.getLastPathSegment());
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
-        final byte[] foto = baos.toByteArray();
-
-        imageRef.putBytes(foto);
-
-    }*/
 
     private void cargarFoto(Bitmap bitmap,String destino, String nombre){
         StorageReference storageRef = storage.getReference();
         Uri file = Uri.fromFile(new File("alojamiento/"+nombre+".jpg"));
-/*
-        Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
-        Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
-*/
 
-        StorageReference imageRef = storageRef.child(destino+"/"+file.getLastPathSegment());
+        StorageReference imageRef = storageRef.child("Alojamientos/"+destino+"/"+file.getLastPathSegment());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);

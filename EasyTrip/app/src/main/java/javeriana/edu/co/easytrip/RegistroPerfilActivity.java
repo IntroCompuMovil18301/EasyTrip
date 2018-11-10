@@ -1,4 +1,5 @@
 package javeriana.edu.co.easytrip;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,6 +43,7 @@ import java.io.File;
 import Modelo.Usuario;
 import javeriana.edu.co.modelo.Anfitrion;
 import javeriana.edu.co.modelo.FirebaseReference;
+import javeriana.edu.co.modelo.Foto;
 
 public class RegistroPerfilActivity extends AppCompatActivity {
 
@@ -53,6 +55,8 @@ public class RegistroPerfilActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ImageView fotoPerfil;
     private StorageReference storageReference;
+    private static final int CAMERA_REQUEST = 1888;
+    private Bitmap foto;
 
     EditText nombre, apellidos, email,nom_usuario, contraseña, confContraseña;
     Spinner rol;
@@ -62,6 +66,7 @@ public class RegistroPerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_perfil);
 
+        this.fotoPerfil = (ImageView) findViewById(R.id.fotoPerfil);
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
@@ -82,6 +87,7 @@ public class RegistroPerfilActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) { }
+
         });
 
         this.btnSiguienteR.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +119,9 @@ public class RegistroPerfilActivity extends AppCompatActivity {
         this.editFotoR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                descargarFoto("ImagenesPerfil","michael");
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
             }
         });
 
@@ -150,7 +158,14 @@ public class RegistroPerfilActivity extends AppCompatActivity {
 
     private void nuevoUsuario(){
         Usuario usuario = new Usuario(nom_usuario.getText().toString(),contraseña.getText().toString(), email.getText().toString(), rol.getSelectedItem().toString());
+
         myRef.child(FirebaseReference.USUARIOS).child(usuario.getNomUsuario()).setValue(usuario);
+
+        Drawable originalDrawable = getResources().getDrawable(R.drawable.fotoperfil);
+        Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+
+        cargarFoto(foto, "ImagenesPerfil",usuario.getNomUsuario());
+
         mAuth.createUserWithEmailAndPassword(usuario.getEmail(),usuario.getContrasena()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -167,9 +182,9 @@ public class RegistroPerfilActivity extends AppCompatActivity {
             }
         });
         if (rol.getSelectedItem().toString().equalsIgnoreCase("Huesped"))
-            crearNuevoHuesped(usuario.getNomUsuario());
+            crearNuevoHuesped(usuario);
         else
-            crearNuevoAnfitrion(usuario.getNomUsuario());
+            crearNuevoAnfitrion(usuario);
     }
 
     private Usuario construirUsuario(){
@@ -177,21 +192,22 @@ public class RegistroPerfilActivity extends AppCompatActivity {
         return new Usuario(nom_usuario.getText().toString(),contraseña.getText().toString(), email.getText().toString(), rol.getSelectedItem().toString());
     }
 
-    private void crearNuevoAnfitrion(String nomUsuario){
+    private void crearNuevoAnfitrion(Usuario usuario){
 
-        Anfitrion anfitrion = new Anfitrion(nomUsuario, nombre.getText().toString(), "UrlFoto");
-        myRef.child(FirebaseReference.ANFITRIONES).child(nomUsuario).setValue(anfitrion);
+        Anfitrion anfitrion = new Anfitrion(usuario.getNomUsuario(), nombre.getText().toString(), "UrlFoto");
+        myRef.child(FirebaseReference.ANFITRIONES).child(usuario.getNomUsuario()).setValue(anfitrion);
 
-        Intent intent = new Intent(RegistroPerfilActivity.this, PrincipalActivity.class);
+        Intent intent = new Intent(RegistroPerfilActivity.this, PrincipalActivity.class).putExtra("Usuario",usuario);
         startActivity(intent);
     }
 
-    private  void crearNuevoHuesped(String nomUsuario){
+    private  void crearNuevoHuesped(Usuario usuario){
 
         Bundle bundle = new Bundle();
-        bundle.putString("nomUsuario", nomUsuario);
+        bundle.putString("nomUsuario", usuario.getNomUsuario());
         bundle.putString("nombre",nom_usuario.getText().toString());
         bundle.putString("email",email.getText().toString());
+        bundle.putSerializable("Usuario",usuario);
 
         Intent intent = new Intent(RegistroPerfilActivity.this, RegistroHuespedActivity.class);
         intent.putExtra("bundle", bundle);
@@ -271,44 +287,36 @@ public class RegistroPerfilActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void cargarFoto(Bitmap bitmap,String destino, String nombre){
+    private void cargarFoto(Bitmap bitmap, String destino, String nombre) {
         StorageReference storageRef = storage.getReference();
-        Uri file = Uri.fromFile(new File("perfil/"+nombre+".jpg"));
+        Uri file = Uri.fromFile(new File("perfil/" + nombre + ".jpg"));
 
-        StorageReference imageRef = storageRef.child(destino+"/"+file.getLastPathSegment());
+        StorageReference imageRef = storageRef.child(destino + "/" + file.getLastPathSegment());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         final byte[] foto = baos.toByteArray();
 
         imageRef.putBytes(foto);
 
     }
-    private void descargarFoto(String origen, String nombre){
 
-        StorageReference storageRef = storage.getReference();
-        StorageReference islandRef = storageRef.child(origen+"/"+nombre+".jpg");
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            RoundedBitmapDrawable roundedDrawable =
+                    RoundedBitmapDrawableFactory.create(getResources(), photo);
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            //asignamos el CornerRadius
+            roundedDrawable.setCircular(true);
 
-                RoundedBitmapDrawable roundedDrawable =
-                        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-                //asignamos el CornerRadius
-                roundedDrawable.setCornerRadius(bitmap.getHeight());
+            foto = photo;
+            fotoPerfil.setImageDrawable(roundedDrawable);
 
-                fotoPerfil.setImageDrawable(roundedDrawable);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+        }
     }
+
 }
 

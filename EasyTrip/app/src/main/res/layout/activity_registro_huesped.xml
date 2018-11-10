@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="2"
-                    android:text="Nacionalidad"
+                    android:text="Tipo de viaje"
                     android:textColor="@color/h2"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -118,7 +118,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/edit_redondo"
-                    android:entries="@array/paises" />
+                    android:entries="@array/tipoViaje" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/linearSobreTiR"
