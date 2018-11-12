@@ -42,10 +42,10 @@ public class AdaptadorCompaneros extends BaseAdapter {
         view = LayoutInflater.from(context).inflate(R.layout.item_companeros, null);
         ImageView imgFoto = (ImageView) view.findViewById(R.id.imgFotoCompanero);
         TextView txtNombre = (TextView) view.findViewById(R.id.txtNombreCompanero);
-        TextView txtCalificacion = (TextView) view.findViewById(R.id.txtCalificacionCompanero);
+        //TextView txtCalificacion = (TextView) view.findViewById(R.id.txtCalificacionCompanero);
         imgFoto.setImageResource(Item.getImgFoto());
         txtNombre.setText(Item.getNombreCompanero());
-        txtCalificacion.setText(Item.getCalificacion());
+        //txtCalificacion.setText(Item.getCalificacion());
         return view;
     }
 }

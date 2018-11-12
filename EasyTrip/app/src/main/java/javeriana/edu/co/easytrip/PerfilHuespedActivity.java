@@ -63,7 +63,7 @@ public class PerfilHuespedActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private FirebaseAuth mAuth;
     private Bitmap fotoPerfil;
-    private ImageButton toolPerfilPH;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -87,6 +87,7 @@ public class PerfilHuespedActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
         this.txtNombrePH = (TextView) findViewById(R.id.txtNombrePH);
         this.txtRolPH = (TextView) findViewById(R.id.txtRolPH);
@@ -126,7 +127,7 @@ public class PerfilHuespedActivity extends AppCompatActivity {
         //asignamos el CornerRadius
         //roundedDrawable.setCornerRadius(originalBitmap.getHeight());
         roundedDrawable.setCircular(true);
-        imageView = (ImageView) findViewById(R.id.fotoPerfilP);
+        imageView = (ImageView) findViewById(R.id.fotoPerfilPH);
 
         imageView.setImageDrawable(roundedDrawable);
 
@@ -150,9 +151,10 @@ public class PerfilHuespedActivity extends AppCompatActivity {
 
                 RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
                 roundedDrawable.setCircular(true);
-                toolPerfilPH.setImageDrawable(roundedDrawable);
+                imageView.setImageDrawable(roundedDrawable);
 
-                Toast.makeText(PerfilHuespedActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(PerfilHuespedActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

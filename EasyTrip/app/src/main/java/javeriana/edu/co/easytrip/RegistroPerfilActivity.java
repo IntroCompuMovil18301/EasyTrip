@@ -1,11 +1,15 @@
 package javeriana.edu.co.easytrip;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -39,6 +43,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 
 import Modelo.Usuario;
 import javeriana.edu.co.modelo.Anfitrion;
@@ -55,8 +60,12 @@ public class RegistroPerfilActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ImageView fotoPerfil;
     private StorageReference storageReference;
+
     private static final int CAMERA_REQUEST = 1888;
+    private static final int PICK_IMAGE = 100;
+
     private Bitmap foto;
+    private Uri imageUri;
 
     EditText nombre, apellidos, email,nom_usuario, contraseña, confContraseña;
     Spinner rol;
@@ -119,9 +128,9 @@ public class RegistroPerfilActivity extends AppCompatActivity {
         this.editFotoR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-
+            cargarImagen();
+                //openGallery();
+                //openCamera();
             }
         });
 
@@ -301,6 +310,15 @@ public class RegistroPerfilActivity extends AppCompatActivity {
 
     }
 
+    private void openGallery(){
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, PICK_IMAGE);
+    }
+    private void openCamera(){
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -316,7 +334,47 @@ public class RegistroPerfilActivity extends AppCompatActivity {
             fotoPerfil.setImageDrawable(roundedDrawable);
 
         }
+
+        if(resultCode ==Activity.RESULT_OK && requestCode == PICK_IMAGE){
+
+            try {
+                imageUri = data.getData();
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                foto = bitmap;
+                //fotoPerfil.setImageURI(imageUri);
+                RoundedBitmapDrawable roundedDrawable =
+                        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                roundedDrawable.setCircular(true);
+                fotoPerfil.setImageDrawable(roundedDrawable);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
+
+    private void cargarImagen() {
+        final CharSequence[] opciones={"Tomar Foto","Cargar Imagen","Cancelar"};
+        final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(RegistroPerfilActivity.this);
+        alertOpciones.setTitle("Seleccione una Opción");
+        alertOpciones.setItems(opciones, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (opciones[i].equals("Tomar Foto")){
+                    openCamera();
+                }else{
+                    if (opciones[i].equals("Cargar Imagen")){
+                        openGallery();
+                    }else{
+                        dialogInterface.dismiss();
+                    }
+                }
+            }
+        });
+        alertOpciones.show();
+
+    }
+
 
 }
 

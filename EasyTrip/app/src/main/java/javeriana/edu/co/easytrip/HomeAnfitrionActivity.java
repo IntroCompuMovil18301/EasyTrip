@@ -88,7 +88,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
 
         this.mAuth = FirebaseAuth.getInstance();
         this.database= FirebaseDatabase.getInstance();
-        storage = FirebaseStorage.getInstance();
+        this.storage = FirebaseStorage.getInstance();
 
         this.fabCalendarioPA = (ImageButton) findViewById(R.id.fabCalendarioPA);
         this.fabCalendarioPA.setOnClickListener(new View.OnClickListener() {

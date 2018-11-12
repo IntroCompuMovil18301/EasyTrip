@@ -105,7 +105,7 @@ public class HomeHuespedActivity extends AppCompatActivity {
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("Usuario",getIntent().getSerializableExtra("Usuario"));
                                 bundle.putSerializable("Huesped",usH);
-                                Intent intent = new Intent(HomeHuespedActivity.this,PerfilAnfitrionActivity.class);
+                                Intent intent = new Intent(HomeHuespedActivity.this,PerfilHuespedActivity.class);
                                 intent.putExtra("bundle",bundle);
                                 startActivity(intent);
                             }
@@ -150,7 +150,9 @@ public class HomeHuespedActivity extends AppCompatActivity {
         HuespedPageAdapter adapter = new HuespedPageAdapter(getSupportFragmentManager(),4);
         MashesHuespedFragment mashes = new MashesHuespedFragment();
         adapter.addFragment(new MashesHuespedFragment(),"");
-        adapter.addFragment(new AloCercanoHuespedFragment(),"");
+        //adapter.addFragment(new AloCercanoHuespedFragment(),"");
+        adapter.addFragment(new
+                AloCercanoHuespedFragment(),"");
         adapter.addFragment(new ReservasHuespedFragment(),"");
 
         viewPager.setAdapter(adapter);

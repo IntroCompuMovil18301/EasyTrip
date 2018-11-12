@@ -68,6 +68,9 @@ public class VerAlojamientoActivity extends AppCompatActivity {
         this.fotos = new ArrayList<>();
 
         this.alojamiento = (Alojamiento) getIntent().getSerializableExtra("alojamiento");
+
+
+
         this.btnCalendarioReservar = (ImageButton) findViewById(R.id.btnCalendarioReservar);
         this.btnCalendarioReservar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +80,8 @@ public class VerAlojamientoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
         this.btnReservarVerAlo = (Button) findViewById(R.id.btnReservarVerAlo);
         this.btnReservarVerAlo.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +140,7 @@ public class VerAlojamientoActivity extends AppCompatActivity {
         this.txtValorVerAlo.setText("Valor noche:\n"+"$"+alojamiento.getCosto().toString()+"00");
         this.txtCapacidadNumVerAlo.setText(alojamiento.getMaxHuespedes()+" Personas");
         this.txtDescripcionVerAlo.setText(alojamiento.getDescripcion());
+
 
 
     }

@@ -12,6 +12,8 @@ public class Huesped implements Serializable{
     private String fumador;
     private String sobreMi;
 
+    public Huesped(){}
+
     public Huesped(String nomUsuario,String nombre, String URL_Foto, String genero, String nacionalidad, String tipo_Viaje, boolean fumador, String sobreMi){
         this.nomUsuario = nomUsuario;
         this.nombre = nombre;

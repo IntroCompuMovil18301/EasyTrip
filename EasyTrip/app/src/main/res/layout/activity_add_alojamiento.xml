@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="20dp"
     tools:context=".AddAlojamientoActivity">
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,10 +16,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,32 +31,43 @@
                 android:focusableInTouchMode="true"
                 android:orientation="vertical">
 
-                <TextView
-
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/acccent"
-                    android:text="Nombre:"
-                    android:textColor="@color/h2"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:ignore="DuplicateIds" />
+                    <TextView
 
-                <EditText
-                    android:id="@+id/txtNombreAddAlo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:selectAllOnFocus="false"
-                    android:text="Casa Anapoima"
-                    android:textColor="@color/h3"
-                    android:textColorHighlight="@color/h3"
-                    android:textColorLink="@color/h2"
-                    android:textSize="16dp" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:backgroundTint="@color/acccent"
+                        android:text="Nombre:"
+
+                        android:textColor="@color/h2"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:ignore="DuplicateIds" />
+
+                    <EditText
+                        android:id="@+id/txtNombreAddAlo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:selectAllOnFocus="false"
+                        android:text="Casa Anapoima"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textColorHighlight="@color/h3"
+                        android:textColorLink="@color/h2"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -69,11 +79,80 @@
 
                 <TextView
                     android:id="@+id/textView2"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Tipo:"
+
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spnTipoAddAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_redondo"
+                    android:entries="@array/tipoAlojamiento" />
+
+                <LinearLayout
+                    android:id="@+id/linearUbicacionsAloAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|fill_horizontal|center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/ibtnUbicacionAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center_vertical|center_horizontal|center"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/iconaddlocation" />
+
+                        <TextView
+                            android:id="@+id/txtCiudadAddAlo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Dirección"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textColor="@color/info"
+                            android:textStyle="italic" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearCocinaAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="2"
-                    android:text="Tipo:"
+                    android:text="Cocina:"
 
                     android:textColor="@color/h2"
                     android:textSize="18sp"
@@ -88,11 +167,42 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:background="@drawable/edit_redondo"
-                    android:entries="@array/tipoAlojamiento" />
+                    android:entries="@array/si_no" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearNumeroAdd"
+                android:id="@+id/linearTipoBanoAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:text="Baño(s):"
+
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spnTipoAddAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_redondo"
+                    android:entries="@array/bano" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearServiciosAdd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="15dp"
@@ -102,6 +212,239 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Servicios de:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/rbtnSerParqueaderoAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Parqueadero"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnSerWifiAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Conexión Wi Fi"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnSerHabiAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Habitación"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnSerCafeAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Café - Bar"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/rbtnSerSalaNinosAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Sala de Niños"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnSerGimnasioAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Gimnasio"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnSerPiscinaAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Piscina"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnSerSPAAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="SPA"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearElectrodomesticosAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Electrodimesticos:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/rbtnRefrigeradorAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Refrigerador"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnMicrohondasAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Microhondas"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnJacuzziAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Jacuzzi"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/rbtnTeatroAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Teatro en casa"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnSonidoAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Equipo de Sonido"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbtnTelevisionAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:buttonTint="@color/lightBlue500"
+                            android:checked="false"
+                            android:text="Televisión"
+                            android:textColor="@color/h3"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearNumeroAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
                     android:text="Numero de Personas:"
                     android:textColor="@color/h2"
                     android:textSize="18sp"
@@ -109,8 +452,9 @@
 
                 <EditText
                     android:id="@+id/txtNumeroAddAlo"
-                    android:layout_width="match_parent"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_horizontal"
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     android:ems="10"
@@ -156,6 +500,60 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearFotosAloAdd"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cargue las fotos del alojamiento:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/ibtnCamaraAdd"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/iconaddphotos" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="7dp"
+                        android:layout_weight="3">
+
+                        <LinearLayout
+                            android:id="@+id/linearFotosAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linearDescripcionAdd"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -194,72 +592,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearButtonsAdd"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/ibtnCamaraAdd"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/iconaddphotos" />
-
-                    <TextView
-                        android:id="@+id/txtFotosAddAlo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="# Fotos"
-                        android:textAlignment="center"
-                        android:textColor="@color/info"
-                        android:textStyle="italic" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/ibtnUbicacionAdd"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:layout_gravity="center_vertical|center_horizontal|center"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:scaleType="fitCenter"
-                        app:srcCompat="@drawable/iconaddlocation" />
-
-                    <TextView
-                        android:id="@+id/txtCiudadAddAlo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Dirección"
-                        android:textAlignment="center"
-                        android:textAllCaps="false"
-                        android:textColor="@color/info"
-                        android:textStyle="italic" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/linearButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -280,4 +612,5 @@
 
         </LinearLayout>
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

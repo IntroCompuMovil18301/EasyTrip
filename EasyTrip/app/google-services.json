@@ -1,66 +1,35 @@
 {
   "project_info": {
-    "project_number": "1077200276617",
-    "firebase_url": "https://easytrip-51590.firebaseio.com",
-    "project_id": "easytrip-51590",
-    "storage_bucket": "easytrip-51590.appspot.com"
+    "project_number": "535695598140",
+    "firebase_url": "https://easytrip-ffa76.firebaseio.com",
+    "project_id": "easytrip-ffa76",
+    "storage_bucket": "easytrip-ffa76.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1077200276617:android:2b9e6e3bff4a59e4",
-        "android_client_info": {
-          "package_name": "co.esu.javeriana.EasyTripMap"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1077200276617-ctkt802ftrhoi7pdaresbuhpq59hruq1.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyD08uzoYPrN2W-7KSgYzBcAUQCVCdux77w"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1077200276617:android:d613e2bd5ab3f7ea",
+        "mobilesdk_app_id": "1:535695598140:android:d613e2bd5ab3f7ea",
         "android_client_info": {
           "package_name": "javeriana.edu.co.easytrip"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1077200276617-fg43v5ffs5jjiml2oc7b8pbkd7jkbf07.apps.googleusercontent.com",
+          "client_id": "535695598140-56rmhm5hukkj1tibhaicfbjd78rf0rbe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "javeriana.edu.co.easytrip",
-            "certificate_hash": "4363fbe99f2c99ffd07d8f9bb775753d5ba5b92d"
+            "certificate_hash": "93e87b9a52f22cac194361b918fc8ee607abcc7c"
           }
         },
         {
-          "client_id": "1077200276617-ctkt802ftrhoi7pdaresbuhpq59hruq1.apps.googleusercontent.com",
+          "client_id": "535695598140-56rk8ivre8bd75ndencg34tpc46sgv20.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD08uzoYPrN2W-7KSgYzBcAUQCVCdux77w"
+          "current_key": "AIzaSyBZrY7EzL_AJfmm4-LbE810a_cArZLSMzk"
         }
       ],
       "services": {
@@ -71,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1077200276617-ctkt802ftrhoi7pdaresbuhpq59hruq1.apps.googleusercontent.com",
+              "client_id": "535695598140-56rk8ivre8bd75ndencg34tpc46sgv20.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
