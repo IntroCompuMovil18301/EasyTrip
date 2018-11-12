@@ -1,6 +1,7 @@
 package javeriana.edu.co.easytrip;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,12 +12,12 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import Modelo.Usuario;
 import javeriana.edu.co.modelo.FirebaseReference;
+import javeriana.edu.co.modelo.Foto;
 import javeriana.edu.co.modelo.Huesped;
 
 public class RegistroHuespedActivity extends AppCompatActivity {
@@ -24,7 +25,7 @@ public class RegistroHuespedActivity extends AppCompatActivity {
     private Button btnRegistrarH;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private FirebaseAuth mAuth;
+    private Bitmap foto;
 
     String nombre, apellidos, nomUsuario;
     TextView sobreMi;
@@ -37,8 +38,9 @@ public class RegistroHuespedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_huesped);
 
+
         database = FirebaseDatabase.getInstance();
-        this.mAuth = FirebaseAuth.getInstance();
+
         this.btnRegistrarH = (Button) findViewById(R.id.btnRegistrarH);
 
         this.btnRegistrarH.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +51,7 @@ public class RegistroHuespedActivity extends AppCompatActivity {
                 nombre = bundle.getString("nombre");
                 apellidos = bundle.getString("apellidos");
                 nomUsuario = bundle.getString("nomUsuario");
-
+                Modelo.Usuario usuario = (Usuario) bundle.getSerializable("Usuario");
                 Huesped huesped = crearNuevoHuesped();
 
                 myRef = database.getReference();
@@ -57,7 +59,7 @@ public class RegistroHuespedActivity extends AppCompatActivity {
                 if(huesped != null)
                     myRef.child(FirebaseReference.HUESPESDES).child(nomUsuario).setValue(huesped);
 
-                Intent intent = new Intent (view.getContext(),HomeHuespedActivity.class);
+                Intent intent = new Intent (view.getContext(),HomeHuespedActivity.class).putExtra("Usuario",usuario);
                 startActivity(intent);
             }
         });
@@ -72,8 +74,8 @@ public class RegistroHuespedActivity extends AppCompatActivity {
         fumador = (RadioButton) findViewById(R.id.rbtnSiFumaR);
         boolean fuma = (fumador.isSelected())? true : false;
         sobreMi = (EditText) findViewById(R.id.txtSobretiR);
-        FirebaseUser user = mAuth.getCurrentUser();
-        Huesped huesped = new Huesped(nomUsuario, nombre,"URL_Foto",genero.getText().toString(),nacionalidad.getSelectedItem().toString(),tipo_Viaje.getSelectedItem().toString(),fuma,sobreMi.getText().toString(),user.getEmail());
+
+        Huesped huesped = new Huesped(nomUsuario, nombre,"URL_Foto",genero.getText().toString(),nacionalidad.getSelectedItem().toString(),tipo_Viaje.getSelectedItem().toString(),fuma,sobreMi.getText().toString());
 
         return huesped;
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#29B6F6</color>
-    <color name="colorPrimaryDark">#0091EA</color>
+    <color name="colorPrimaryDark">#0091ea</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="white">#ffffff</color>
@@ -17,7 +17,7 @@
     <color name="primario">#0288D1</color>
     <color name="h2">#0277bd</color>
     <color name="h1">#01579B</color>
-    <color name="h4">#80D8FF</color>
+    <color name="h4">#80d8ff</color>
     <color name="h3">#40c4ff</color>
     <color name="acccent">#00b0ff</color>
     <color name="fondoBoton">#0091ea</color>

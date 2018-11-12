@@ -2,24 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="javeriana.edu.co.easytrip">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"></uses-feature>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="EasyTrip"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
-
-        >
-
-
+        android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".PrincipalActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,21 +27,35 @@
         <activity android:name=".RegistroHuespedActivity" />
         <activity android:name=".BuscarAlojamientoActivity" />
         <activity android:name=".PerfilHuespedActivity" />
-        <activity android:name=".HomeHuespedActivity"/>
-
-
+        <activity android:name=".HomeHuespedActivity" />
         <activity android:name=".VerAlojamientoActivity" />
         <activity android:name=".CalendarioReservarActivity" />
         <activity android:name=".VerMashActivity" />
         <activity android:name=".HomeAnfitrionActivity" />
-        <activity android:name=".AddAlojamientoActivity"/>
         <activity android:name=".VerReservaActivity" />
+        <activity android:name=".AddAlojamientoActivity" />
         <activity android:name=".ActivityCompaneros" />
         <activity android:name=".ActivityMatshes" />
         <activity android:name=".VerHuespedActivity" />
         <activity android:name=".EditarPerfilHuespedActivity" />
         <activity android:name=".EditarPerfilAnfitrionActivity" />
-        <activity android:name=".PerfilAnfitrionActivity"></activity>
+        <activity android:name=".PerfilAnfitrionActivity" />
+        <activity android:name=".MapAddAlojamientoFragment" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapAloCercanos"
+            android:label="@string/title_activity_map_alo_cercanos"></activity>
     </application>
 
 </manifest>

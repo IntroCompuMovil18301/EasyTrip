@@ -63,7 +63,6 @@ public class AlojamientosAnfitrionFragment extends Fragment{
         //updateList();
         cargarAlojamientos();
 
-
     }
 
     @Nullable

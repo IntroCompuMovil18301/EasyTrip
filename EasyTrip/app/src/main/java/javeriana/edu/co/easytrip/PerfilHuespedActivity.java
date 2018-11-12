@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -39,6 +40,7 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Locale;
 
+import Modelo.Usuario;
 import javeriana.edu.co.modelo.Anfitrion;
 import javeriana.edu.co.modelo.Huesped;
 
@@ -56,31 +58,36 @@ public class PerfilHuespedActivity extends AppCompatActivity {
     private TextView txtInfoPH;
 
 
-    private Huesped myUser;
+    private Huesped myUserH;
+    private Modelo.Usuario myUser;
     private FirebaseStorage storage;
+    private FirebaseAuth mAuth;
+    private Bitmap fotoPerfil;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_huesped);
-        //Toast.makeText(PerfilHuespedActivity.this, "consulta", Toast.LENGTH_SHORT).show();
 
         storage = FirebaseStorage.getInstance();
 
         Bundle b =  getIntent().getBundleExtra ("bundle");
-        this.myUser = (Huesped) b.getSerializable("huesped");
+        this.myUser = (Usuario) b.getSerializable("Usuario");
+        this.myUserH = (Huesped) b.getSerializable("Huesped") ;
 
 
         this.fabEditPH = (FloatingActionButton) findViewById(R.id.fabEditPH);
         this.fabEditPH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(view.getContext(), "TESTING FAB CLICK",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(view.getContext(), EditarPerfilHuespedActivity.class);
+                mAuth.signOut();
+                Intent intent = new Intent(view.getContext(), PrincipalActivity.class);
                 startActivity(intent);
             }
         });
+
 
         this.txtNombrePH = (TextView) findViewById(R.id.txtNombrePH);
         this.txtRolPH = (TextView) findViewById(R.id.txtRolPH);
@@ -90,12 +97,13 @@ public class PerfilHuespedActivity extends AppCompatActivity {
         this.txtInfoPH = (TextView) findViewById(R.id.txtInfoPH);
 
 
-        this.txtNombrePH.setText(this.myUser.getNombre());
-        this.txtRolPH.setText("Huesped");
-        this.txtGeneroPH.setText(this.myUser.getGenero());
-        this.txtNacionalidadPH.setText(this.myUser.getNacionalidad());
-        this.txtInfoPH.setText(this.myUser.getSobreMi());
+        this.txtNombrePH.setText(this.myUserH.getNombre());
+        this.txtRolPH.setText(this.myUser.getTipo());
+        this.txtGeneroPH.setText(this.myUserH.getGenero());
+        this.txtNacionalidadPH.setText(this.myUserH.getNacionalidad());
+        this.txtInfoPH.setText(this.myUserH.getSobreMi());
 
+        this.mAuth = FirebaseAuth.getInstance();
 
         DateFormat dateFormat = dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date fechaNacimiento = null;
@@ -119,14 +127,11 @@ public class PerfilHuespedActivity extends AppCompatActivity {
         //asignamos el CornerRadius
         //roundedDrawable.setCornerRadius(originalBitmap.getHeight());
         roundedDrawable.setCircular(true);
-        imageView = (ImageView) findViewById(R.id.fotoPerfilP);
+        imageView = (ImageView) findViewById(R.id.fotoPerfilPH);
 
         imageView.setImageDrawable(roundedDrawable);
 
-        descargarFoto("ImagenesPerfil",this.myUser.getNombre());
-
-
-
+        descargarFoto("ImagenesPerfil",this.myUserH.getNomUsuario());
 
     }
 
@@ -140,16 +145,16 @@ public class PerfilHuespedActivity extends AppCompatActivity {
         islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-                RoundedBitmapDrawable roundedDrawable =
-                        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-                //asignamos el CornerRadius
-                roundedDrawable.setCornerRadius(bitmap.getHeight());
-                roundedDrawable.setCircular(true);
+                fotoPerfil = bitmap;
 
+                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                roundedDrawable.setCircular(true);
                 imageView.setImageDrawable(roundedDrawable);
+
+
+                //Toast.makeText(PerfilHuespedActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

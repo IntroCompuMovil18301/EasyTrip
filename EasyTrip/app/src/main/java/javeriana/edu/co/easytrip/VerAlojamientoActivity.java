@@ -68,7 +68,8 @@ public class VerAlojamientoActivity extends AppCompatActivity {
         this.fotos = new ArrayList<>();
 
         this.alojamiento = (Alojamiento) getIntent().getSerializableExtra("alojamiento");
-        //Toast.makeText(this,this.alojamiento.getNombre(), Toast.LENGTH_SHORT).show();
+
+
 
         this.btnCalendarioReservar = (ImageButton) findViewById(R.id.btnCalendarioReservar);
         this.btnCalendarioReservar.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +80,8 @@ public class VerAlojamientoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
         this.btnReservarVerAlo = (Button) findViewById(R.id.btnReservarVerAlo);
         this.btnReservarVerAlo.setOnClickListener(new View.OnClickListener() {
@@ -103,7 +106,6 @@ public class VerAlojamientoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               // Toast.makeText(VerAlojamientoActivity.this, selected, Toast.LENGTH_SHORT).show();
                 if(!fotosB.isEmpty()){
                     if(selected == 1){
                         selected = fotosB.size();
@@ -114,14 +116,12 @@ public class VerAlojamientoActivity extends AppCompatActivity {
                     imageVerAlo.setImageBitmap(fotosB.get(selected-1));
                 }
 
-
             }
         });
         this.btnNextFotoVerAlo = (ImageButton) findViewById(R.id.btnNextFotoVerAlo);
         this.btnNextFotoVerAlo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(VerAlojamientoActivity.this, selected, Toast.LENGTH_SHORT).show();
                 if(!fotosB.isEmpty()){
                     if(selected == fotosB.size()){
                         selected = 1;
@@ -142,42 +142,33 @@ public class VerAlojamientoActivity extends AppCompatActivity {
         this.txtDescripcionVerAlo.setText(alojamiento.getDescripcion());
 
 
+
     }
 
     private void cargarFotos(){
         fotosB = new ArrayList<>();
 
         myRef = database.getReference("alojamientos/"+alojamiento.getId()+"/fotos/");
-        //Toast.makeText(this, "Aqui", Toast.LENGTH_SHORT).show();
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Toast.makeText(VerAlojamientoActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    //Toast.makeText(VerAlojamientoActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
                     foto = singleSnapshot.getValue(Foto.class);
 
                     StorageReference storageRef = storage.getReference();
-                    //StorageReference islandRef = storageRef.child("Alojamientos/"+singleSnapshot.getKey()+"/"+foto.getNombre()+".jpg");
                     StorageReference islandRef = storageRef.child("Alojamientos/"+alojamiento.getId()+"/"+foto.getNombre()+".jpg");
-                    //Toast.makeText(VerAlojamientoActivity.this, islandRef.getPath(), Toast.LENGTH_SHORT).show();
 
                     final long ONE_MEGABYTE = 1024 * 1024;
 
                     islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
-                            // Data for "images/island.jpg" is returns, use this as needed
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            //foto.setBitmap(bitmap);
                             fotos.add(foto);
                             fotosB.add(bitmap);
                             imageVerAlo.setImageBitmap(fotosB.get(0));
                             selected++;
-                            //Toast.makeText(VerAlojamientoActivity.this, "hecho", Toast.LENGTH_SHORT).show();
-
-
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -188,13 +179,10 @@ public class VerAlojamientoActivity extends AppCompatActivity {
 
 
                 }
-                //Toast.makeText(VerAlojamientoActivity.this, fotos.size(), Toast.LENGTH_SHORT).show();
-                //asignarFotos();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //Toast.makeText(AlojamientosAnfitrionFragment.class, "Error en consulta", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -202,9 +190,6 @@ public class VerAlojamientoActivity extends AppCompatActivity {
 
     }
 
-    private void asignarFotos(){
-        Toast.makeText(VerAlojamientoActivity.this, fotos.size(), Toast.LENGTH_SHORT).show();
-    }
     @Override
     protected void onStart() {
         super.onStart();

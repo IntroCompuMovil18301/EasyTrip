@@ -11,9 +11,10 @@ public class Huesped implements Serializable{
     private String tipo_Viaje;
     private String fumador;
     private String sobreMi;
-    private String email;
 
-    public Huesped(String nomUsuario,String nombre, String URL_Foto, String genero, String nacionalidad, String tipo_Viaje, boolean fumador, String sobreMi, String em){
+    public Huesped(){}
+
+    public Huesped(String nomUsuario,String nombre, String URL_Foto, String genero, String nacionalidad, String tipo_Viaje, boolean fumador, String sobreMi){
         this.nomUsuario = nomUsuario;
         this.nombre = nombre;
         this.URL_Foto = URL_Foto;
@@ -22,7 +23,6 @@ public class Huesped implements Serializable{
         this.tipo_Viaje = tipo_Viaje;
         this.fumador = (fumador)? "Si" : "No";
         this.sobreMi = sobreMi;
-        this.email = em;
     }
 
     public String getGenero() {
@@ -87,17 +87,5 @@ public class Huesped implements Serializable{
 
     public void setNomUsuario(String nomUsuario) {
         this.nomUsuario = nomUsuario;
-    }
-
-    public String getFumador() {
-        return fumador;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }

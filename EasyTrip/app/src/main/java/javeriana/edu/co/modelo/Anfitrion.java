@@ -7,16 +7,14 @@ public class Anfitrion implements Serializable{
     private String nomUsuario;
     private String nombre;
     private String URL_Foto;
-    private String email;
 
     public Anfitrion(){}
 
 
-    public Anfitrion(String nomUsuario,String nombre,String URL_Foto, String em) {
+    public Anfitrion(String nomUsuario,String nombre,String URL_Foto) {
         this.nomUsuario = nomUsuario;
         this.nombre = nombre;
         this.URL_Foto = URL_Foto;
-        this.email = em;
     }
 
     public String getNombre() {
@@ -45,13 +43,5 @@ public class Anfitrion implements Serializable{
 
     public boolean agregarAlojamiento(String tipo, double costo , int numHuespeds, String descripcion, String URL_foto){
         return true;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }

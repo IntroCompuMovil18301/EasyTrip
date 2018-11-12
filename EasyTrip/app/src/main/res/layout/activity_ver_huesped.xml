@@ -182,6 +182,24 @@
                     android:textStyle="bold"
                     tools:ignore="DuplicateIds" />
 
+
+                <com.hsalf.smilerating.SmileRating
+                    android:id="@+id/ratingView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    app:angryColor="#f29a68"
+                    app:drawingColor="#353431"
+                    app:isIndicator="false"
+                    app:normalColor="#f2dd68"
+                    app:placeHolderBackgroundColor="#e6e8ed"
+                    app:placeHolderSmileColor="#ffffff"
+                    app:textNonSelectionColor="#AEB3B5"
+                    app:textSelectionColor="#000000" />
+
+
+
             </LinearLayout>
 
         </LinearLayout>

@@ -12,6 +12,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.security.Principal;
-
+import Modelo.Usuario;
 import javeriana.edu.co.modelo.Anfitrion;
 import javeriana.edu.co.modelo.Huesped;
 
@@ -37,7 +37,8 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
 
     private FloatingActionButton fabEditAnfi;
     private ImageView imageView;
-    private Anfitrion myUser;
+    private Anfitrion myUserA;
+    private Modelo.Usuario myUser;
     private TextView txtNombreAnfiVi;
     private TextView txtRolAnfiVi;
     private TextView txtEmailPAVi;
@@ -46,40 +47,35 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     private FirebaseAuth mAuth;
-    private String email;
     private FirebaseStorage storage;
 
-
+    private FloatingActionButton cerrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil_anfitrion);
 
-        Bundle b=  getIntent().getBundleExtra ("bundle");
-        this.myUser = (Anfitrion) b.getSerializable("anfitrion");
+        Bundle bundle = getIntent().getBundleExtra("bundle");
+
+        this.myUserA =(Anfitrion) bundle.getSerializable("Anfitrion");
+        this.myUser = (Usuario) bundle.getSerializable("Usuario");
+
         this.database= FirebaseDatabase.getInstance();
 
         this.mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
-
-        //loadUser(user.getEmail());
 
         this.txtNombreAnfiVi = (TextView) findViewById(R.id.txtNombreAnfiVi);
         this.txtRolAnfiVi = (TextView) findViewById(R.id.txtRolAnfiVi);
         this.txtEmailPAVi = (TextView) findViewById(R.id.txtEmailPAVi);
         this.txtUsuarioAnfi = (TextView) findViewById(R.id.txtUsuarioAnfiVi);
 
-        //Toast.makeText(PerfilAnfitrionActivity.this, "Aqui--"+myUser.getNombre(), Toast.LENGTH_SHORT).show();
-
-        this.txtNombreAnfiVi.setText(myUser.getNombre().toString());
-        this.txtNombreAnfiVi.setText(myUser.getNombre());
-        this.txtRolAnfiVi.setText("Anfitrión");
-        this.txtEmailPAVi.setText(myUser.getEmail());
         this.txtUsuarioAnfi.setText(myUser.getNomUsuario());
+        this.txtRolAnfiVi.setText(myUser.getTipo());
+        this.txtEmailPAVi.setText(myUser.getEmail());
+        this.txtNombreAnfiVi.setText(myUserA.getNombre());
 
-        this.mAuth = FirebaseAuth.getInstance();
 
 
         this.fabEditAnfi = (FloatingActionButton) findViewById(R.id.fabEditAnfi);
@@ -87,12 +83,13 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(view.getContext(), "TESTING FAB CLICK",Toast.LENGTH_SHORT).show();
-             //   mAuth.signOut();
-               // Intent intent = new Intent(view.getContext(), PrincipalActivity.class);
+                //Intent intent = new Intent(view.getContext(), EditarPerfilAnfitrionActivity.class);
                 //startActivity(intent);
+                mAuth.signOut();
+                Intent intent = new Intent(view.getContext(), PrincipalActivity.class);
+                startActivity(intent);
             }
         });
-
 
 
         Drawable originalDrawable = getResources().getDrawable(R.drawable.perfirlanonimo);
@@ -109,42 +106,8 @@ public class PerfilAnfitrionActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.fotoPerfilAnfi);
 
         imageView.setImageDrawable(roundedDrawable);
-        descargarFoto("ImagenesPerfil",this.myUser.getNombre());
+        descargarFoto("ImagenesPerfil",this.myUserA.getNombre());
     }
-
-
-    public void loadUser(String em) {
-        this.email = em;
-        myRef = database.getReference("anfitriones/");
-        //Toast.makeText(PerfilAnfitrionActivity.this, "Aqui", Toast.LENGTH_SHORT).show();
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Toast.makeText(PerfilAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-
-                    Anfitrion a = singleSnapshot.getValue(Anfitrion.class);
-                    if(a.getEmail().compareTo(email) == 0){
-                        //txtNombreAnfi.setText(a.getNombre());
-                        //txtRolAnfiVi.setText(a.getRol());
-                        //txtEmailPAVi.setText(a.getEmail());
-                        //txtUsuarioAnfi.setText(a.getUsuario());
-                        myUser = a;
-                    }
-                        //myUser = a;
-
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(PerfilAnfitrionActivity.this, "Error en consulta", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
-    }
-
 
 
     private void descargarFoto(String origen, String nombre){

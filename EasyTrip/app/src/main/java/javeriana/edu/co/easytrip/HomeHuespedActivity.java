@@ -36,6 +36,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import javeriana.edu.co.modelo.Anfitrion;
+import javeriana.edu.co.modelo.FirebaseReference;
 import javeriana.edu.co.modelo.Huesped;
 
 public class HomeHuespedActivity extends AppCompatActivity {
@@ -52,8 +53,7 @@ public class HomeHuespedActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private String email;
-    private Huesped myUserH;
+    private Modelo.Usuario myUser;
     private FirebaseStorage storage;
     private Bitmap fotoPerfil;
 
@@ -62,15 +62,13 @@ public class HomeHuespedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_huesped);
 
-        //this.toolbar = (Toolba    r) findViewById(R.id.toolbarHuesped);
-        //this.toolbar.inflateMenu(R.menu.menu);
+        this.myUser = (Modelo.Usuario) getIntent().getSerializableExtra("Usuario");
+
         this.mAuth = FirebaseAuth.getInstance();
         this.storage = FirebaseStorage.getInstance();
-        this.database= FirebaseDatabase.getInstance();
+        this.database = FirebaseDatabase.getInstance();
 
         FirebaseUser user = mAuth.getCurrentUser();
-
-        loadUser(user.getEmail());
 
         this.fabCalendarioPH = (ImageButton) findViewById(R.id.fabCalendarioPH);
         this.fabCalendarioPH.setOnClickListener(new View.OnClickListener() {
@@ -96,14 +94,32 @@ public class HomeHuespedActivity extends AppCompatActivity {
         this.toolPerfilPH.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),PerfilHuespedActivity.class);
+                Modelo.Usuario us = (Modelo.Usuario) getIntent().getSerializableExtra("Usuario");
+                myRef = database.getReference();
+                myRef.child(FirebaseReference.HUESPESDES).orderByChild("nomUsuario").equalTo(us.getNomUsuario()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChildren()) {
+                            for(DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
+                                Huesped usH = singlesnapshot.getValue(Huesped.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("Usuario",getIntent().getSerializableExtra("Usuario"));
+                                bundle.putSerializable("Huesped",usH);
+                                Intent intent = new Intent(HomeHuespedActivity.this,PerfilHuespedActivity.class);
+                                intent.putExtra("bundle",bundle);
+                                startActivity(intent);
+                            }
+                        }else {
+                            Toast.makeText(HomeHuespedActivity.this,"No encontre nada",Toast.LENGTH_SHORT).show();
 
-                Bundle b = new Bundle();
-                b.putSerializable("huesped",myUserH);
-                //intent.putExtra("anfitrion",myUserA);
-                intent.putExtra("bundle",b);
+                        }
+                    }
 
-                startActivity(intent);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
@@ -126,13 +142,17 @@ public class HomeHuespedActivity extends AppCompatActivity {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         tabLayout.getTabAt(1).select();
+
+        loadUser();
     }
 
     private void setupViewPager(ViewPager viewPager) {
         HuespedPageAdapter adapter = new HuespedPageAdapter(getSupportFragmentManager(),4);
         MashesHuespedFragment mashes = new MashesHuespedFragment();
         adapter.addFragment(new MashesHuespedFragment(),"");
-        adapter.addFragment(new AloCercanoHuespedFragment(),"");
+        //adapter.addFragment(new AloCercanoHuespedFragment(),"");
+        adapter.addFragment(new
+                AloCercanoHuespedFragment(),"");
         adapter.addFragment(new ReservasHuespedFragment(),"");
 
         viewPager.setAdapter(adapter);
@@ -193,24 +213,19 @@ public class HomeHuespedActivity extends AppCompatActivity {
         }
     }
 
-
-    public void loadUser(String em) {
-        this.email = em;
-        myRef = database.getReference("huespedes/");
-        //Toast.makeText(PerfilAnfitrionActivity.this, "Aqui", Toast.LENGTH_SHORT).show();
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-
+    public void loadUser() {
+        myRef = database.getReference();
+        myRef.child(FirebaseReference.HUESPESDES).orderByChild("nomUsuario").equalTo(myUser.getNomUsuario()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
-                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-
-                    Huesped h = singleSnapshot.getValue(Huesped.class);
-                    if(h.getEmail().compareTo(email) == 0){
-                        myUserH = h;
-                        descargarFoto("ImagenesPerfil",h.getNombre());
-                        //Toast.makeText(HomeHuespedActivity.this, "Aqui2"+h.getNombre(), Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()) {
+                    for(DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
+                        Anfitrion usA = singlesnapshot.getValue(Anfitrion.class);
+                        descargarFoto("ImagenesPerfil",myUser.getNomUsuario());
                     }
+                }else {
+                    Toast.makeText(HomeHuespedActivity.this,"No encontre nada",Toast.LENGTH_SHORT).show();
+
                 }
             }
             @Override
@@ -222,6 +237,8 @@ public class HomeHuespedActivity extends AppCompatActivity {
         //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
     }
 
+
+
     private void descargarFoto(String origen, String nombre){
 
         StorageReference storageRef = storage.getReference();
@@ -231,19 +248,15 @@ public class HomeHuespedActivity extends AppCompatActivity {
         islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                 fotoPerfil = bitmap;
 
-                RoundedBitmapDrawable roundedDrawable =
-                        RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-                //asignamos el CornerRadius
-                //roundedDrawable.setCornerRadius(bitmap.getHeight());
+                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
                 roundedDrawable.setCircular(true);
                 toolPerfilPH.setImageDrawable(roundedDrawable);
 
-                //Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeHuespedActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

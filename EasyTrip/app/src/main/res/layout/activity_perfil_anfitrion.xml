@@ -34,10 +34,9 @@
 
                 <ImageView
                     android:id="@+id/fotoPerfilAnfi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_gravity="fill_vertical|fill_horizontal|center|fill"
                     app:srcCompat="@drawable/perfirlanonimo" />
 
                 <android.support.design.widget.FloatingActionButton

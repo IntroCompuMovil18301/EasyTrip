@@ -45,9 +45,9 @@ public class PrincipalActivity extends AppCompatActivity {
 
         mUser = (EditText) findViewById(R.id.txtUsuarioL);
         mPassword = (EditText) findViewById(R.id.txtContrasenaL);
-        mUser.setText("michael");
+
         mAuth = FirebaseAuth.getInstance();
-        mPassword.setText("123456");
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {

@@ -80,7 +80,20 @@ public class AdaptadorAlojamientos extends BaseAdapter {
         //--------------------------------
 
         this.fotos = new ArrayList<Foto>();
-        Drawable originalDrawable = view.getResources().getDrawable(R.drawable.imagencasa);
+        Drawable originalDrawable = null;
+
+        if(item.getTipo().compareTo("Habitación")==0)
+            originalDrawable = view.getResources().getDrawable(R.drawable.imagehabitacion);
+
+        if(item.getTipo().compareTo("Apartamento")==0)
+            originalDrawable = view.getResources().getDrawable(R.drawable.imageapartamento);
+
+        if(item.getTipo().compareTo("Cabaña")==0)
+            originalDrawable = view.getResources().getDrawable(R.drawable.imagecabana);
+
+        if(originalDrawable == null)
+            originalDrawable = view.getResources().getDrawable(R.drawable.imagecasa);
+
         Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
 
         //creamos el drawable redondeado
@@ -92,7 +105,6 @@ public class AdaptadorAlojamientos extends BaseAdapter {
         imgFotoAloja = (ImageView) view.findViewById(R.id.imgFotoAloja);
 
         imgFotoAloja.setImageDrawable(roundedDrawable);
-
         //--------------------------------
         this.btnVerItemAnfi = (Button) view.findViewById(R.id.btnVerItemAnfi);
         this.btnVerItemAnfi.setOnClickListener(new View.OnClickListener() {

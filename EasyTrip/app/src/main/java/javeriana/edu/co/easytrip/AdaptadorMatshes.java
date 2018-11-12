@@ -51,8 +51,8 @@ public class AdaptadorMatshes extends BaseAdapter {
         rbmd.setCircular(true);
         imgFoto.setImageDrawable(rbmd);
 
-        TextView txtNombreMatch = (TextView) view.findViewById(R.id.txtNombreMatsh);
-        TextView fechaInicio = (TextView) view.findViewById(R.id.txtFechaInicioMatsh);
+        TextView txtNombreMatch = (TextView) view.findViewById(R.id.txtINombreMash);
+        TextView fechaInicio = (TextView) view.findViewById(R.id.txtIfechaInicioMash);
         TextView fechaFin = (TextView) view.findViewById(R.id.txtFechaFinMatsh);
         txtNombreMatch.setText(Item.getNombreMatsh());
         fechaFin.setText(Item.getFechaFin());
