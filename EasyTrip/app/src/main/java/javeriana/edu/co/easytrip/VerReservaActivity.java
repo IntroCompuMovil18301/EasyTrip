@@ -1,9 +1,13 @@
 package javeriana.edu.co.easytrip;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -14,24 +18,99 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import javeriana.edu.co.modelo.Anfitrion;
+import javeriana.edu.co.modelo.FirebaseReference;
+import javeriana.edu.co.modelo.Huesped;
+import javeriana.edu.co.modelo.Reserva;
 
 public class VerReservaActivity extends AppCompatActivity {
 
-    private Button btnDescartarAnfi;
-    private Button btnAceptarAnfi;
+    private FirebaseStorage storage;
+    private ImageButton btnDescartarAnfi;
+    private ImageButton btnAceptarAnfi;
     private ImageView imageView;
     private AdaptadorCompaneros adaptador;
     private ListView gridview;
+    private Reserva reserva;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+
+
+    private TextView txtAlojamientoVR;
+    private TextView txtNombreHuespedAnfi;
+    private TextView txtEdadReservaAnfi;
+    private TextView txtCalificacionReservaAnfi;
+    private TextView txtFechaInicioReservaAnfi;
+    private TextView txtFechaFinReservaAnfi;
+    private TextView txtDiasReservaAnfi;
+    private TextView txtCostoReservaAnfi;
+    private LinearLayout linearButtonsVerReservaAnfi;
+    private ImageButton btnCheckout;
+
+ /*   txtAlojamientoVR
+    txtNombreHuespedAnfi
+    txtEdadReservaAnfi
+    txtCalificacionReservaAnfi
+    txtFechaInicioReservaAnfi
+    txtFechaFinReservaAnfi
+    txtDiasReservaAnfi
+    txtCostoReservaAnfi
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_reserva);
-        super.setTitle("Reserva Casa Quinta");
+
         //------------------------------------------------------------------------------------------
+        Bundle b = getIntent().getBundleExtra("bundle");
+        this.reserva = (Reserva) b.getSerializable("reserva");
+
+        this.storage = FirebaseStorage.getInstance();
+        this.database = FirebaseDatabase.getInstance();
+
+
+        this.txtAlojamientoVR = (TextView) findViewById(R.id.txtAlojamientoVR);
+        this.txtNombreHuespedAnfi = (TextView) findViewById(R.id.txtNombreHuespedAnfi);
+        this.txtEdadReservaAnfi = (TextView) findViewById(R.id.txtEdadReservaAnfi);
+        this.txtCalificacionReservaAnfi = (TextView) findViewById(R.id.txtCalificacionReservaAnfi);
+        this.txtFechaInicioReservaAnfi = (TextView) findViewById(R.id.txtFechaInicioReservaAnfi);
+        this.txtFechaFinReservaAnfi = (TextView) findViewById(R.id.txtFechaFinReservaAnfi);
+        this.txtDiasReservaAnfi = (TextView) findViewById(R.id.txtDiasReservaAnfi);
+        this.txtCostoReservaAnfi = (TextView) findViewById(R.id.txtCostoReservaAnfi);
+        this.linearButtonsVerReservaAnfi = (LinearLayout) findViewById(R.id.linearButtonsVerReservaAnfi);
+
+        txtAlojamientoVR.setText(reserva.getNombreAlo());
+        txtNombreHuespedAnfi.setText("");
+        txtEdadReservaAnfi.setText("");
+        txtFechaInicioReservaAnfi.setText(getFechaString(reserva.getFechaInicio()));
+        txtFechaFinReservaAnfi.setText(getFechaString(reserva.getFechaFin()));
+        txtDiasReservaAnfi.setText(reserva.getDias()+"");
+        txtCostoReservaAnfi.setText(reserva.getCosto()+"00");
+
 
         this.gridview = (ListView) findViewById(R.id.listAcompaReserva);
         this.gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -62,25 +141,36 @@ public class VerReservaActivity extends AppCompatActivity {
         imageView.setImageDrawable(roundedDrawable);
         //------------------------------------------------------------------------------------------
 
-        this.btnDescartarAnfi = (Button) findViewById(R.id.btnDescartarAnfi);
+        this.btnDescartarAnfi = (ImageButton) findViewById(R.id.btnDescartarAnfi);
         this.btnDescartarAnfi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),CalendarioReservarActivity.class);
-
-                startActivity(intent);
+                myRef = database.getReference("reservas/"+reserva.getId());
+                reserva.setEstado("Rechazada");
+                myRef.setValue(reserva);
+                finish();
             }
         });
+        this.btnDescartarAnfi = (ImageButton) findViewById(R.id.btnDescartarAnfi);
 
-        this.btnAceptarAnfi = (Button) findViewById(R.id.btnAceptarAnfi);
+        this.btnAceptarAnfi = (ImageButton) findViewById(R.id.btnAceptarAnfi);
         this.btnAceptarAnfi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),CalendarioReservarActivity.class);
-
-                startActivity(intent);
+                myRef = database.getReference("reservas/"+reserva.getId());
+                reserva.setEstado("Aceptada");
+                myRef.setValue(reserva);
+                finish();
             }
         });
+
+        if(reserva.getEstado().compareTo("Solicitado") == 0){
+            linearButtonsVerReservaAnfi.setVisibility(View.VISIBLE);
+        }else{
+            linearButtonsVerReservaAnfi.setVisibility(View.INVISIBLE);
+        }
+
+        loadUser();
 
     }
 
@@ -103,5 +193,95 @@ public class VerReservaActivity extends AppCompatActivity {
 
         return arrayItems;
     }
+
+    private String getFechaString(Date date){
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        String fecha = cal.get(Calendar.DAY_OF_MONTH)
+                + "/" + (cal.get(Calendar.MONTH) + 1)
+                + "/" + cal.get(Calendar.YEAR);
+
+        return fecha;
+    }
+
+    private void descargarFoto(String origen, String nombre){
+        //Toast.makeText(this, nombre+"...", Toast.LENGTH_SHORT).show();
+        StorageReference storageRef = storage.getReference();
+        StorageReference islandRef = storageRef.child(origen+"/"+nombre+".jpg");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+
+                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                roundedDrawable.setCircular(true);
+                imageView.setImageDrawable(roundedDrawable);
+
+
+                //Toast.makeText(PerfilHuespedActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+    }
+
+    public void loadUser() {
+        myRef = database.getReference();
+        myRef.child(FirebaseReference.HUESPESDES).orderByChild("nomUsuario").equalTo(reserva.getNombrePrincipal()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()) {
+                    for(DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
+                        Huesped h = singlesnapshot.getValue(Huesped.class);
+                        descargarFoto("ImagenesPerfil",reserva.getNombrePrincipal());
+                        txtNombreHuespedAnfi.setText(h.getNombre());
+
+                        DateFormat dateFormat = dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        Date fechaNacimiento = null;
+
+                            try {
+                                fechaNacimiento = dateFormat.parse("1997-07-19");
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Calendar cal = Calendar.getInstance();
+                        Date fechaActual = cal.getTime();
+                        txtEdadReservaAnfi.setText("("+getEdad(fechaNacimiento, fechaActual)+" Años) - " + h.getNacionalidad());
+                        txtCalificacionReservaAnfi.setText("calificacion...");
+
+
+
+                    }
+                }else {
+                    Toast.makeText(VerReservaActivity.this,"No encontre nada",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(VerReservaActivity.this, "Error en consulta", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public  int getEdad(Date fechaNacimiento, Date fechaActual) {
+        DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        int dIni = Integer.parseInt(formatter.format(fechaNacimiento));
+        int dEnd = Integer.parseInt(formatter.format(fechaActual));
+        int age = (dEnd-dIni)/10000;
+        return age;
+    }
+
 
 }

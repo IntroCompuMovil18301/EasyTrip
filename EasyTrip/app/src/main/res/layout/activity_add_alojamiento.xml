@@ -190,7 +190,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/spnTipoAddAlo"
+                    android:id="@+id/spnBanoAddAlo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -199,6 +199,40 @@
                     android:layout_weight="1"
                     android:background="@drawable/edit_redondo"
                     android:entries="@array/bano" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearNumeroHabi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:text="Numero de Habitciones:"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/txtNumeroHabiAlo"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_horizontal"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:selectAllOnFocus="false"
+                    android:text="10"
+                    android:textColor="@color/h3"
+                    android:textColorLink="@color/acccent"
+                    android:textSize="16dp" />
+
             </LinearLayout>
 
             <LinearLayout

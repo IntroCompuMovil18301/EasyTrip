@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,8 +37,10 @@ public class AloCercanoHuespedFragment extends Fragment{
     private AdaptadorAlojamientosCercanos adaptador;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private List<Object> values;
     private FirebaseAuth mAuth;
+    private List<Object> values;
+    private String nombreUsuario;
+
 
     private List<Alojamiento> alojamientos;
 
@@ -116,14 +119,14 @@ public class AloCercanoHuespedFragment extends Fragment{
         listView.setAdapter(adaptador);
 */
         //updateList();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent intent = new Intent(view.getContext(),VerAlojamientoActivity.class);
 
                 startActivity(intent);
         };
-        });
+        });*/
 //        cargarAlojamientos();
 
         return view;
@@ -209,17 +212,10 @@ public class AloCercanoHuespedFragment extends Fragment{
                     //Toast.makeText(getContext(),a.getNombre() , Toast.LENGTH_SHORT).show();
                 }
 
-                //Toast.makeText(getContext(),"aqui -"+alojamientos.size() , Toast.LENGTH_SHORT).show();
-                adaptador = new AdaptadorAlojamientosCercanos(arrayItems, getContext());
+                Toast.makeText(getContext(),"aqui -"+nombreUsuario , Toast.LENGTH_SHORT).show();
+                adaptador = new AdaptadorAlojamientosCercanos(arrayItems, getContext(),nombreUsuario);
                 listAlojamientoHuesped.setAdapter(adaptador);
-                listAlojamientoHuesped.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        Intent intent = new Intent(view.getContext(),VerAlojamientoActivity.class);
 
-                        startActivity(intent);
-                    };
-                });
             }
 
             @Override
@@ -241,10 +237,14 @@ public class AloCercanoHuespedFragment extends Fragment{
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //updateList();
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+
+
 
 }

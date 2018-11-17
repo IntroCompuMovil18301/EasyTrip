@@ -44,9 +44,16 @@ public class Alojamiento implements Serializable{
     private boolean cajaFuerte;
     private boolean teatro;
 
+    private Localizacion localiza;
 
 
+    public String getServicios(){
+        return "Servicios...";
+    }
 
+    public String getElectrodomesticos(){
+        return "Electro...";
+    }
 
 
     public String getNombre() {
@@ -313,4 +320,11 @@ public class Alojamiento implements Serializable{
         this.teatro = teatro;
     }
 
+    public Localizacion getLocaliza() {
+        return localiza;
+    }
+
+    public void setLocaliza(Localizacion localizacion) {
+        this.localiza = localizacion;
+    }
 }

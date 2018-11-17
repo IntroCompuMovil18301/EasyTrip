@@ -47,6 +47,7 @@ public class AlojamientosAnfitrionFragment extends Fragment{
     private DatabaseReference myRef;
     private List<Object> values;
     private FirebaseAuth mAuth;
+    private String rol;
 
     private List<Alojamiento> alojamientos;
 
@@ -70,6 +71,7 @@ public class AlojamientosAnfitrionFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alojamientos_anfitrion,container,false);
 
+        this.rol = "";
         this.mAuth = FirebaseAuth.getInstance();
         this.database= FirebaseDatabase.getInstance();
         this.alojamientos = new ArrayList<Alojamiento>();
@@ -216,16 +218,16 @@ public class AlojamientosAnfitrionFragment extends Fragment{
                 }
 
                 //Toast.makeText(getContext(),"aqui -"+alojamientos.size() , Toast.LENGTH_SHORT).show();
-                adaptador = new AdaptadorAlojamientos(arrayItems, getContext());
+                adaptador = new AdaptadorAlojamientos(arrayItems, getContext(), "anfitrion");
                 listAlojamientosAnfi.setAdapter(adaptador);
-                listAlojamientosAnfi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                /*listAlojamientosAnfi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
                         Intent intent = new Intent(view.getContext(),VerAlojamientoActivity.class);
 
                         startActivity(intent);
                     };
-                });
+                });*/
             }
 
             @Override
@@ -253,4 +255,12 @@ public class AlojamientosAnfitrionFragment extends Fragment{
         //updateList();
     }
 
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 }

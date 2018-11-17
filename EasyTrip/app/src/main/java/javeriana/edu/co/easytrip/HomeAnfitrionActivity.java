@@ -154,15 +154,15 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabsPA);
         tabLayout.setupWithViewPager(mViewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.iconmash);
-        tabLayout.getTabAt(1).setIcon(R.drawable.iconlodging);
-        tabLayout.getTabAt(2).setIcon(R.drawable.iconreservations);
+        //tabLayout.getTabAt(0).setIcon(R.drawable.iconmash);
+        tabLayout.getTabAt(0).setIcon(R.drawable.iconlodging);
+        tabLayout.getTabAt(1).setIcon(R.drawable.iconreservations);
 
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-        tabLayout.getTabAt(1).select();
+        //tabLayout.getTabAt(1).select();
 
         loadUser();
 
@@ -171,9 +171,15 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         AnfitrionPageAdapter adapter = new AnfitrionPageAdapter(getSupportFragmentManager(),3);
         MashesHuespedFragment mashes = new MashesHuespedFragment();
-        adapter.addFragment(new MashesHuespedFragment(),"");
-        adapter.addFragment(new AlojamientosAnfitrionFragment(),"");
-        adapter.addFragment(new ReservasAnfitrionFragment(),"");
+        //adapter.addFragment(new MashesHuespedFragment(),"");
+        AlojamientosAnfitrionFragment aff = new AlojamientosAnfitrionFragment();
+        aff.setRol("anfitrion");
+
+        adapter.addFragment(aff,"");
+
+        ReservasAnfitrionFragment r = new ReservasAnfitrionFragment();
+        r.setNombreUsuario(myUser.getNomUsuario());
+        adapter.addFragment(r,"");
 
         viewPager.setAdapter(adapter);
         viewPager.arrowScroll(1);
@@ -293,7 +299,7 @@ public class HomeAnfitrionActivity extends AppCompatActivity {
                 roundedDrawable.setCircular(true);
                 toolPerfilPA.setImageDrawable(roundedDrawable);
 
-                Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HomeAnfitrionActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

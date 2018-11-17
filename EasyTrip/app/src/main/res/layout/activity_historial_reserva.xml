@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReservasAnfitrionFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    tools:context=".HistorialReservaActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,11 +24,11 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/linearTitleReservaPH"
+                android:id="@+id/linearTitleHistorialReservaPH"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
 
@@ -41,20 +38,36 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/acccent"
-                    android:text="Reservas"
+                    android:text="Historial Reservas"
                     android:textAlignment="center"
                     android:textColor="@color/h1"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     tools:ignore="DuplicateIds" />
 
+                <TextView
+
+                    android:id="@+id/txtAloHistorialReservas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/acccent"
+                    android:text="---"
+                    android:textAlignment="center"
+                    android:textColor="@color/h2"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="DuplicateIds" />
+
             </LinearLayout>
 
             <ListView
-                android:id="@+id/listReservasAnfi"
+                android:id="@+id/listHistorialReservasAnfi"
                 android:layout_width="match_parent"
                 android:layout_height="476dp" />
 
         </LinearLayout>
     </ScrollView>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

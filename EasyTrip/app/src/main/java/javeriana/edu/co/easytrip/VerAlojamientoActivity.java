@@ -34,14 +34,22 @@ import javeriana.edu.co.modelo.Huesped;
 
 public class VerAlojamientoActivity extends AppCompatActivity {
 
-    private ImageButton btnCalendarioReservar;
+
     private Button btnReservarVerAlo;
     private Alojamiento alojamiento;
 
+    private TextView txtHistorialVerAlo;
     private TextView txtNombreVerAlo;
     private TextView txtValorVerAlo;
     private TextView txtCapacidadNumVerAlo;
     private TextView txtDescripcionVerAlo;
+    private TextView txtHabitaNumVerAlo;
+    private TextView txtCocinaVerAlo;
+    private TextView txtBanoVerAlo;
+    private TextView txtServiciosVerAlo;
+    private TextView txtElectroVerAlo;
+    private TextView txtTipoVerAlo;
+
 
     private ImageView imageVerAlo;
     private ImageButton btnBackFotoVerAlo;
@@ -54,6 +62,8 @@ public class VerAlojamientoActivity extends AppCompatActivity {
     private ArrayList<Foto> fotos;
     private Foto foto;
     private ArrayList<Bitmap> fotosB;
+    private String rol;
+    private String nombreUsuario;
 
 
 
@@ -67,19 +77,11 @@ public class VerAlojamientoActivity extends AppCompatActivity {
 
         this.fotos = new ArrayList<>();
 
-        this.alojamiento = (Alojamiento) getIntent().getSerializableExtra("alojamiento");
+        Bundle b = getIntent().getBundleExtra("bundle");
 
-
-
-        this.btnCalendarioReservar = (ImageButton) findViewById(R.id.btnCalendarioReservar);
-        this.btnCalendarioReservar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),CalendarioReservarActivity.class);
-
-                startActivity(intent);
-            }
-        });
+        this.alojamiento = (Alojamiento) b.getSerializable("alojamiento");
+        this.rol = b.getString("rol");
+        this.nombreUsuario = b.getString("nombreUsuario");
 
 
 
@@ -88,17 +90,49 @@ public class VerAlojamientoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(),CalendarioReservarActivity.class);
-
-
+                Bundle b = new Bundle();
+                b.putSerializable("alojamiento",alojamiento);
+                b.putString("foto","Image0");
+                b.putString("nombreUsuario",nombreUsuario);
+                intent.putExtra("bundle",b);
 
                 startActivity(intent);
             }
         });
 
+        //Toast.makeText(this, rol+"--", Toast.LENGTH_SHORT).show();
+
+        if(rol.compareTo("anfitrion")==0){
+            this.btnReservarVerAlo.setVisibility(View.INVISIBLE);
+        }else{
+            this.btnReservarVerAlo.setVisibility(View.VISIBLE);
+        }
+
         this.txtNombreVerAlo = (TextView) findViewById(R.id.txtNombreVerAlo);
         this.txtValorVerAlo = (TextView) findViewById(R.id.txtValorVerAlo);
         this.txtCapacidadNumVerAlo = (TextView) findViewById(R.id.txtCapacidadNumVerAlo);
         this.txtDescripcionVerAlo = (TextView) findViewById(R.id.txtDescripcionVerAlo);
+
+        this.txtHabitaNumVerAlo = (TextView) findViewById(R.id.txtHabitaNumVerAlo);
+        this.txtCocinaVerAlo = (TextView) findViewById(R.id.txtCocinaVerAlo);
+        this.txtBanoVerAlo = (TextView) findViewById(R.id.txtBanoVerAlo);
+        this.txtServiciosVerAlo = (TextView) findViewById(R.id.txtServiciosVerAlo);
+        this.txtElectroVerAlo = (TextView) findViewById(R.id.txtElectroVerAlo);
+        this.txtTipoVerAlo = (TextView) findViewById(R.id.txtTipoVerAlo);
+
+        this.txtHistorialVerAlo = (TextView) findViewById(R.id.txtHistorialVerAlo);
+        this.txtHistorialVerAlo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VerAlojamientoActivity.this,HistorialReservaActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("alojamiento",alojamiento);
+                intent.putExtra("bundle",b);
+
+                startActivity(intent);
+            }
+        });
+
 
         this.imageVerAlo = (ImageView) findViewById(R.id.imageVerAlo);
         this.btnBackFotoVerAlo = (ImageButton) findViewById(R.id.btnBackFotoVerAlo);
@@ -138,9 +172,18 @@ public class VerAlojamientoActivity extends AppCompatActivity {
 
         this.txtNombreVerAlo.setText(alojamiento.getNombre());
         this.txtValorVerAlo.setText("Valor noche:\n"+"$"+alojamiento.getCosto().toString()+"00");
-        this.txtCapacidadNumVerAlo.setText(alojamiento.getMaxHuespedes()+" Personas");
+        this.txtCapacidadNumVerAlo.setText(alojamiento.getMaxHuespedes()+"");
         this.txtDescripcionVerAlo.setText(alojamiento.getDescripcion());
 
+        this.txtHabitaNumVerAlo.setText(alojamiento.getNumHabitaciones()+"");
+
+        if(alojamiento.isCocina()) {this.txtCocinaVerAlo.setText("Si");}
+        else{ this.txtCocinaVerAlo.setText("No"); }
+
+        this.txtBanoVerAlo.setText(alojamiento.getBano());
+        this.txtServiciosVerAlo.setText(alojamiento.getServicios());
+        this.txtElectroVerAlo.setText(alojamiento.getElectrodomesticos());
+        this.txtTipoVerAlo.setText(alojamiento.getTipo());
 
 
     }

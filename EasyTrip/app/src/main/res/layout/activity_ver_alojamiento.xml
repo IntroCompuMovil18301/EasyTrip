@@ -75,7 +75,7 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/reservavillareal" />
+                        android:src="@android:drawable/ic_menu_gallery" />
 
                     <ImageButton
                         android:id="@+id/btnNextFotoVerAlo"
@@ -87,6 +87,22 @@
                         android:scaleType="fitCenter"
                         app:srcCompat="@drawable/iconnextimage" />
                 </LinearLayout>
+
+                <TextView
+
+                    android:id="@+id/txtTipoVerAlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/h4"
+                    android:text="Casa"
+                    android:textAlignment="center"
+                    android:textColor="@color/h3"
+                    android:textSize="14sp"
+                    tools:ignore="DuplicateIds" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -97,19 +113,9 @@
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/btnCalendarioReservar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3
-"
-                    android:background="@android:color/transparent"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@android:drawable/ic_menu_agenda" />
-
                 <Button
                     android:id="@+id/btnReservarVerAlo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="106dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/boton_redondo"
@@ -129,47 +135,101 @@
                     android:id="@+id/txtValorVerAlo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal|center"
                     android:layout_marginLeft="6dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:backgroundTint="@color/acccent"
-                    android:text="Valor día: $35.000"
+                    android:gravity="center_vertical|center_horizontal|center"
+                    android:text="Valor día: \n$35.000"
                     android:textAlignment="center"
                     android:textColor="@color/h1"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     tools:ignore="DuplicateIds" />
 
-                <TextView
-
-                    android:id="@+id/txtCapacidadVerAlo"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/acccent"
-                    android:text="Capacidad:"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/h1"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:ignore="DuplicateIds" />
+                    android:orientation="vertical">
 
-                <TextView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
 
-                    android:id="@+id/txtCapacidadNumVerAlo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/h4"
-                    android:text="25 personas"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/h3"
-                    android:textSize="18sp"
-                    tools:ignore="DuplicateIds" />
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/acccent"
+                            android:text="Personas:"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/h1"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:ignore="DuplicateIds" />
+
+                        <TextView
+
+                            android:id="@+id/txtCapacidadNumVerAlo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/h4"
+                            android:text="25"
+                            android:textAlignment="center"
+                            android:textColor="@color/h3"
+                            android:textSize="18sp"
+                            tools:ignore="DuplicateIds" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/acccent"
+                            android:text="Habitaciones:"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/h1"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:ignore="DuplicateIds" />
+
+                        <TextView
+
+                            android:id="@+id/txtHabitaNumVerAlo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/h4"
+                            android:text="25"
+                            android:textAlignment="center"
+                            android:textColor="@color/h3"
+                            android:textSize="18sp"
+                            tools:ignore="DuplicateIds" />
+
+                    </LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -207,6 +267,175 @@
                     android:textAlignment="center"
                     android:textColor="@color/info"
                     android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearInfoSerVerAlo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="241dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/acccent"
+                            android:text="Cocina:"
+                            android:textAlignment="viewStart"
+                            android:textColor="@color/h1"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:ignore="DuplicateIds" />
+
+                        <TextView
+
+                            android:id="@+id/txtCocinaVerAlo"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/h4"
+                            android:text="Si"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/h3"
+                            android:textSize="18sp"
+                            tools:ignore="DuplicateIds" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            android:layout_width="127dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/acccent"
+                            android:text="Baño(s):"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/h1"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:ignore="DuplicateIds" />
+
+                        <TextView
+
+                            android:id="@+id/txtBanoVerAlo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/h4"
+                            android:text="Por habitación"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/h3"
+                            android:textSize="18sp"
+                            tools:ignore="DuplicateIds" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearServicios"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="5dp"
+
+                        android:backgroundTint="@color/acccent"
+                        android:text="Servicios:"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/h1"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:ignore="DuplicateIds" />
+
+                    <TextView
+                        android:id="@+id/txtServiciosVerAlo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+
+                        android:text="servicios..."
+                        android:textAlignment="center"
+                        android:textColor="@color/info"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearElectrodimesticos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="5dp"
+
+                        android:backgroundTint="@color/acccent"
+                        android:text="Electrodomésticos:"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/h1"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:ignore="DuplicateIds" />
+
+                    <TextView
+                        android:id="@+id/txtElectroVerAlo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+
+                        android:text="electrodimésticos..."
+                        android:textAlignment="center"
+                        android:textColor="@color/info"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

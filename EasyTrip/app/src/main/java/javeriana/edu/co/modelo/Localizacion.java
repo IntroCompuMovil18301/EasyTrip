@@ -1,12 +1,15 @@
 package javeriana.edu.co.modelo;
 
-public class Localizacion {
+import java.io.Serializable;
+
+public class Localizacion implements Serializable{
 
     private Double latitud;
     private Double longitud;
     private String ciudad;
     private String direccion;
     private String pais;
+    private String subLocalidad;
 
 
     public Double getLatitud() {
@@ -47,5 +50,13 @@ public class Localizacion {
 
     public void setPais(String pais) {
         this.pais = pais;
+    }
+
+    public String getSubLocalidad() {
+        return subLocalidad;
+    }
+
+    public void setSubLocalidad(String subLocalidad) {
+        this.subLocalidad = subLocalidad;
     }
 }

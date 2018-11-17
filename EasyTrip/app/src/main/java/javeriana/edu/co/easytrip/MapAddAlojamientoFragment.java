@@ -48,6 +48,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import javeriana.edu.co.modelo.Localizacion;
+
 public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMapReadyCallback {
 
 
@@ -58,7 +60,9 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
     private String nombreAlo;
     private Geocoder mGeocoder;
     private ImageButton btnBuscarAloMap;
+    private ImageButton btnGuardarAloMap;
     private EditText txtBuscarAloMap;
+    private Localizacion localizacion;
 
 
     private final static int LOCALIZATION_PERMISSION = 200;
@@ -87,6 +91,16 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         this.mGeocoder = new Geocoder(getBaseContext());
 
+        this.localizacion = new Localizacion();
+
+        this.btnGuardarAloMap = (ImageButton) findViewById(R.id.btnGuardarAloMap);
+        this.btnGuardarAloMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                guardarLocalizacion();
+            }
+        });
+
         this.txtBuscarAloMap = (EditText) findViewById(R.id.txtBuscarAloMap);
         this.btnBuscarAloMap = (ImageButton) findViewById(R.id.btnBuscarAloMap);
         this.btnBuscarAloMap.setOnClickListener(new View.OnClickListener() {
@@ -107,16 +121,24 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
                             LatLng position = new LatLng(addressResult.getLatitude(), addressResult.getLongitude());
 
                             mMap.clear();
+                            /*
                             Marker home = mMap.addMarker(new MarkerOptions()
                                     .position(position).title(nombreAlo)
                                     .icon(BitmapDescriptorFactory
                                             .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                            */
+
+                            Marker home = mMap.addMarker(new MarkerOptions()
+                                    .position(position)
+                                    .icon(BitmapDescriptorFactory
+                                            .fromResource(R.drawable.iconalojamientomap)));
 
                             home.setVisible(true);
 
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-                            mMap.moveCamera(CameraUpdateFactory.zoomTo(18));
-                            Toast.makeText(MapAddAlojamientoFragment.this,addresses.get(0).getAddressLine(0)+"",Toast.LENGTH_SHORT).show();
+                            mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+                            //Toast.makeText(MapAddAlojamientoFragment.this,addresses.get(0).getAddressLine(0)+"",Toast.LENGTH_SHORT).show();
+
 
                         }
                     } catch (IOException e) {
@@ -136,7 +158,7 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 Location location = locationResult.getLastLocation();
-        //        Log.i(“LOCATION", "Location update in the callback: " + location);
+
                 if (location != null) {
                     Toast.makeText(MapAddAlojamientoFragment.this, location.getLatitude()+"", Toast.LENGTH_LONG).show();
                     //latitude.setText("Latitude: " + String.valueOf(location.getLatitude()));
@@ -167,22 +189,22 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
 
         mMap = googleMap;
         LatLng bogota = new LatLng(4.65, -74.05);
-        mMap.addMarker(new MarkerOptions().position(bogota).title(nombreAlo));
-
-
-        /*
-        Marker bogotaHome = mMap.addMarker(new MarkerOptions()
-                .position(bogota)
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.iconmash)));
-        */
+        //mMap.addMarker(new MarkerOptions().position(bogota).title(nombreAlo));
+        mMap.clear();
 
 
         Marker home = mMap.addMarker(new MarkerOptions()
                 .position(bogota).title(nombreAlo)
                 .icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                        .fromResource(R.drawable.iconalojamientomap)));
 
+
+        /*
+        Marker home = mMap.addMarker(new MarkerOptions()
+                .position(bogota).title(nombreAlo)
+                .icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        */
         home.setVisible(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bogota));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
@@ -193,25 +215,40 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
                 LatLng touched = new LatLng(point.latitude, point.longitude);
 
                 mMap.clear();
-                Marker home = mMap.addMarker(new MarkerOptions()
-                        .position(touched).title(nombreAlo)
-                        .icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-
-                home.setVisible(true);
-
-                List<Address> addresses = null;
 
                 try {
 
+
+
+                    List<Address> addresses = null;
+
                     addresses = mGeocoder.getFromLocation(point.latitude, point.longitude, 3);
+
+                    /*
+                    Marker home = mMap.addMarker(new MarkerOptions()
+                            .position(touched).title(addresses.get(0).getAddressLine(0))
+                            .icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                    */
+                    Marker home = mMap.addMarker(new MarkerOptions()
+                            .position(touched)
+                            .icon(BitmapDescriptorFactory
+                                    .fromResource(R.drawable.iconalojamientomap)));
+
+                    //Toast.makeText(MapAddAlojamientoFragment.this,addresses.get(0).getAddressLine(0)+"",Toast.LENGTH_SHORT).show();
+
+                    home.setVisible(true);
+
+                    localizacion.setLongitud(point.longitude);
+                    localizacion.setLatitud(point.latitude);
+                    localizacion.setDireccion(addresses.get(0).getAddressLine(0));
+                    localizacion.setCiudad(addresses.get(0).getLocality());
+                    localizacion.setPais(addresses.get(0).getCountryName());
+                    localizacion.setSubLocalidad(addresses.get(0).getSubLocality());
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                Toast.makeText(MapAddAlojamientoFragment.this,addresses.get(0).getAddressLine(0)+"",Toast.LENGTH_SHORT).show();
-
 
             }
         });
@@ -242,19 +279,20 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
                             if (location != null) {
                                 LatLng bogota = new LatLng(location.getLatitude(), location.getLongitude());
 
-                                mMap.addMarker(new MarkerOptions().position(bogota).title(nombreAlo));
-
-                                Marker home = mMap.addMarker(new MarkerOptions()
-                                        .position(bogota)
-                                        .icon(BitmapDescriptorFactory
-                                                .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                                //mMap.addMarker(new MarkerOptions().position(bogota).title(nombreAlo));
 
                                 /*
                                 Marker home = mMap.addMarker(new MarkerOptions()
                                         .position(bogota)
                                         .icon(BitmapDescriptorFactory
-                                                .fromResource(R.drawable.iconmash)));
+                                                .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                                 */
+
+                                Marker home = mMap.addMarker(new MarkerOptions()
+                                        .position(bogota)
+                                        .icon(BitmapDescriptorFactory
+                                                .fromResource(R.drawable.iconalojamientomap)));
+
                                 home.setVisible(true);
                                 List<Address> addresses = null;
 
@@ -266,10 +304,18 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
                                     e.printStackTrace();
                                 }
 
-                                Toast.makeText(MapAddAlojamientoFragment.this,addresses.get(0).getAddressLine(0)+"",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(MapAddAlojamientoFragment.this,addresses.get(0).getAddressLine(0)+"+++",Toast.LENGTH_SHORT).show();
 
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(bogota));
                                 mMap.moveCamera(CameraUpdateFactory.zoomTo(18));
+
+
+                                localizacion.setLongitud(location.getLongitude());
+                                localizacion.setLatitud(location.getLatitude());
+                                localizacion.setDireccion(addresses.get(0).getAddressLine(0));
+                                localizacion.setCiudad(addresses.get(0).getLocality());
+                                localizacion.setPais(addresses.get(0).getCountryName());
+                                localizacion.setSubLocalidad(addresses.get(0).getSubLocality());
                             }
                         }});
 
@@ -315,7 +361,7 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
         if(requestCode==200){
             if(grantResults.length==2 && grantResults[0]==PackageManager.PERMISSION_GRANTED
                     && grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getApplicationContext(),"Permisos",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Permisos",Toast.LENGTH_SHORT).show();
                 startLocationUpdates();
 
             }else{
@@ -356,6 +402,18 @@ public class MapAddAlojamientoFragment extends AppCompatActivity implements OnMa
             }
             ActivityCompat.requestPermissions(context, new String[]{permission}, requestId);
         }
+    }
+
+    private void guardarLocalizacion(){
+
+        Intent returnIntent = new Intent();
+        Bundle b = new Bundle();
+        b.putSerializable("localizacion",localizacion);
+        //b.putString("localizacion","esta es la prueba");
+        returnIntent.putExtra("bundle",b);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
+
     }
 
 

@@ -61,7 +61,6 @@ public class HomeHuespedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_huesped);
-
         this.myUser = (Modelo.Usuario) getIntent().getSerializableExtra("Usuario");
 
         this.mAuth = FirebaseAuth.getInstance();
@@ -151,9 +150,13 @@ public class HomeHuespedActivity extends AppCompatActivity {
         MashesHuespedFragment mashes = new MashesHuespedFragment();
         adapter.addFragment(new MashesHuespedFragment(),"");
         //adapter.addFragment(new AloCercanoHuespedFragment(),"");
-        adapter.addFragment(new
-                AloCercanoHuespedFragment(),"");
-        adapter.addFragment(new ReservasHuespedFragment(),"");
+        AloCercanoHuespedFragment aloC = new AloCercanoHuespedFragment();
+        aloC.setNombreUsuario(myUser.getNomUsuario());
+        adapter.addFragment(aloC,"");
+
+        ReservasHuespedFragment r = new ReservasHuespedFragment();
+        r.setNombreUsuario(myUser.getNomUsuario());
+        adapter.addFragment( r,"");
 
         viewPager.setAdapter(adapter);
         viewPager.arrowScroll(1);
@@ -256,7 +259,7 @@ public class HomeHuespedActivity extends AppCompatActivity {
                 roundedDrawable.setCircular(true);
                 toolPerfilPH.setImageDrawable(roundedDrawable);
 
-                Toast.makeText(HomeHuespedActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HomeHuespedActivity.this, "cargada ", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

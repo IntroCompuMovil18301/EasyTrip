@@ -49,10 +49,12 @@ public class AdaptadorAlojamientos extends BaseAdapter {
     private List<Foto> fotos;
     private Button btnVerItemAnfi;
     private Alojamiento item;
+    private String rol;
 
-    public AdaptadorAlojamientos(ArrayList<Alojamiento> listItems, Context context) {
+    public AdaptadorAlojamientos(ArrayList<Alojamiento> listItems, Context context, String rol) {
         this.listItems = listItems;
         this.context = context;
+        this.rol = rol;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class AdaptadorAlojamientos extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         view = LayoutInflater.from(context).inflate(R.layout.item_alojamientos_anfi, null);
         item = (Alojamiento) getItem(i);
 
@@ -98,7 +100,7 @@ public class AdaptadorAlojamientos extends BaseAdapter {
 
         //creamos el drawable redondeado
         RoundedBitmapDrawable roundedDrawable =
-                RoundedBitmapDrawableFactory.create(view.getResources(), originalBitmap);
+        RoundedBitmapDrawableFactory.create(view.getResources(), originalBitmap);
 
         //roundedDrawable.setCornerRadius(originalBitmap.getHeight());
         roundedDrawable.setCircular(true);
@@ -112,9 +114,11 @@ public class AdaptadorAlojamientos extends BaseAdapter {
             public void onClick(View view) {
 
                 Intent intent = new Intent(view.getContext(),VerAlojamientoActivity.class);
-                //Bundle b = new Bundle();
-                //b.putSerializable("alojamiento",item);
-                intent.putExtra("alojamiento",item);
+                Bundle b = new Bundle();
+                b.putSerializable("alojamiento",(Alojamiento) getItem(i));
+                b.putString("rol",rol);
+                intent.putExtra("bundle",b);
+                intent.putExtra("nombreUsuario","");
                 //Toast.makeText(view.getContext(),"Ver", Toast.LENGTH_SHORT).show();
                 view.getContext().startActivity(intent);
             }

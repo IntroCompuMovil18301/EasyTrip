@@ -86,12 +86,13 @@ public class AddAlojamientoActivity extends AppCompatActivity {
     private EditText txtNombreAddAlo;
     private EditText txtValorAddAlo;
     private EditText txtDescripcionAddAlo;
-    //private TextView txtFotosAddAlo;
+    private TextView txtNumeroHabiAlo;
     private TextView txtCiudadAddAlo;
     private ImageButton ibtnCamaraAdd;
     private ImageButton ibtnUbicacionAdd;
     private Button btnGuardarAlo;
     private Spinner spnTipoAddAlo;
+    private Spinner spnBanoAddAlo;
     private List<Foto> fotos;
     private List<Bitmap> fotosB;
     private Localizacion localizacion;
@@ -122,6 +123,7 @@ public class AddAlojamientoActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1888;
     private static final int PICK_IMAGE = 100;
+    private static final int MAP_LOCATION = 500;
 
 
 
@@ -131,8 +133,8 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_alojamiento);
         this.alo = new Alojamiento();
-        database= FirebaseDatabase.getInstance();
-        storage = FirebaseStorage.getInstance();
+        this.database= FirebaseDatabase.getInstance();
+        this.storage = FirebaseStorage.getInstance();
         this.mAuth = FirebaseAuth.getInstance();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -168,7 +170,7 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         this.txtNumeroAddAlo = (EditText) findViewById(R.id.txtNumeroAddAlo);
         this.txtValorAddAlo = (EditText) findViewById(R.id.txtValorAddAlo);
         this.txtDescripcionAddAlo = (EditText) findViewById(R.id.txtDescripcionAddAlo);
-
+        this.txtNumeroHabiAlo = (EditText) findViewById(R.id.txtNumeroHabiAlo);
 
 
         //this.mapaAlo = this.<View>findViewById(R.id.map);
@@ -180,6 +182,7 @@ public class AddAlojamientoActivity extends AppCompatActivity {
 
 
         this.spnTipoAddAlo = (Spinner) findViewById(R.id.spnTipoAddAlo);
+        this.spnBanoAddAlo = (Spinner) findViewById(R.id.spnBanoAddAlo);
 
         this.ibtnCamaraAdd = (ImageButton) findViewById(R.id.ibtnCamaraAdd);
         this.ibtnCamaraAdd.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +227,8 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                 alo.setTipo(spnTipoAddAlo.getSelectedItem().toString());
                 alo.setValoracion(0.0);
                 alo.setIdUsuario(user.getUid());
-
+                alo.setNumHabitaciones(Integer.parseInt(txtNumeroHabiAlo.getText().toString()));
+                alo.setBano(spnBanoAddAlo.getSelectedItem().toString());
 
                 if(rbtnSerParqueaderoAdd.isChecked()){  alo.setSerParqueadero(true);} else { alo.setSerParqueadero(false);}
                 if(rbtnSerWifiAdd.isChecked()){  alo.setWifi(true);} else { alo.setWifi(false);}
@@ -367,6 +371,13 @@ public class AddAlojamientoActivity extends AppCompatActivity {
 
         }
 
+        if(resultCode ==Activity.RESULT_OK && requestCode == MAP_LOCATION){
+            Bundle b = data.getExtras().getBundle("bundle");
+            localizacion = (Localizacion) b.getSerializable("localizacion");
+            txtCiudadAddAlo.setVisibility(View.VISIBLE);
+            txtCiudadAddAlo.setText(localizacion.getCiudad()+" - "+localizacion.getSubLocalidad());
+        }
+
 
     }
 
@@ -407,7 +418,8 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                         Bundle b = new Bundle();
                         b.putString("nombreAlo", txtNombreAddAlo.getText().toString());
                         intent.putExtra("bundle",b);
-                        startActivity(intent);
+                        //startActivity(intent);
+                        startActivityForResult(intent,MAP_LOCATION);
                     }else{
                         dialogInterface.dismiss();
                     }
@@ -430,7 +442,7 @@ public class AddAlojamientoActivity extends AppCompatActivity {
 
                             if (location != null) {
                                 //LatLng bogota = new LatLng(location.getLatitude(), location.getLongitude());
-                                //String addressString = location.getLatitude()+"  " + location.getLongitude()+"";
+                                //String addressString = location.getLatitude()+"  "    + location.getLongitude()+"";
                                 List<Address> addresses = null;
                                 try {
                                     // localizacion.setLatitud(4.6758818);
@@ -447,6 +459,7 @@ public class AddAlojamientoActivity extends AppCompatActivity {
                                         localizacion.setDireccion(addresses.get(0).getAddressLine(0));
                                         localizacion.setCiudad(addresses.get(0).getLocality());
                                         localizacion.setPais(addresses.get(0).getCountryName());
+                                        localizacion.setSubLocalidad(addresses.get(0).getSubLocality());
 
                                         txtCiudadAddAlo.setVisibility(View.VISIBLE);
                                         txtCiudadAddAlo.setText(localizacion.getCiudad()+" - "+addresses.get(0).getSubLocality());

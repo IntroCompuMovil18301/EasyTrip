@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,10 +43,13 @@ public class AdaptadorAlojamientosCercanos extends BaseAdapter {
     private List<Foto> fotos;
     private ImageView btnVerRutaH;
     private Alojamiento item;
+    private LinearLayout linearInfoAloCercanoH;
+    private String nombreUsuario;
 
-    public AdaptadorAlojamientosCercanos(ArrayList<Alojamiento> listItems, Context context) {
+    public AdaptadorAlojamientosCercanos(ArrayList<Alojamiento> listItems, Context context, String nombreUsuario) {
         this.listItems = listItems;
         this.context = context;
+        this.nombreUsuario = nombreUsuario;
     }
 
     @Override
@@ -106,12 +111,14 @@ public class AdaptadorAlojamientosCercanos extends BaseAdapter {
             public void onClick(View view) {
 
                 Intent intent = new Intent(view.getContext(),VerAlojamientoActivity.class);
-                //Bundle b = new Bundle();
-                //b.putSerializable("alojamiento",item);
+                Bundle b = new Bundle();
+                b.putSerializable("alojamiento",(Alojamiento)getItem(i));
+                b.putString("rol","");
                 //intent.putExtra("alojamiento",item);
-                intent.putExtra("alojamiento",(Alojamiento)getItem(i));
+                intent.putExtra("bundle",b);
                 //Toast.makeText(view.getContext(),"Ver", Toast.LENGTH_SHORT).show();
                 view.getContext().startActivity(intent);
+
             }
         });
 
@@ -121,9 +128,23 @@ public class AdaptadorAlojamientosCercanos extends BaseAdapter {
 
         txtINombreAloja.setText(item.getNombre());
         txtICostoAloja.setText("Costo: "+item.getCosto().toString()+"\n"+"Num. Personas: "+item.getMaxHuespedes());
-        //txtINumeroAloja.setText("Num. Personas: "+item.getMaxHuespedes());
 
-        //descargarFoto(item.getId(),view);
+        this.linearInfoAloCercanoH = (LinearLayout) view.findViewById(R.id.linearInfoAloCercanoH);
+        this.linearInfoAloCercanoH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),VerAlojamientoActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("alojamiento",(Alojamiento)getItem(i));
+                b.putString("rol","");
+                b.putString("nombreUsuario",nombreUsuario);
+                //intent.putExtra("alojamiento",item);
+                intent.putExtra("bundle",b);
+                //Toast.makeText(view.getContext(),"Ver", Toast.LENGTH_SHORT).show();
+                view.getContext().startActivity(intent);
+
+            }
+        });
         return view;
     }
 
@@ -146,7 +167,7 @@ public class AdaptadorAlojamientosCercanos extends BaseAdapter {
                     //Toast.makeText(v.getContext(), "Aqui2", Toast.LENGTH_SHORT).show();
                     //descargarFoto("ImagenesPerfil",a.getNombre());
                     //Toast.makeText(HomeAnfitrionActivity.this, a.getNombre(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(v.getContext(), "Aqui2", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(v.getContext(), "Aqui2", Toast.LENGTH_SHORT).show();
 /*                    //----------------
                     StorageReference storageRef = storage.getReference();
                     StorageReference islandRef = storageRef.child("alijamientos/"+singleSnapshot.getKey()+"/"+f.getNombre()+".jpg");
@@ -187,7 +208,7 @@ public class AdaptadorAlojamientosCercanos extends BaseAdapter {
         //-------------------------------------------------------------------
         //updateImage();
 //Toast.makeText(v.getContext(), "Aqui", Toast.LENGTH_SHORT).show();
-        Toast.makeText(v.getContext(), fotos.size(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(v.getContext(), fotos.size(), Toast.LENGTH_SHORT).show();
     }
 
     private void updateImage(){
