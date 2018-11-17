@@ -39,11 +39,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javeriana.edu.co.modelo.Anfitrion;
 import javeriana.edu.co.modelo.FirebaseReference;
 import javeriana.edu.co.modelo.Huesped;
+import javeriana.edu.co.modelo.Mash;
 import javeriana.edu.co.modelo.Reserva;
 
 public class VerReservaActivity extends AppCompatActivity {
@@ -57,6 +59,7 @@ public class VerReservaActivity extends AppCompatActivity {
     private Reserva reserva;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private List<Mash> mashes;
 
 
     private TextView txtAlojamientoVR;
@@ -69,6 +72,10 @@ public class VerReservaActivity extends AppCompatActivity {
     private TextView txtCostoReservaAnfi;
     private LinearLayout linearButtonsVerReservaAnfi;
     private ImageButton btnCheckout;
+    private Button btnSolicitarMash;
+    private String origin;
+    private String nombreUsuario;
+
 
  /*   txtAlojamientoVR
     txtNombreHuespedAnfi
@@ -88,9 +95,15 @@ public class VerReservaActivity extends AppCompatActivity {
         //------------------------------------------------------------------------------------------
         Bundle b = getIntent().getBundleExtra("bundle");
         this.reserva = (Reserva) b.getSerializable("reserva");
+        this.origin = b.getString("origin");
+        this.mashes = new ArrayList<Mash>();
+        this.database = FirebaseDatabase.getInstance();
+        if(this.origin.compareTo("mash") == 0){
+            this.nombreUsuario = b.getString("nombreUsuario");
+        }
 
         this.storage = FirebaseStorage.getInstance();
-        this.database = FirebaseDatabase.getInstance();
+
 
 
         this.txtAlojamientoVR = (TextView) findViewById(R.id.txtAlojamientoVR);
@@ -120,6 +133,25 @@ public class VerReservaActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        this.btnSolicitarMash = (Button) findViewById(R.id.btnSolicitarMash);
+        this.btnSolicitarMash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                solicitarMash();
+
+            }
+        });
+
+
+        if(this.origin.compareTo("mash") == 0){
+            this.btnSolicitarMash.setVisibility(View.VISIBLE);
+
+        }else{
+            this.btnSolicitarMash.setVisibility(View.INVISIBLE);
+        }
+
+
 
         this.adaptador = new AdaptadorCompaneros(getArrayItems(), this);
         gridview.setAdapter(this.adaptador);
@@ -275,6 +307,66 @@ public class VerReservaActivity extends AppCompatActivity {
     }
 
 
+    private void solicitarMash(){
+        Mash mash = new Mash();
+        mash.setFechaInicio(reserva.getFechaInicio());
+        mash.setFechaFin(reserva.getFechaFin());
+        mash.setPorcentaje(-1.0);
+        mash.setValor(-1.0);
+        mash.setValoracion(-1.0);
+        mash.setNombreUsuario(nombreUsuario);
+        mash.setIdAlojamiento(reserva.getIdAlojamiento());
+        mash.setNombrePrincipal(reserva.getNombrePrincipal()    );
+        mash.setIdPropietario(reserva.getIdUsuario());
+        mash.setIdPago("");
+        mash.setEstado("Solicitado");
+
+        mashes.add(mash);
+
+        myRef = database.getReference("mashes/"+reserva.getId()+"/");
+        reserva.setEstado("Aceptada");
+        myRef.setValue(mashes);
+        finish();
+
+    }
+
+    public void cargarMashes() {
+
+        mashes.clear();
+        //FirebaseUser user = mAuth.getCurrentUser();
+        myRef = database.getReference("mashes/"+reserva.getId()+"/");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
+                int i = 0;
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+
+                    Mash a = singleSnapshot.getValue(Mash.class);
+                    //if(a.getEmail().compareTo(email) == 0){
+                    //Map<String, Object> td = (HashMap<String,Object>) dataSnapshot.getValue();
+                    //    if(a.getIdUsuario().compareTo(user.getUid()) == 0){
+                    mashes.add(a);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //Toast.makeText(AlojamientosAnfitrionFragment.this, "Error en consulta", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
+        //Toast.makeText( this.getContext() , this.alojamientos.size(), Toast.LENGTH_SHORT).show();
+    }
+
+
+
     public  int getEdad(Date fechaNacimiento, Date fechaActual) {
         DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         int dIni = Integer.parseInt(formatter.format(fechaNacimiento));
@@ -284,4 +376,11 @@ public class VerReservaActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(origin.compareTo("mash") == 0){
+            cargarMashes();
+        }
+    }
 }

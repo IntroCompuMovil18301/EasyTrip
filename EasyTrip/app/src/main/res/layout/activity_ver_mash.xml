@@ -30,10 +30,10 @@
 
                 <ImageView
                     android:id="@+id/fotoPerfilMash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
+                    android:scaleType="fitCenter"
                     app:srcCompat="@drawable/perfirlanonimo" />
 
             </FrameLayout>
@@ -65,7 +65,7 @@
                 android:id="@+id/linearInfoMash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -82,6 +82,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
                         android:text="26 Años"
                         android:textAlignment="center"
                         android:textColor="@color/h3"
@@ -136,7 +137,7 @@
                 android:id="@+id/linearDescipcionMash"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -173,7 +174,7 @@
                 android:id="@+id/linearCalificacionMash"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -197,31 +198,33 @@
             <LinearLayout
                 android:id="@+id/linearButtonsMash"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="15dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnDescartarMash"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/boton_redondo"
-                    android:text="Descartar"
-                    android:textColor="@color/white" />
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/rechazar" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnAceptarMash"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/boton_redondo"
-                    android:text="Aceptar"
-                    android:textColor="@color/white" />
+                    android:background="@android:color/transparent"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/aceptar" />
+
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

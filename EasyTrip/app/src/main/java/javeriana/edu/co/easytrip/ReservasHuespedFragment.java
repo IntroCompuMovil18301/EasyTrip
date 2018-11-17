@@ -261,7 +261,7 @@ public class ReservasHuespedFragment extends Fragment{
 
         StorageReference storageRef = storage.getReference();
         StorageReference islandRef = storageRef.child(origen+"/"+nombre+".jpg");
-        Toast.makeText(getContext(), origen+"/"+nombre, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), origen+"/"+nombre, Toast.LENGTH_SHORT).show();
 
         final long ONE_MEGABYTE = 1024 * 1024;
         islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {

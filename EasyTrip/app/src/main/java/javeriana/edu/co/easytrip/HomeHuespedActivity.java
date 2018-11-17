@@ -49,6 +49,7 @@ public class HomeHuespedActivity extends AppCompatActivity {
     private ImageButton fabCalendarioPH;
     private ImageButton fabBusquedaPH;
     private Toolbar toolbar;
+    private Huesped usA;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -84,7 +85,9 @@ public class HomeHuespedActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent (view.getContext(),BuscarAlojamientoActivity.class);
-
+                Bundle b = new Bundle();
+                b.putString("nombreUsuario",myUser.getNomUsuario());
+                intent.putExtra("bundle",b);
                 startActivity(intent);
             }
         });
@@ -123,8 +126,16 @@ public class HomeHuespedActivity extends AppCompatActivity {
         });
 
         this.huespedPageAdapter = new HuespedPageAdapter(getSupportFragmentManager(),3);
-
+        loadUser();
         // Set up the ViewPager with the sections adapter.
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
@@ -142,13 +153,15 @@ public class HomeHuespedActivity extends AppCompatActivity {
 
         tabLayout.getTabAt(1).select();
 
-        loadUser();
     }
 
     private void setupViewPager(ViewPager viewPager) {
         HuespedPageAdapter adapter = new HuespedPageAdapter(getSupportFragmentManager(),4);
         MashesHuespedFragment mashes = new MashesHuespedFragment();
-        adapter.addFragment(new MashesHuespedFragment(),"");
+
+        mashes.setNombreUsuario(myUser.getNomUsuario());
+//        mashes.setGenero(usA.getGenero());
+        adapter.addFragment(mashes,"");
         //adapter.addFragment(new AloCercanoHuespedFragment(),"");
         AloCercanoHuespedFragment aloC = new AloCercanoHuespedFragment();
         aloC.setNombreUsuario(myUser.getNomUsuario());
@@ -223,7 +236,7 @@ public class HomeHuespedActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()) {
                     for(DataSnapshot singlesnapshot : dataSnapshot.getChildren()) {
-                        Anfitrion usA = singlesnapshot.getValue(Anfitrion.class);
+                        usA = singlesnapshot.getValue(Huesped.class);
                         descargarFoto("ImagenesPerfil",myUser.getNomUsuario());
                     }
                 }else {

@@ -59,6 +59,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -72,6 +73,7 @@ public class AddAlojamientoActivity extends AppCompatActivity {
     private final static int LOCALIZATION_PERMISSION = 200;
 
     public static final String PATH_ALOJAMIENTOS="alojamientos/";
+    public static final String PATH_CALENDARIOS="calendarios/";
 
     private FusedLocationProviderClient mFusedLocationClient;
     private FirebaseDatabase database;
@@ -120,6 +122,7 @@ public class AddAlojamientoActivity extends AppCompatActivity {
     private RadioButton rbtnTelevisionAdd;
 
 
+    private List<Date> calendario;
 
     private static final int CAMERA_REQUEST = 1888;
     private static final int PICK_IMAGE = 100;
@@ -137,6 +140,8 @@ public class AddAlojamientoActivity extends AppCompatActivity {
         this.storage = FirebaseStorage.getInstance();
         this.mAuth = FirebaseAuth.getInstance();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        this.calendario = new ArrayList<Date>();
 
         this.rbtnSerParqueaderoAdd = (RadioButton) findViewById(R.id.rbtnSerParqueaderoAdd);
         this.rbtnSerWifiAdd = (RadioButton) findViewById(R.id.rbtnSerWifiAdd);

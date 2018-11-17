@@ -155,7 +155,7 @@ public class AdaptadorAlojamientos extends BaseAdapter {
                     //Toast.makeText(v.getContext(), "Aqui2", Toast.LENGTH_SHORT).show();
                     //descargarFoto("ImagenesPerfil",a.getNombre());
                     //Toast.makeText(HomeAnfitrionActivity.this, a.getNombre(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(v.getContext(), "Aqui2", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(v.getContext(), "Aqui2", Toast.LENGTH_SHORT).show();
 /*                    //----------------
                     StorageReference storageRef = storage.getReference();
                     StorageReference islandRef = storageRef.child("alijamientos/"+singleSnapshot.getKey()+"/"+f.getNombre()+".jpg");

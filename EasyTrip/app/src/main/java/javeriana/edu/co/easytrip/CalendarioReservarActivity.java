@@ -12,8 +12,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.timessquare.CalendarPickerView;
 
 import java.text.DateFormat;
@@ -32,6 +35,8 @@ import javeriana.edu.co.modelo.Reserva;
 public class CalendarioReservarActivity extends AppCompatActivity {
 
     public static final String PATH_RESERVAS="reservas/";
+    public static final String PATH_CALENDARIOS="calendarios/";
+
 
     private TextView txtFechaInicioCalReser;
     private TextView txtFechaFinCalReser;
@@ -42,6 +47,7 @@ public class CalendarioReservarActivity extends AppCompatActivity {
 
     private CalendarPickerView datePicker;
     private List<Date> fechas;
+    private List<Date> calendario;
     private Date fechaInicio;
     private Date fechaFin;
     private Alojamiento alojamiento;
@@ -65,6 +71,7 @@ public class CalendarioReservarActivity extends AppCompatActivity {
         this.nombreUsuario = b.getString("nombreUsuario");
         this.foto = "Image0";
         this.fechas = new ArrayList<Date>();
+        this.calendario = new ArrayList<Date>();
         //this.alojamiento = (Alojamiento) getIntent().getSerializableExtra("alojamiento");
 
         Date today = new Date();
@@ -135,8 +142,9 @@ public class CalendarioReservarActivity extends AppCompatActivity {
 
                     myRef.setValue(reserva);
 
+                    actualizarCalendario();
                     //Toast.makeText(CalendarioReservarActivity.this, "hecho", Toast.LENGTH_SHORT).show();
-                    finish();
+
 
                 }
 
@@ -221,4 +229,63 @@ public class CalendarioReservarActivity extends AppCompatActivity {
         return valid;
     }
 
+
+
+    private void actualizarCalendario(){
+        for(Date f: fechas){
+            calendario.add(f);
+        }
+
+        myRef = database.getReference(PATH_CALENDARIOS);
+        //String keyF = myRef.push().getKey();
+        myRef = database.getReference(PATH_CALENDARIOS+alojamiento.getId());
+
+        myRef.setValue(calendario);
+
+        finish();
+    }
+
+
+
+    public void cargarCalendario() {
+
+        calendario.clear();
+        //FirebaseUser user = mAuth.getCurrentUser();
+        myRef = database.getReference("calendarios/"+alojamiento.getId()+"/");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
+                int i = 0;
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+
+                    Date a = singleSnapshot.getValue(Date.class);
+                    //if(a.getEmail().compareTo(email) == 0){
+                    //Map<String, Object> td = (HashMap<String,Object>) dataSnapshot.getValue();
+                    //    if(a.getIdUsuario().compareTo(user.getUid()) == 0){
+                    calendario.add(a);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //Toast.makeText(AlojamientosAnfitrionFragment.this, "Error en consulta", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        //Toast.makeText(PrincipalActivity.this, rol, Toast.LENGTH_SHORT).show();
+        //Toast.makeText( this.getContext() , this.alojamientos.size(), Toast.LENGTH_SHORT).show();
+        }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        cargarCalendario();
+    }
 }
+

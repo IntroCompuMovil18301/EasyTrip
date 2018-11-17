@@ -212,7 +212,7 @@ public class AloCercanoHuespedFragment extends Fragment{
                     //Toast.makeText(getContext(),a.getNombre() , Toast.LENGTH_SHORT).show();
                 }
 
-                Toast.makeText(getContext(),"aqui -"+nombreUsuario , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"aqui -"+nombreUsuario , Toast.LENGTH_SHORT).show();
                 adaptador = new AdaptadorAlojamientosCercanos(arrayItems, getContext(),nombreUsuario);
                 listAlojamientoHuesped.setAdapter(adaptador);
 

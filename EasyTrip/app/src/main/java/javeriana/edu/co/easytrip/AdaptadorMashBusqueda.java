@@ -2,9 +2,7 @@ package javeriana.edu.co.easytrip;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -24,15 +22,17 @@ import java.util.Date;
 
 import javeriana.edu.co.modelo.Reserva;
 
-public class AdaptadorReservaPorAceptar extends BaseAdapter {
+public class AdaptadorMashBusqueda extends BaseAdapter {
 
     private ArrayList<Reserva> listItems;
     private Context context;
     private Button button;
+    private String nombreUsuario;
 
-    public AdaptadorReservaPorAceptar(ArrayList<Reserva> listItems, Context context) {
+    public AdaptadorMashBusqueda(ArrayList<Reserva> listItems, Context context, String nombreUsuario) {
         this.listItems = listItems;
         this.context = context;
+        this.nombreUsuario = nombreUsuario;
     }
 
     @Override
@@ -53,10 +53,10 @@ public class AdaptadorReservaPorAceptar extends BaseAdapter {
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         final Reserva item = (Reserva) getItem(i);
-        view = LayoutInflater.from(context).inflate(R.layout.item_reservas_por_aceptar, null);
-        ImageView imgFoto = (ImageView) view.findViewById(R.id.imgFotoReserva);
+        view = LayoutInflater.from(context).inflate(R.layout.item_mash_busqueda, null);
+        ImageView imgFoto = (ImageView) view.findViewById(R.id.imgFotoMashQuery);
 
-        button = (Button) view.findViewById(R.id.btnVerReservaPorAceptarAnfi);
+        button = (Button) view.findViewById(R.id.btnVerVerMashQuery);
 
         Drawable originalDrawable = null;
 
@@ -80,12 +80,14 @@ public class AdaptadorReservaPorAceptar extends BaseAdapter {
         rbmd.setCircular(true);
         imgFoto.setImageDrawable(rbmd);
 
-        TextView txtNombreReserva = (TextView) view.findViewById(R.id.txtNombreRePoAC);
-        TextView fechaInicio = (TextView) view.findViewById(R.id.txtFechaInicioRePoAc);
-        TextView fechaFin = (TextView) view.findViewById(R.id.txtFechaFinRePoAC);
+        TextView txtNombreReserva = (TextView) view.findViewById(R.id.txtNombreAloMashQuery);
+        TextView fechaInicio = (TextView) view.findViewById(R.id.txtFechaInicioMashQuery);
+        TextView fechaFin = (TextView) view.findViewById(R.id.txtFechaFinMashQuery);
+        TextView txtCostoMashQuery = (TextView) view.findViewById(R.id.txtCostoMashQuery);
         txtNombreReserva.setText(item.getNombreAlo());
         fechaFin.setText(getFechaString(item.getFechaFin()));
         fechaInicio.setText(getFechaString(item.getFechaInicio()));
+        txtCostoMashQuery.setText("Costo:\n"+item.getCosto()+"00");
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -94,13 +96,14 @@ public class AdaptadorReservaPorAceptar extends BaseAdapter {
                 Intent intent = new Intent(view.getContext(),VerReservaActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("reserva",listItems.get(i));
-                b.putString("origin","anfitrion");
+                b.putString("origin","mash");
+                b.putString("nombreUsuario",nombreUsuario);
                 intent.putExtra("bundle",b);
                 view.getContext().startActivity(intent);
             }
         });
-        button.setBackgroundColor(getColor(item.getEstado()));
-        button.setText(item.getEstado());
+        //button.setBackgroundColor(getColor(item.getEstado()));
+        //button.setText(item.getEstado());
 
         return view;
     }

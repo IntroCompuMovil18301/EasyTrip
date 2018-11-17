@@ -26,8 +26,7 @@ public class ActivityMatshes extends AppCompatActivity{
                 startActivity(intent);
             }
         });
-        adaptador = new AdaptadorMatshes(getArrayItems(), this);
-        listView.setAdapter(adaptador);
+
     }
     public ArrayList<EntityMatshes> getArrayItems() {
         ArrayList<EntityMatshes>arrayItems = new ArrayList<>();
