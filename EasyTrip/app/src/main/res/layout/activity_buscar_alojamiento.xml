@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
+    android:layout_marginBottom="27dp"
     android:orientation="vertical">
 
     <GridView
@@ -29,63 +30,48 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <ScrollView
+        <TextView
+
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+
+            android:layout_weight="1"
+            android:backgroundTint="@color/acccent"
+            android:text="Alojamientos"
+            android:textAlignment="viewStart"
+            android:textColor="@color/h1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="Mashes" />
+
+        <ListView
+            android:id="@+id/listAloBusqueda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+        <TextView
 
-                <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
 
-                    android:id="@+id/textView7"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/acccent"
+            android:text="Mashes"
+            android:textAlignment="viewStart"
+            android:textColor="@color/h1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="DuplicateIds" />
 
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/acccent"
-                    android:text="Alojamientos"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/h1"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:ignore="Mashes" />
-
-                <ListView
-                    android:id="@+id/listAloBusqueda"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:layout_weight="1" />
-
-                <TextView
-
-                    android:id="@+id/textView6"
-                    android:layout_width="match_parent"
-                    android:layout_height="32dp"
-
-                    android:layout_marginTop="15dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/acccent"
-                    android:text="Mashes"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/h1"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:ignore="DuplicateIds" />
-
-                <ListView
-                    android:id="@+id/listMashesBusqueda"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-        </ScrollView>
+        <ListView
+            android:id="@+id/listMashesBusqueda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
     </LinearLayout>
 

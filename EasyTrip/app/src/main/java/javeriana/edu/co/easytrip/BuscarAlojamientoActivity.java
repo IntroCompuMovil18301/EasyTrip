@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ArrayList;
@@ -130,13 +134,14 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
     private void showQueryDateDialog(Context c) {
         final EditText taskEditText = new EditText(c);
         //taskEditText.setPadding(20,0,20,0);
-        taskEditText.setHint("dd-mm-aaaa");
+        taskEditText.setHint("dd/mm/aaaa");
 
         AlertDialog dialog = new AlertDialog.Builder(c)
                 .setTitle("Búsqueda por fecha")
                 .setMessage("Ingrese la fecha")
                 .setView(taskEditText)
                 .setPositiveButton("Buscar", new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String task = String.valueOf(taskEditText.getText());
@@ -144,7 +149,23 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
 
                             //Date fecha=  dateFormat.parse("1997-07-19");
                             //Date fecha =  dateFormat.parse(task);
-                            cargarAlojamientosDate(task);
+                        //String task = "20/11/2018";
+                        cargarAlojamientosDate(task);
+
+                        String inputString = "11-11-2012";
+                        //String inputString = task;
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+                        Date date = null;
+                        try {
+                            date = formatter.parse(task);
+                            cargarReservasDate(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        //LocalDate inputDate = LocalDate.parse(inputString);
+
+                            //cargarReservasDate(new Date (task));
 
 
 
@@ -339,6 +360,7 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
 
     public void cargarAlojamientosDate(final String fecha) {
 
+
         alojamientos.clear();
         //FirebaseUser user = mAuth.getCurrentUser();
         myRef = database.getReference("alojamientos/");
@@ -348,7 +370,7 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
+
                 int i = 0;
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
 
@@ -383,8 +405,9 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
                                 calSelected.setTime(f);
 
                                 String date = calSelected.get(Calendar.DAY_OF_MONTH)
-                                        + "-" + (calSelected.get(Calendar.MONTH) + 1)
-                                        + "-" + calSelected.get(Calendar.YEAR);
+                                        + "/" + (calSelected.get(Calendar.MONTH) + 1)
+                                        + "/" + calSelected.get(Calendar.YEAR);
+                //                Toast.makeText(BuscarAlojamientoActivity.this, fecha+"--"+date, Toast.LENGTH_SHORT).show();
 
                                 if(date.compareTo(fecha) == 0){
                                     esta=true;
@@ -396,7 +419,7 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
 
                             if(!esta){
                                 alojamientos.add(a);
-                                Toast.makeText(BuscarAlojamientoActivity.this, alojamientos.size()+"++" , Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(BuscarAlojamientoActivity.this, alojamientos.size()+"++" , Toast.LENGTH_SHORT).show();
                             }
                             actualizar();
 
@@ -455,6 +478,9 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
 
     }
 
+    //---------------------------------------------------------------------------------
+
+
     public void cargarReservasType(final String tipo) {
 
         reservas.clear();
@@ -498,10 +524,111 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
 
     }
 
+
+    public void cargarReservasDate(final Date date) {
+
+
+        reservas.clear();
+        //FirebaseUser user = mAuth.getCurrentUser();
+        myRef = database.getReference("reservas/");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            boolean add = false;
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                int i = 0;
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+
+                    Reserva r = singleSnapshot.getValue(Reserva.class);
+                    Date fAnt = r.getFechaInicio();
+                    Date fDesp = r.getFechaFin();
+                    //if(r.getIdUsuario().compareTo(user.getUid()) == 0){
+                    r.setId(singleSnapshot.getKey());
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+
+                    int day = cal.get(Calendar.DAY_OF_MONTH);
+                    int month =(cal.get(Calendar.MONTH) + 1);
+
+                    Calendar cali = Calendar.getInstance();
+                    cali.setTime(r.getFechaInicio());
+
+                    int dayi = cali.get(Calendar.DAY_OF_MONTH);
+                    int monthi =(cali.get(Calendar.MONTH) + 1);
+
+                    Calendar calf = Calendar.getInstance();
+                    calf.setTime(r.getFechaFin());
+
+                    int dayf = calf.get(Calendar.DAY_OF_MONTH);
+                    int monthf =(calf.get(Calendar.MONTH) + 1);
+
+                    //Toast.makeText(BuscarAlojamientoActivity.this,day+ " -- "+dayf, Toast.LENGTH_SHORT).show();
+                    if( (day <= dayf) && (month <=(monthf)) && ((day >= dayi) && (month <=(monthi)) ) ){
+                        add= true;
+
+                    }
+
+/*
+                    if(date.after(fDesp)){          Toast.makeText(BuscarAlojamientoActivity.this, "Aqui1", Toast.LENGTH_SHORT).show();
+                        if(date.before(fAnt)){
+                            add=true;
+                            Toast.makeText(BuscarAlojamientoActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    Toast.makeText(BuscarAlojamientoActivity.this, getFechaString(fAnt)+" xd "+getFechaString(fDesp), Toast.LENGTH_SHORT).show();
+                    if( (getFechaString(date).compareTo(getFechaString(fAnt))) == 0 ){
+                        add=true;
+                    }
+
+                    if( (getFechaString(date).compareTo(getFechaString(fDesp))) == 0 ){
+                        add=true;
+                    }
+*/
+                    if(r.getEstado().compareTo("Aceptada") == 0 && add){
+                        reservas.add(r);
+
+                    }
+
+                    add = false;
+
+
+                    //Toast.makeText(getContext(), r.getNombreAlo(), Toast.LENGTH_SHORT).show();
+                    //}
+                }
+
+
+                actualizarReservas();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //Toast.makeText(AlojamientosAnfitrionFragment.this, "Error en consulta", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+
     private void actualizarReservas(){
         Toast.makeText(this, nombreUsuario+"!!!", Toast.LENGTH_SHORT).show();
         adapMash= new AdaptadorMashBusqueda(this.reservas, this, nombreUsuario);
         listMashesBusqueda.setAdapter(adapMash);
+    }
+
+    private String getFechaString(Date date){
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        String fecha = cal.get(Calendar.DAY_OF_MONTH)
+                + "/" + (cal.get(Calendar.MONTH) + 1)
+                + "/" + cal.get(Calendar.YEAR);
+
+        return fecha;
     }
 
 }
