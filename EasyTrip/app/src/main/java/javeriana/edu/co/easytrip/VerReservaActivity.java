@@ -202,6 +202,11 @@ public class VerReservaActivity extends AppCompatActivity {
             linearButtonsVerReservaAnfi.setVisibility(View.INVISIBLE);
         }
 
+        this.btnCheckout = (ImageButton) findViewById(R.id.btnCheckout );
+
+
+        
+
         loadUser();
 
     }

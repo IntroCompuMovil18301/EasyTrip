@@ -124,6 +124,7 @@ public class AdaptadorCalificar extends BaseAdapter implements SmileRating.OnSmi
     public void onSmileySelected(@BaseRating.Smiley int smiley, boolean reselected) {
         switch (smiley) {
             case SmileRating.BAD:
+                //listItems.get(i).setValoracion(1.0);
                 Log.i(TAG, "Bad");
                 break;
             case SmileRating.GOOD:

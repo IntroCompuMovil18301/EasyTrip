@@ -92,6 +92,9 @@ public class ReservasHuespedFragment extends Fragment{
         this.storage = FirebaseStorage.getInstance();
 
         this.btnCheckout = (ImageButton) view.findViewById(R.id.btnCheckout);
+
+
+
         this.btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -304,6 +307,11 @@ public class ReservasHuespedFragment extends Fragment{
             descargarFoto("Alojamientos/"+reservas.get(selected).getIdAlojamiento(),reservas.get(0).getFoto());
             //-----------------------------------------
 
+            if(reservas.get(selected).getEstado().compareTo("Aceptada") == 0){
+                btnCheckout.setVisibility(View.VISIBLE);
+            }else{
+                btnCheckout.setVisibility(View.INVISIBLE);
+            }
 
         }
 
@@ -328,7 +336,11 @@ public class ReservasHuespedFragment extends Fragment{
 
             descargarFoto("Alojamientos/"+reservas.get(selected).getIdAlojamiento(),reservas.get(0).getFoto());
             //-----------------------------------------
-
+            if(reservas.get(selected).getEstado().compareTo("Aceptada") == 0){
+                btnCheckout.setVisibility(View.VISIBLE);
+            }else{
+                btnCheckout.setVisibility(View.INVISIBLE);
+            }
 
         }
     }

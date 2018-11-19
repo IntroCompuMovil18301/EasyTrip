@@ -18,6 +18,8 @@ public class Reserva implements Serializable{
     private String estado;
     private Double costo;
     private String foto;
+    private Double longitud;
+    private Double latitud;
 
     public String getId() {
         return id;
@@ -113,5 +115,21 @@ public class Reserva implements Serializable{
 
     public void setNombrePrincipal(String nombrePrincipal) {
         this.nombrePrincipal = nombrePrincipal;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
     }
 }

@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -16,16 +18,26 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,22 +46,53 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class MapAloCercanos extends FragmentActivity implements OnMapReadyCallback {
+import javeriana.edu.co.modelo.Alojamiento;
+import javeriana.edu.co.modelo.FirebaseReference;
+import javeriana.edu.co.modelo.Localizacion;
 
+public class MapAloCercanos extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest;
-    private String nombreAlo;
     private Geocoder mGeocoder;
     private ImageButton btnBuscarAloMap;
+    private ImageButton btnGuardarAloMap;
     private EditText txtBuscarAloMap;
+    private Localizacion localizacion;
+    private LatLng puntoActu;
+    private Marker markerActu;
+    private List<Alojamiento> alojamientos;
+    public static final int ID_PERMISSION_LOCATION = 1;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+    private DatabaseReference myRefCal;
+    private Location location;
+    protected static final int RADIUS_OF_EARTH_KM = 6371;
+    private JSONObject jsonObject;
 
 
     private final static int LOCALIZATION_PERMISSION = 200;
@@ -62,22 +105,40 @@ public class MapAloCercanos extends FragmentActivity implements OnMapReadyCallba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_map_alo_cercanos);
+        setContentView(R.layout.fragment_map_add_alojamiento);
 
+        alojamientos = new ArrayList<Alojamiento>();
 
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.mapHuesped);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        mGeocoder = new Geocoder(getBaseContext());
+
         mLocationRequest = createLocationRequest();
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        this.mGeocoder = new Geocoder(getBaseContext());
 
-        this.txtBuscarAloMap = (EditText) findViewById(R.id.txtBuscarAloMapH);
-        this.btnBuscarAloMap = (ImageButton) findViewById(R.id.btnBuscarAloMapH);
+        database= FirebaseDatabase.getInstance();
+
+        mLocationCallback = new LocationCallback(){
+            @Override
+            public void  onLocationResult(LocationResult locationResult){
+                location = locationResult.getLastLocation();
+                if(location != null){
+                    puntoActual(location.getLatitude(),location.getLongitude());
+                }
+            }
+        };
+
+        this.btnGuardarAloMap = (ImageButton) findViewById(R.id.btnGuardarAloMap);
+        this.btnGuardarAloMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                guardarLocalizacion();
+            }
+        });
+
+        this.txtBuscarAloMap = (EditText) findViewById(R.id.txtBuscarAloMap);
+        this.btnBuscarAloMap = (ImageButton) findViewById(R.id.btnBuscarAloMap);
         this.btnBuscarAloMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,23 +150,22 @@ public class MapAloCercanos extends FragmentActivity implements OnMapReadyCallba
                         List<Address> addresses = mGeocoder.getFromLocationName( addressString, 2,
                                 lowerLeftLatitude, lowerLeftLongitude, upperRightLatitude, upperRigthLongitude);
 
-                        //List<Address> addresses = mGeocoder.getFromLocationName(addressString, 2);
                         if (addresses != null && !addresses.isEmpty()) {
                             Address addressResult = addresses.get(0);
 
                             LatLng position = new LatLng(addressResult.getLatitude(), addressResult.getLongitude());
 
                             mMap.clear();
+
                             Marker home = mMap.addMarker(new MarkerOptions()
-                                    .position(position).title(nombreAlo)
+                                    .position(position)
                                     .icon(BitmapDescriptorFactory
-                                            .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                                            .fromResource(R.drawable.iconalojamientomap)));
 
                             home.setVisible(true);
 
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-                            mMap.moveCamera(CameraUpdateFactory.zoomTo(18));
-                            Toast.makeText(MapAloCercanos.this,addresses.get(0).getAddressLine(0)+"",Toast.LENGTH_SHORT).show();
+                            mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
 
                         }
                     } catch (IOException e) {
@@ -113,31 +173,11 @@ public class MapAloCercanos extends FragmentActivity implements OnMapReadyCallba
                     }
                 }
 
-
             }
         });
 
         requestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, "Se necesita acceder a los contactos", LOCALIZATION_PERMISSION);
-
-
-        //En OnCreate()
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                Location location = locationResult.getLastLocation();
-                //        Log.i(“LOCATION", "Location update in the callback: " + location);
-                if (location != null) {
-                    Toast.makeText(MapAloCercanos.this, location.getLatitude()+"", Toast.LENGTH_LONG).show();
-                    //latitude.setText("Latitude: " + String.valueOf(location.getLatitude()));
-                    //longitude.setText("Longitude: " + String.valueOf(location.getLongitude()));
-                    //altitude.setText("Altitude: " + String.valueOf(location.getAltitude()));
-                }
-            }
-        };
-
-        //startLocationUpdates();
-
-
+        permisoConsedido();
     }
 
 
@@ -153,62 +193,69 @@ public class MapAloCercanos extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-
         mMap = googleMap;
-        LatLng bogota = new LatLng(4.65, -74.05);
-        mMap.addMarker(new MarkerOptions().position(bogota).title(nombreAlo));
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
 
-
-        /*
-        Marker bogotaHome = mMap.addMarker(new MarkerOptions()
-                .position(bogota)
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.iconmash)));
-        */
-
-
-        Marker home = mMap.addMarker(new MarkerOptions()
-                .position(bogota).title(nombreAlo)
-                .icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-
-        home.setVisible(true);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(bogota));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        alojamientosDosKilometors();
+/*
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public void onMapClick(LatLng point) {
-                LatLng touched = new LatLng(point.latitude, point.longitude);
+            public boolean onMarkerClick(Marker marker) {
+                String url = "http://maps.googleapis.com/maps/api/directions/json?origin="+location.getLatitude()+","+location.getLongitude()+"&destination="+marker.getPosition().latitude+","+marker.getPosition().longitude;
 
-                mMap.clear();
-                Marker home = mMap.addMarker(new MarkerOptions()
-                        .position(touched).title(nombreAlo)
-                        .icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                RequestQueue queue = Volley.newRequestQueue(MapAloCercanos.this);
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            jsonObject = new JSONObject(response);
+                            Log.i("jsonTuta",""+response);
+                            trazarRuta(jsonObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-                home.setVisible(true);
+                    }
+                });
 
-                List<Address> addresses = null;
+                queue.add(stringRequest);
 
-                try {
-
-                    addresses = mGeocoder.getFromLocation(point.latitude, point.longitude, 3);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Toast.makeText(MapAloCercanos.this,addresses.get(0).getAddressLine(0)+"",Toast.LENGTH_SHORT).show();
-
-
+                return false;
             }
         });
-
-        startLocationUpdates();
+        */
     }
+/*
+    private void trazarRuta(JSONObject jsonObject) {
+        JSONArray jRoutes;
+        JSONArray jLegs;
+        JSONArray jSteps;
 
+        try{
+            jRoutes = jsonObject.getJSONArray("routes");
+            for(int i=0; i<jRoutes.length();i++){
+                jLegs = ((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
+                for(int j=0; j<jLegs.length();j++){
+                    jSteps = ((JSONObject)(jLegs.get(j))).getJSONArray("steps");
+                    for(int k=0; k<jSteps.length();k++){
 
+                        String polyline = ""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
+                        List<LatLng> list = PolyUtil.decode(polyline);
+                        mMap.addPolyline(new PolylineOptions().addAll(list).color(Color.RED).width(5));
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+*/
 
     protected LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();
@@ -218,105 +265,25 @@ public class MapAloCercanos extends FragmentActivity implements OnMapReadyCallba
         return mLocationRequest;
     }
 
-    private void startLocationUpdates() {
-//Verificación de permiso!!
-        //Toast.makeText(MapAddAlojamientoFragment.this,"Permisos",Toast.LENGTH_SHORT).show();
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            //mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
-            mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new
-                    OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-
-                            if (location != null) {
-                                LatLng bogota = new LatLng(location.getLatitude(), location.getLongitude());
-
-                                mMap.addMarker(new MarkerOptions().position(bogota).title(nombreAlo));
-
-                                Marker home = mMap.addMarker(new MarkerOptions()
-                                        .position(bogota)
-                                        .icon(BitmapDescriptorFactory
-                                                .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-
-                                /*
-                                Marker home = mMap.addMarker(new MarkerOptions()
-                                        .position(bogota)
-                                        .icon(BitmapDescriptorFactory
-                                                .fromResource(R.drawable.iconmash)));
-                                */
-                                home.setVisible(true);
-                                List<Address> addresses = null;
-
-                                try {
-
-                                    addresses = mGeocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 3);
-
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
-                                Toast.makeText(MapAloCercanos.this,addresses.get(0).getAddressLine(0)+"",Toast.LENGTH_SHORT).show();
-
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(bogota));
-                                mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-                            }
-                        }});
-
-            /*
-
-        LocationSettingsRequest.Builder builder = new
-                LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
-        SettingsClient client = LocationServices.getSettingsClient(this);
-        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
-
-        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                startLocationUpdates(); //Todas las condiciones para recibir localizaciones
-            }
-        });
-
-        */
-        }
-    }
-
     @Override
-    protected void onResume() {
-        super.onResume();
-        startLocationUpdates();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        stopLocationUpdates();
-    }
-
-    private void stopLocationUpdates(){
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(requestCode==200){
-            if(grantResults.length==2 && grantResults[0]==PackageManager.PERMISSION_GRANTED
-                    && grantResults[1]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getApplicationContext(),"Permisos",Toast.LENGTH_SHORT).show();
-                startLocationUpdates();
-
-            }else{
-                solicitarPermisosManual();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResult){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResult);
+        switch (requestCode){
+            case ID_PERMISSION_LOCATION : {
+                if(grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(this, "Ya hay permiso para acceder a la localizacion", Toast.LENGTH_LONG).show();
+                    requestLocation();
+                }else{
+                    Toast.makeText(this, "No hay permiso", Toast.LENGTH_LONG).show();
+                }
+                return;
             }
         }
-
     }
 
     private void solicitarPermisosManual() {
         final CharSequence[] opciones={"si","no"};
-        final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(MapAloCercanos.this);
+        final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(this);
         alertOpciones.setTitle("¿Desea configurar los permisos de forma manual?");
         alertOpciones.setItems(opciones, new DialogInterface.OnClickListener() {
             @Override
@@ -347,4 +314,163 @@ public class MapAloCercanos extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
+    private void guardarLocalizacion(){
+
+        Intent returnIntent = new Intent();
+        Bundle b = new Bundle();
+        b.putSerializable("localizacion",localizacion);
+        returnIntent.putExtra("bundle",b);
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
+
+    }
+
+    public void puntoActual(double lat, double lng){
+
+        if(markerActu != null){
+            markerActu.remove();
+        }
+
+        puntoActu = new LatLng(lat, lng);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(puntoActu));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        markerActu = mMap.addMarker(new MarkerOptions().position(puntoActu).title("Marcador en Bogotá"));
+
+    }
+
+    private void requestLocation(){
+        if((ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)){
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if(location != null){
+                        puntoActual(location.getLatitude(),location.getLongitude());
+                    }
+                }
+            });
+        }
+    }
+
+    private void startLocationUpdates(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest,mLocationCallback,null);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CHECK_SETTINGS : {
+                if (resultCode == RESULT_OK) {
+                    startLocationUpdates(); //Se encendió la localización!!!
+                } else {
+                    Toast.makeText(this,"Sin acceso a localización, hardware deshabilitado!", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startLocationUpdates();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+    private void stopLocationUpdates(){
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+    }
+
+    private void permisoConsedido(){
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
+        SettingsClient client = LocationServices.getSettingsClient(this);
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                startLocationUpdates();
+            }
+        });
+        task.addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e){
+                int statusCode = ((ApiException)e).getStatusCode();
+                switch (statusCode){
+                    case CommonStatusCodes.RESOLUTION_REQUIRED:
+                        try{
+                            ResolvableApiException resolvable = (ResolvableApiException) e;
+                            resolvable.startResolutionForResult(MapAloCercanos.this, REQUEST_CHECK_SETTINGS);
+                        }catch (IntentSender.SendIntentException sendEx){
+
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+
+                        break;
+                }
+            }
+        })  ;
+    }
+
+    private  boolean radioDosKilometros(double lat1, double long1, double lat2, double long2){
+        double latDistance = Math.toRadians(lat1 - lat2);
+        double lngDistance = Math.toRadians(long1 - long2);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double result = RADIUS_OF_EARTH_KM * c;
+        if(result < 2){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private void alojamientosDosKilometors(){
+        myRef = database.getReference("alojamientos/");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    final Alojamiento a = singleSnapshot.getValue(Alojamiento.class);
+                    a.setId(singleSnapshot.getKey());
+                    myRefCal = database.getReference("alojamientos/" + a.getId() + "/localizacion/");
+                    myRefCal.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                                Localizacion l = singleSnapshot.getValue(Localizacion.class);
+                                if (radioDosKilometros(l.getLatitud(), l.getLongitud(), location.getLatitude(), location.getLongitude())) {
+                                    a.setLocaliza(l);
+                                    alojamientos.add(a);
+                                }
+                            }
+                            ponerMarcas();
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void ponerMarcas(){
+        for(Alojamiento a : alojamientos){
+            LatLng latLng = new LatLng(a.getLocaliza().getLatitud(),a.getLocaliza().getLongitud());
+            Marker m = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.iconalojamientomap)));
+            m.setTitle(a.getNombre());
+        }
+    }
 }
