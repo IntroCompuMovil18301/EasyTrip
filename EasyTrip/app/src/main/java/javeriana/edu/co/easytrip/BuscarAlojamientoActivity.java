@@ -255,7 +255,7 @@ public class BuscarAlojamientoActivity extends AppCompatActivity {
 
                     Alojamiento a = singleSnapshot.getValue(Alojamiento.class);
                     //if(a.getEmail().compareTo(email) == 0){
-                    //Map<String, Object> td = (HashMap<String,Object>) dataSnapshot.getValue();
+                    //Map<String, Object> td = (HashMap<String,Object>x) dataSnapshot.getValue();
                     //    if(a.getIdUsuario().compareTo(user.getUid()) == 0){
                     a.setId(singleSnapshot.getKey());
                     if(a.getTipo().compareTo(tipo) == 0){

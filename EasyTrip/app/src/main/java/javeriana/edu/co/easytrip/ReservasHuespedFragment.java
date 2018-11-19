@@ -2,6 +2,7 @@ package javeriana.edu.co.easytrip;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -340,7 +341,11 @@ public class ReservasHuespedFragment extends Fragment{
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (opciones[i].equals("Pagar")){
-
+                    Intent intent = new Intent(getContext(), CheckOutReservaActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("reserva",reservas.get(selected));
+                        intent.putExtra("bundle",b);
+                    startActivity(intent);
                 }else{
                     dialogInterface.dismiss();
                 }
