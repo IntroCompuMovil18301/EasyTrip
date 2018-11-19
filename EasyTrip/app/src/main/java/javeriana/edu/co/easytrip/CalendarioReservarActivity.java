@@ -1,5 +1,6 @@
 package javeriana.edu.co.easytrip;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -30,6 +31,7 @@ import java.util.Date;
 import java.util.List;
 
 import javeriana.edu.co.modelo.Alojamiento;
+import javeriana.edu.co.modelo.Localizacion;
 import javeriana.edu.co.modelo.Reserva;
 
 public class CalendarioReservarActivity extends AppCompatActivity {
@@ -88,8 +90,6 @@ public class CalendarioReservarActivity extends AppCompatActivity {
                 .inMode(CalendarPickerView.SelectionMode.RANGE)
                 .withSelectedDate(today);
 
-
-
         datePicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {
@@ -122,7 +122,7 @@ public class CalendarioReservarActivity extends AppCompatActivity {
 
                 if(validateForm()){
 
-                    Reserva reserva = new Reserva();
+                    final Reserva reserva = new Reserva();
                     reserva.setIdAlojamiento(alojamiento.getId());
                     reserva.setFoto(foto);
                     reserva.setNombreAlo(alojamiento.getNombre());
@@ -133,16 +133,46 @@ public class CalendarioReservarActivity extends AppCompatActivity {
                     reserva.setNombrePrincipal(nombreUsuario);
                     reserva.setDias(Integer.parseInt(txtDiasCalReser.getText().toString()));
                     reserva.setCosto(Double.parseDouble(txtValorCalReser.getText().toString()));
-                    reserva.setEstado("Solicitado");
 
-                    myRef = database.getReference(PATH_RESERVAS);
-                    String key = myRef.push().getKey();
+                    myRef = database.getReference("alojamientos/" + alojamiento.getId() + "/localizacion/");
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
-                    myRef = database.getReference(PATH_RESERVAS+key);
 
-                    myRef.setValue(reserva);
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //Toast.makeText(HomeAnfitrionActivity.this, "Aqui2", Toast.LENGTH_SHORT).show();
 
-                    actualizarCalendario();
+                            for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+
+                                Localizacion l = singleSnapshot.getValue(Localizacion.class);
+                                reserva.setLatitud(l.getLatitud());
+                                reserva.setLongitud(l.getLongitud());
+
+                            }
+                            reserva.setEstado("Solicitado");
+
+                            myRef = database.getReference(PATH_RESERVAS);
+                            String key = myRef.push().getKey();
+
+                            myRef = database.getReference(PATH_RESERVAS+key);
+
+                            myRef.setValue(reserva);
+
+                            actualizarCalendario();
+                         //   actualizar();
+
+                        }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //Toast.makeText(AlojamientosAnfitrionFragment.this, "Error en consulta", Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        });
+
+
                     //Toast.makeText(CalendarioReservarActivity.this, "hecho", Toast.LENGTH_SHORT).show();
 
 

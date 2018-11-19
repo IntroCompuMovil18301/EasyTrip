@@ -48,11 +48,44 @@ public class Alojamiento implements Serializable{
 
 
     public String getServicios(){
-        return "Servicios...";
+        String ser = "     ";
+        if (this.serParqueadero)
+            ser=ser+"Parqueadero, ";
+        if (this.wifi)
+            ser=ser+"Wifi, ";
+        if (this.salaNinos)
+            ser=ser+"Sala de niños, ";
+        if (this.serHabitacion)
+            ser=ser+"Habitacion, ";
+        if (this.gimnasio)
+            ser=ser+"Gimnasio, ";
+        if (this.piscina)
+            ser=ser+"Piscina, ";
+        if (this.cafeBar)
+            ser=ser+"Cafe Bar, ";
+        if (this.gimnasio)
+            ser=ser+"SPA, ";
+        ser = ser.substring(1, ser.length() - 2);
+        return ser;
     }
 
     public String getElectrodomesticos(){
-        return "Electro...";
+        String elec = "     ";
+        if (this.refrigerador)
+            elec=elec+"Refrigerador, ";
+        if (this.microhondas)
+            elec=elec+"Microhondas, ";
+        if (this.teatro)
+            elec=elec+"Teatro en casa, ";
+        if (this.jacuzzi)
+            elec=elec+"Jacuzzi, ";
+        if (this.television)
+            elec=elec+"Television, ";
+        if (this.equipoSonido)
+            elec=elec+"Equipo de sonido, ";
+        elec = elec.substring(1, elec.length() - 2);
+
+        return elec;
     }
 
 
