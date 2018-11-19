@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".CheckOutReservaActivity">
+
+    <LinearLayout
+        android:id="@+id/linearImgVerAlo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="107dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:id="@+id/txtNombreCalificar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/acccent"
+                android:text="Casa Quinta"
+                android:textAlignment="center"
+                android:textColor="@color/h1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="DuplicateIds" />
+
+            <ImageButton
+                android:id="@+id/imageVerAloCalificar"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@android:drawable/ic_menu_gallery" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="458dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.hsalf.smilerating.SmileRating
+                android:id="@+id/ratingCalificar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                app:angryColor="#f29a68"
+                app:drawingColor="#353431"
+                app:isIndicator="false"
+                app:normalColor="#f2dd68"
+                app:placeHolderBackgroundColor="#e6e8ed"
+                app:placeHolderSmileColor="#ffffff"
+                app:textNonSelectionColor="#AEB3B5"
+                app:textSelectionColor="#000000" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearDescripcionVerAlo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:focusableInTouchMode="false"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="5dp"
+
+                android:backgroundTint="@color/acccent"
+                android:text="Comentario:"
+                android:textAlignment="viewStart"
+                android:textColor="@color/h1"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:ignore="DuplicateIds" />
+
+            <EditText
+                android:id="@+id/txtComentarioCalificar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:ems="10"
+                android:hint="Comentario.."
+                android:selectAllOnFocus="false"
+                android:textColor="@color/h3"
+                android:textColorHighlight="@color/h3"
+                android:textColorHint="@color/h3"
+                android:textColorLink="@color/acccent"
+                android:textSize="16dp"
+                tools:ignore="DuplicateIds"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/listCompanerosCalificar"
+                android:layout_width="match_parent"
+                android:layout_height="90dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
